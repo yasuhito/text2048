@@ -1,6 +1,6 @@
-require 'game2048/numbers'
+require 'text2048/numbers'
 
-module Game2048
+module Text2048
   # Game board
   class Board
     def initialize(layout = nil)

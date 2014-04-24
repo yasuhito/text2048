@@ -1,10 +1,10 @@
-require 'game2048'
+require 'text2048'
 
 Given(/^a board:$/) do |string|
   layout = string.split.reduce([]) do |result, row|
     result << row.split(//).map { |each| each.to_i }
   end
-  @board = Game2048::Board.new(layout)
+  @board = Text2048::Board.new(layout)
 end
 
 When(/^I start a new game$/) do

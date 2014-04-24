@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-module Game2048
+module Text2048
   module MonkeyPatch
     module Array
       # 2048 related methods

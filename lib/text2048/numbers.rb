@@ -1,9 +1,9 @@
 # encoding: utf-8
 
 require 'forwardable'
-require 'game2048/monkey_patch/array'
+require 'text2048/monkey_patch/array'
 
-module Game2048
+module Text2048
   # Each row or column of a game board.
   class Numbers
     extend Forwardable

@@ -2,6 +2,6 @@
 
 $LOAD_PATH.unshift(File.dirname(File.realpath(__FILE__)) + '/../lib')
 
-require 'game2048'
+require 'text2048'
 
-Game2048::Game.new.start
+Text2048::Game.new.start

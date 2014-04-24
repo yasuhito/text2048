@@ -1,6 +1,6 @@
-require 'game2048/board'
+require 'text2048/board'
 
-module Game2048
+module Text2048
   class Game
     def initialize
       @board = Board.new
