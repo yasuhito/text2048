@@ -3,15 +3,15 @@ require 'game2048/numbers'
 module Game2048
   # Game board
   class Board
-    def initialize(layout)
+    def initialize(layout = nil)
       @data = [[0, 0, 0, 0],
                [0, 0, 0, 0],
                [0, 0, 0, 0],
                [0, 0, 0, 0]]
-      layout.each_with_index do |row, y|
-        row.each_with_index do |number, x|
-          @data[y][x] = number
-        end
+      if layout
+        load_layout(layout)
+      else
+        set_random_numbers
       end
     end
 
@@ -47,6 +47,29 @@ module Game2048
           number != 0 ? number : '_'
         end.join
       end.join("\n")
+    end
+
+    private
+
+    def load_layout(layout)
+      layout.each_with_index do |row, y|
+        row.each_with_index do |number, x|
+          @data[y][x] = number
+        end
+      end
+    end
+
+    def set_random_numbers
+      n = 0
+      loop do
+        return if n == 2
+        x = rand(4).to_i
+        y = rand(4).to_i
+        if @data[y][x] == 0
+          @data[y][x] = (rand(2) == 0 ? 2 : 4)
+          n += 1
+        end
+      end
     end
   end
 end
