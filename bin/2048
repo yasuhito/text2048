@@ -10,7 +10,7 @@ game.show
 puts
 
 loop do
+  game.game_over if game.lose?
   game.input Curses.getch
   game.show
-  puts
 end

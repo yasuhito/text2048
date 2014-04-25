@@ -21,19 +21,19 @@ module Text2048
     end
 
     def right!
-      move :right
+      move! :right
     end
 
     def left!
-      move :left
+      move! :left
     end
 
     def up!
-      transpose { move :left }
+      transpose { move! :left }
     end
 
     def down!
-      transpose { move :right }
+      transpose { move! :right }
     end
 
     def ==(other)
@@ -61,7 +61,7 @@ module Text2048
 
     private
 
-    def move(direction)
+    def move!(direction)
       @layout.map! do |each|
         row, score = Numbers.new(each).__send__ direction
         @score += score

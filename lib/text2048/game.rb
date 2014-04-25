@@ -69,6 +69,10 @@ module Text2048
       refresh
     end
 
+    def lose?
+      false
+    end
+
     def input(input)
       last = @board.layout.dup
       quit if input == 'q'
