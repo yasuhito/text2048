@@ -16,26 +16,26 @@ module Text2048
 
     def right!
       @layout.each_with_index do |each, index|
-        @layout[index] = Numbers.new(each).right!
+        @layout[index] = Numbers.new(each).right
       end
     end
 
     def left!
       @layout.each_with_index do |each, index|
-        @layout[index] = Numbers.new(each).left!
+        @layout[index] = Numbers.new(each).left
       end
     end
 
     def up!
       @layout.transpose.each_with_index do |each, index|
-        column = Numbers.new(each).left!
+        column = Numbers.new(each).left
         0.upto(3).each { |y| @layout[y][index] = column[y] }
       end
     end
 
     def down!
       @layout.transpose.each_with_index do |each, index|
-        column = Numbers.new(each).right!
+        column = Numbers.new(each).right
         0.upto(3).each { |y| @layout[y][index] = column[y] }
       end
     end

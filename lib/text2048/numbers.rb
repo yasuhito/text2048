@@ -16,16 +16,8 @@ module Text2048
       @numbers.rshrink.rmerge.rshrink
     end
 
-    def right!
-      @numbers = right
-    end
-
     def left
       @numbers.reverse.rshrink.rmerge.rshrink.reverse
-    end
-
-    def left!
-      @numbers = left
     end
 
     def_delegators :@numbers, :map, :==
