@@ -1,4 +1,4 @@
-task default: [:spec, :cucumber]
+task default: [:spec, :cucumber, :rubocop]
 
 begin
   require 'rspec/core/rake_task'
@@ -15,5 +15,14 @@ begin
 rescue LoadError
   task :cucumber do
     $stderr.puts 'Cucumber is disabled'
+  end
+end
+
+begin
+  require 'rubocop/rake_task'
+  Rubocop::RakeTask.new
+rescue LoadError
+  task :rubocop do
+    $stderr.puts 'Rubocop is disabled'
   end
 end

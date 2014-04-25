@@ -11,24 +11,25 @@ module Text2048
     TILE_WIDTH = 5
 
     KEYS = {
-            'h' => :left!, 'l' => :right!, 'k' => :up!, 'j' => :down!,
-            Key::LEFT => :left!, Key::RIGHT => :right!, Key::UP => :up!, Key::DOWN => :down!
-           }
+      'h' => :left!, 'l' => :right!, 'k' => :up!, 'j' => :down!,
+      Key::LEFT => :left!, Key::RIGHT => :right!,
+      Key::UP => :up!, Key::DOWN => :down!
+    }
 
     COLORS = {
-              0 => COLOR_BLACK,
-              2 => COLOR_WHITE,
-              4 => COLOR_GREEN,
-              8 => COLOR_GREEN,
-              16 => COLOR_CYAN,
-              32 => COLOR_CYAN,
-              64 => COLOR_BLUE,
-              128 => COLOR_BLUE,
-              256 => COLOR_YELLOW,
-              512 => COLOR_YELLOW,
-              1024 => COLOR_MAGENTA,
-              2048 => COLOR_MAGENTA
-             }
+      0 => COLOR_BLACK,
+      2 => COLOR_WHITE,
+      4 => COLOR_GREEN,
+      8 => COLOR_GREEN,
+      16 => COLOR_CYAN,
+      32 => COLOR_CYAN,
+      64 => COLOR_BLUE,
+      128 => COLOR_BLUE,
+      256 => COLOR_YELLOW,
+      512 => COLOR_YELLOW,
+      1024 => COLOR_MAGENTA,
+      2048 => COLOR_MAGENTA
+    }
 
     def initialize(output = STDOUT)
       @board = Board.new
@@ -41,7 +42,7 @@ module Text2048
       start_color
       stdscr.keypad(true)
       noecho
-      COLORS.each_pair do |key, value|
+      COLORS.each_pair do |_key, value|
         init_pair value, COLOR_BLACK, value
       end
       at_exit { close_screen }
