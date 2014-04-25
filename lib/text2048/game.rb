@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'curses'
 require 'text2048/board'
 
@@ -61,11 +63,15 @@ module Text2048
       setpos(y - 1, 0)
       addstr('+-----+-----+-----+-----+')
 
+      setpos(y, 0)
+      addstr('   Use arrow key or q    ')
+
       refresh
     end
 
     def input(input)
       last = @board.layout.dup
+      quit if input == 'q'
       method = KEYS[input]
       if method
         @board.__send__ method
@@ -74,6 +80,10 @@ module Text2048
       end
       return if last == @board.layout
       @board.generate
+    end
+
+    def quit
+      exit 0
     end
 
     private
