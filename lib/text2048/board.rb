@@ -17,40 +17,24 @@ module Text2048
     end
 
     def right!
-      @layout.each_with_index do |each, index|
-        @layout[index], score = Numbers.new(each).right
-        @score += score
-      end
+      move :right
     end
 
     def left!
-      @layout.each_with_index do |each, index|
-        @layout[index], score = Numbers.new(each).left
-        @score += score
-      end
+      move :left
     end
 
     def up!
-      @layout.transpose.each_with_index do |each, index|
-        column, score = Numbers.new(each).left
-        0.upto(3).each { |y| @layout[y][index] = column[y] }
-        @score += score
-      end
+      transpose { move :left }
     end
 
     def down!
-      @layout.transpose.each_with_index do |each, index|
-        column, score = Numbers.new(each).right
-        0.upto(3).each { |y| @layout[y][index] = column[y] }
-        @score += score
-      end
+      transpose { move :right }
     end
 
     def to_s
       @layout.map do |row|
-        row.map do |number|
-          number != 0 ? number : '_'
-        end.join(' ')
+        row.map { |num| num != 0 ? num : '_' }.join(' ')
       end.join("\n")
     end
 
@@ -66,6 +50,20 @@ module Text2048
     end
 
     private
+
+    def move(direction)
+      @layout.map! do |each|
+        row, score = Numbers.new(each).__send__ direction
+        @score += score
+        row
+      end
+    end
+
+    def transpose
+      @layout = @layout.transpose
+      yield
+      @layout = @layout.transpose
+    end
 
     def load_layout(layout)
       layout.each_with_index do |row, y|
