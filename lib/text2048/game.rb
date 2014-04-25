@@ -16,16 +16,16 @@ module Text2048
            }
 
     COLORS = {
-              0 => COLOR_BLUE,
+              0 => COLOR_BLACK,
               2 => COLOR_WHITE,
               4 => COLOR_GREEN,
               8 => COLOR_GREEN,
-              16 => COLOR_YELLOW,
-              32 => COLOR_YELLOW,
-              64 => COLOR_YELLOW,
-              128 => COLOR_CYAN,
-              256 => COLOR_CYAN,
-              512 => COLOR_CYAN,
+              16 => COLOR_CYAN,
+              32 => COLOR_CYAN,
+              64 => COLOR_BLUE,
+              128 => COLOR_BLUE,
+              256 => COLOR_YELLOW,
+              512 => COLOR_YELLOW,
               1024 => COLOR_MAGENTA,
               2048 => COLOR_MAGENTA
              }
@@ -51,11 +51,14 @@ module Text2048
       setpos(0, 0)
       addstr("Score: #{@board.score}")
 
-      y = 1
+      y = 2
       @board.layout.each do |row|
         show_row(row, y)
         y += TILE_HEIGHT + 1
       end
+
+      setpos(y - 1, 0)
+      addstr('+-----+-----+-----+-----+')
 
       refresh
     end
@@ -73,8 +76,11 @@ module Text2048
     private
 
     def show_row(numbers, y)
+      setpos(y - 1, 0)
+      addstr('+-----+-----+-----+-----+')
+
       numbers.each_with_index do |each, index|
-        show_tile(each, y, (TILE_WIDTH + 1) * index)
+        show_tile(each, y, (TILE_WIDTH + 1) * index + 1)
       end
       refresh
     end
@@ -82,14 +88,32 @@ module Text2048
     def show_tile(number, y, x)
       color = color_pair(COLORS[number] || COLOR_YELLOW) | A_BOLD
 
+      setpos(y, x - 1)
+      addstr('|')
       attron(color) do
         setpos(y, x)
         addstr(' ' * TILE_WIDTH)
+      end
+      setpos(y, x + TILE_WIDTH)
+      addstr('|')
+
+      setpos(y + 1, x - 1)
+      addstr('|')
+      attron(color) do
         setpos(y + 1, x)
         addstr(number != 0 ? number.to_s.center(TILE_WIDTH) : ' ' * TILE_WIDTH)
+      end
+      setpos(y + 1, x + TILE_WIDTH)
+      addstr('|')
+
+      setpos(y + 2, x - 1)
+      addstr('|')
+      attron(color) do
         setpos(y + 2, x)
         addstr(' ' * TILE_WIDTH)
       end
+      setpos(y + 2, x + TILE_WIDTH)
+      addstr('|')
     end
   end
 end
