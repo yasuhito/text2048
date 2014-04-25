@@ -8,20 +8,24 @@ module Text2048
   class Numbers
     extend Forwardable
 
-    def initialize(numbers)
-      @numbers = numbers.dup
+    def initialize(list)
+      @list = list.dup
     end
 
     def right
-      numbers, score = @numbers.rshrink.rmerge
-      [numbers.rshrink, score]
+      list, score = @list.rshrink.rmerge
+      [list.rshrink, score]
     end
 
     def left
-      numbers, score = @numbers.reverse.rshrink.rmerge
-      [numbers.rshrink.reverse, score]
+      list, score = @list.reverse.rshrink.rmerge
+      [list.rshrink.reverse, score]
     end
 
-    def_delegators :@numbers, :map, :==
+    def ==(other)
+      rshrink == other.rshrink
+    end
+
+    def_delegators :@list, :map, :rshrink
   end
 end

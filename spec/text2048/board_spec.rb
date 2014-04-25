@@ -39,6 +39,17 @@ describe Text2048::Board, '.new' do
                          [0, 0, 0, 2]]
       end
     end
+
+    describe '#==' do
+      When(:result) do
+        board == Text2048::Board.new([[0, 0, 0, 2],
+                                      [0, 0, 2, 0],
+                                      [0, 2, 0, 0],
+                                      [2, 0, 0, 0]])
+      end
+
+      Then { result == true }
+    end
   end
 
   context 'with six 2s that can be merged' do

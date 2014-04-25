@@ -16,6 +16,10 @@ module Text2048
       end
     end
 
+    def initialize_copy(board)
+      @layout = board.layout.dup
+    end
+
     def right!
       move :right
     end
@@ -30,6 +34,12 @@ module Text2048
 
     def down!
       transpose { move :right }
+    end
+
+    def ==(other)
+      @layout.zip(other.layout).reduce(true) do |result, each|
+        result && Numbers.new(each[0]) == Numbers.new(each[1])
+      end
     end
 
     def to_s
