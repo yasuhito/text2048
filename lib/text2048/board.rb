@@ -54,7 +54,7 @@ module Text2048
         y = rand(4)
         if @layout[y][x] == 0
           @layout[y][x] = (rand < 0.8 ? 2 : 4)
-          return
+          return [y, x, @layout[y][x]]
         end
       end
     end

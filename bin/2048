@@ -2,15 +2,25 @@
 
 $LOAD_PATH.unshift(File.dirname(File.realpath(__FILE__)) + '/../lib')
 
+require 'curses'
 require 'text2048'
 
-game = Text2048::Game.new
+include Curses
+
+KEYS = {
+  'h' => :left!, 'l' => :right!, 'k' => :up!, 'j' => :down!,
+  Key::LEFT => :left!, Key::RIGHT => :right!,
+  Key::UP => :up!, Key::DOWN => :down!,
+  'q' => :quit
+}
+
+game = Text2048::Game.new(Text2048::CursesBoard.new)
 game.start
-game.show
-puts
+game.draw
 
 loop do
   game.game_over if game.lose?
-  game.input Curses.getch
-  game.show
+  command = KEYS[Curses.getch]
+  game.input(command) if command
+  game.draw
 end
