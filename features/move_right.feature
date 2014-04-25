@@ -1,102 +1,68 @@
 Feature: Move right
-  Scenario: Empty board
+  Scenario: Move empty board
     Given a board:
     """
-    ____
-    ____
-    ____
-    ____
+    _ _ _ _
+    _ _ _ _
+    _ _ _ _
+    _ _ _ _
     """
-    When I hit the right key
+    When I move the board to the right
     Then the board is:
     """
-    ____
-    ____
-    ____
-    ____
+    _ _ _ _
+    _ _ _ _
+    _ _ _ _
+    _ _ _ _
     """
 
-  Scenario: One '2'
+  Scenario: Move numbers
     Given a board:
     """
-    2___
-    ____
-    ____
-    ____
+    2 _ _ _
+    _ 2 _ _
+    _ _ 2 _
+    _ _ _ 2
     """
-    When I hit the right key
+    When I move the board to the right
     Then the board is:
     """
-    ___2
-    ____
-    ____
-    ____
+    _ _ _ 2
+    _ _ _ 2
+    _ _ _ 2
+    _ _ _ 2
     """
 
-  Scenario: Four '2's
+  Scenario: Merge numbers
     Given a board:
     """
-    2___
-    _2__
-    __2_
-    ___2
+    2 _ 2 _
+    _ 2 _ _
+    _ 2 _ 2
+    _ _ _ 2
     """
-    When I hit the right key
+    When I move the board to the right
     Then the board is:
     """
-    ___2
-    ___2
-    ___2
-    ___2
+    _ _ _ 4
+    _ _ _ 2
+    _ _ _ 4
+    _ _ _ 2
     """
 
-  Scenario: Merge '2's
+  Scenario: Move and merge mix of numbers
     Given a board:
     """
-    22__
-    _2__
-    __22
-    ___2
+    4 _ 2 _
+    _ 2 _ 2
+    _ 2 _ 4
+    _ _ _ 2
     """
-    When I hit the right key
+    When I move the board to the right
     Then the board is:
     """
-    ___4
-    ___2
-    ___4
-    ___2
-    """
-
-  Scenario: Merge '2's
-    Given a board:
-    """
-    2_2_
-    _2__
-    _2_2
-    ___2
-    """
-    When I hit the right key
-    Then the board is:
-    """
-    ___4
-    ___2
-    ___4
-    ___2
-    """
-
-  Scenario: 4s and 2s
-    Given a board:
-    """
-    4_2_
-    _2__
-    _2_4
-    ___2
-    """
-    When I hit the right key
-    Then the board is:
-    """
-    __42
-    ___2
-    __24
-    ___2
+    _ _ 4 2
+    _ _ _ 4
+    _ _ 2 4
+    _ _ _ 2
     """

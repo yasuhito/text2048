@@ -1,86 +1,68 @@
 Feature: Move left
-  Scenario: Empty board
+  Scenario: Move empty board
     Given a board:
     """
-    ____
-    ____
-    ____
-    ____
+    _ _ _ _
+    _ _ _ _
+    _ _ _ _
+    _ _ _ _
     """
-    When I hit the left key
+    When I move the board to the left
     Then the board is:
     """
-    ____
-    ____
-    ____
-    ____
+    _ _ _ _
+    _ _ _ _
+    _ _ _ _
+    _ _ _ _
     """
 
-  Scenario: One 2
+  Scenario: Move numbers
     Given a board:
     """
-    ___2
-    ____
-    ____
-    ____
+    _ _ _ 2
+    _ _ 2 _
+    _ 2 _ _
+    2 _ _ _
     """
-    When I hit the left key
+    When I move the board to the left
     Then the board is:
-
     """
-    2___
-    ____
-    ____
-    ____
+    2 _ _ _
+    2 _ _ _
+    2 _ _ _
+    2 _ _ _
     """
 
-  Scenario: Four 2s
+  Scenario: Merge numbers
     Given a board:
     """
-    ___2
-    __2_
-    _2__
-    2___
+    _ 2 _ 2
+    _ _ 2 _
+    2 _ 2 _
+    _ 2 _ _
     """
-    When I hit the left key
+    When I move the board to the left
     Then the board is:
     """
-    2___
-    2___
-    2___
-    2___
+    4 _ _ _
+    2 _ _ _
+    4 _ _ _
+    2 _ _ _
     """
 
-  Scenario: Merge 2s
+  Scenario: Move and merge mix of numbers
     Given a board:
     """
-    _2_2
-    __2_
-    2_2_
-    _2__
+    _ 4 _ 2
+    2 _ 2 _
+    2 _ 4 _
+    _ 2 _ _
     """
-    When I hit the left key
+    When I move the board to the left
     Then the board is:
     """
-    4___
-    2___
-    4___
-    2___
-    """
-
-  Scenario: 4s and 2s
-    Given a board:
-    """
-    _4_2
-    __2_
-    2_4_
-    _2__
-    """
-    When I hit the left key
-    Then the board is:
-    """
-    42__
-    2___
-    24__
-    2___
+    4 2 _ _
+    4 _ _ _
+    2 4 _ _
+    2 _ _ _
     """

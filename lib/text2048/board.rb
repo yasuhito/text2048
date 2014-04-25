@@ -3,50 +3,69 @@ require 'text2048/numbers'
 module Text2048
   # Game board
   class Board
+    attr_reader :layout
+
     def initialize(layout = nil)
-      @data = [[0, 0, 0, 0],
-               [0, 0, 0, 0],
-               [0, 0, 0, 0],
-               [0, 0, 0, 0]]
+      @layout = Array.new(4) { Array.new(4, 0) }
       if layout
         load_layout(layout)
       else
-        set_random_numbers
+        2.times { generate }
       end
     end
 
     def right!
-      @data.each_with_index do |each, index|
-        @data[index] = Numbers.new(each).right!
+      @layout.each_with_index do |each, index|
+        @layout[index] = Numbers.new(each).right!
       end
     end
 
     def left!
-      @data.each_with_index do |each, index|
-        @data[index] = Numbers.new(each).left!
+      @layout.each_with_index do |each, index|
+        @layout[index] = Numbers.new(each).left!
       end
     end
 
     def up!
-      @data.transpose.each_with_index do |each, index|
+      @layout.transpose.each_with_index do |each, index|
         column = Numbers.new(each).left!
-        0.upto(3).each { |y| @data[y][index] = column[y] }
+        0.upto(3).each { |y| @layout[y][index] = column[y] }
       end
     end
 
     def down!
-      @data.transpose.each_with_index do |each, index|
+      @layout.transpose.each_with_index do |each, index|
         column = Numbers.new(each).right!
-        0.upto(3).each { |y| @data[y][index] = column[y] }
+        0.upto(3).each { |y| @layout[y][index] = column[y] }
       end
     end
 
     def to_s
-      @data.map do |row|
+      @layout.map do |row|
+        "+----+----+----+----+\n" +
+          '|' + row.map do |number|
+          number != 0 ? format('%4d', number) : ' ' * 4
+        end.join('|') + '|'
+      end.join("\n") + "\n+----+----+----+----+"
+    end
+
+    def to_simple_s
+      @layout.map do |row|
         row.map do |number|
           number != 0 ? number : '_'
-        end.join
+        end.join(' ')
       end.join("\n")
+    end
+
+    def generate
+      loop do
+        x = rand(4)
+        y = rand(4)
+        if @layout[y][x] == 0
+          @layout[y][x] = (rand < 0.8 ? 2 : 4)
+          return
+        end
+      end
     end
 
     private
@@ -54,20 +73,7 @@ module Text2048
     def load_layout(layout)
       layout.each_with_index do |row, y|
         row.each_with_index do |number, x|
-          @data[y][x] = number
-        end
-      end
-    end
-
-    def set_random_numbers
-      n = 0
-      loop do
-        return if n == 2
-        x = rand(4).to_i
-        y = rand(4).to_i
-        if @data[y][x] == 0
-          @data[y][x] = (rand(2) == 0 ? 2 : 4)
-          n += 1
+          @layout[y][x] = number
         end
       end
     end

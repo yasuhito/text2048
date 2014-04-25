@@ -1,36 +1,36 @@
 require 'text2048'
 
 Given(/^a board:$/) do |string|
-  layout = string.split.reduce([]) do |result, row|
-    result << row.split(//).map { |each| each.to_i }
+  layout = string.split("\n").reduce([]) do |result, row|
+    result << row.split(' ').map(&:to_i)
   end
   @board = Text2048::Board.new(layout)
 end
 
-When(/^I start a new game$/) do
-  step 'I run `2048`'
-end
-
-When(/^I hit the right key$/) do
+When(/^I move the board to the right$/) do
   @board.right!
 end
 
-When(/^I hit the left key$/) do
+When(/^I move the board to the left$/) do
   @board.left!
 end
 
-When(/^I hit the up key$/) do
+When(/^I move the board up$/) do
   @board.up!
 end
 
-When(/^I hit the down key$/) do
+When(/^I move the board down$/) do
   @board.down!
 end
 
 Then(/^the board is:$/) do |string|
-  @board.to_s.should eq(string)
+  @board.to_simple_s.should eq(string)
+end
+
+When(/^I start a new game$/) do
+  Text2048::Game.new(output).start
 end
 
 Then(/^the board has two random numbers$/) do
-  all_output.to_s.split(//).select! { |each| /\d/=~ each }.size == 2
+  output.messages.split(//).select! { |each| /\d/=~ each }.size == 2
 end

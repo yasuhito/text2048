@@ -1,102 +1,68 @@
 Feature: Move down
-  Scenario: Empty board
+  Scenario: Move empty board
     Given a board:
     """
-    ____
-    ____
-    ____
-    ____
+    _ _ _ _
+    _ _ _ _
+    _ _ _ _
+    _ _ _ _
     """
-    When I hit the down key
+    When I move the board down
     Then the board is:
     """
-    ____
-    ____
-    ____
-    ____
+    _ _ _ _
+    _ _ _ _
+    _ _ _ _
+    _ _ _ _
     """
 
-  Scenario: One '2'
+  Scenario: Move numbers
     Given a board:
     """
-    2___
-    ____
-    ____
-    ____
+    2 _ _ _
+    _ 2 _ _
+    _ _ 2 _
+    _ _ _ 2
     """
-    When I hit the down key
+    When I move the board down
     Then the board is:
     """
-    ____
-    ____
-    ____
-    2___
+    _ _ _ _
+    _ _ _ _
+    _ _ _ _
+    2 2 2 2
     """
 
-  Scenario: Four '2's
+  Scenario: Merge numbers
     Given a board:
     """
-    2___
-    _2__
-    __2_
-    ___2
+    2 _ _ _
+    _ 2 2 _
+    2 _ _ 2
+    _ _ 2 _
     """
-    When I hit the down key
+    When I move the board down
     Then the board is:
     """
-    ____
-    ____
-    ____
-    2222
+    _ _ _ _
+    _ _ _ _
+    _ _ _ _
+    4 2 4 2
     """
 
-  Scenario: Merge '2's
+  Scenario: Move and merge mix of numbers
     Given a board:
     """
-    22__
-    _2__
-    __22
-    ___2
+    2 _ _ 2
+    _ 2 4 _
+    4 _ _ _
+    _ _ 2 2
     """
-    When I hit the down key
+    When I move the board down
     Then the board is:
     """
-    ____
-    ____
-    ____
-    2424
-    """
-
-  Scenario: Merge '2's
-    Given a board:
-    """
-    2___
-    _22_
-    2__2
-    __2_
-    """
-    When I hit the down key
-    Then the board is:
-    """
-    ____
-    ____
-    ____
-    4242
-    """
-
-  Scenario: 4s and 2s
-    Given a board:
-    """
-    2___
-    _24_
-    4___
-    __22
-    """
-    When I hit the down key
-    Then the board is:
-    """
-    ____
-    ____
-    2_4_
-    4222
+    _ _ _ _
+    _ _ _ _
+    2 _ 4 _
+    4 2 2 4
     """
