@@ -42,15 +42,6 @@ module Text2048
 
     def to_s
       @layout.map do |row|
-        "+----+----+----+----+\n" +
-          '|' + row.map do |number|
-          number != 0 ? format('%4d', number) : ' ' * 4
-        end.join('|') + '|'
-      end.join("\n") + "\n+----+----+----+----+"
-    end
-
-    def to_simple_s
-      @layout.map do |row|
         row.map do |number|
           number != 0 ? number : '_'
         end.join(' ')

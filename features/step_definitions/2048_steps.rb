@@ -24,7 +24,7 @@ When(/^I move the board down$/) do
 end
 
 Then(/^the board is:$/) do |string|
-  @board.to_simple_s.should eq(string)
+  @board.to_s.should eq(string)
 end
 
 When(/^I start a new game$/) do

@@ -4,21 +4,13 @@ $LOAD_PATH.unshift(File.dirname(File.realpath(__FILE__)) + '/../lib')
 
 require 'text2048'
 
-def input
-  begin
-    system 'stty raw -echo'
-    str = STDIN.getc
-  ensure
-    system 'stty -raw echo'
-  end
-  str.chr
-end
-
 game = Text2048::Game.new
 game.start
+game.show
 puts
 
 loop do
-  game.input input
+  game.input Curses.getch
+  game.show
   puts
 end
