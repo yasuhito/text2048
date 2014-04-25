@@ -64,12 +64,14 @@ module Text2048
     end
 
     def input(input)
+      last = @board.layout.dup
       method = KEYS[input]
       if method
         @board.__send__ method
       else
         :ignore
       end
+      return if last == @board.layout
       @board.generate
     end
 
