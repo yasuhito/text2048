@@ -13,11 +13,13 @@ module Text2048
     end
 
     def right
-      @numbers.rshrink.rmerge.rshrink
+      numbers, score = @numbers.rshrink.rmerge
+      [numbers.rshrink, score]
     end
 
     def left
-      @numbers.reverse.rshrink.rmerge.rshrink.reverse
+      numbers, score = @numbers.reverse.rshrink.rmerge
+      [numbers.rshrink.reverse, score]
     end
 
     def_delegators :@numbers, :map, :==

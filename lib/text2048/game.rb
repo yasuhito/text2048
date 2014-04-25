@@ -48,8 +48,10 @@ module Text2048
     end
 
     def show
-      y = 0
+      setpos(0, 0)
+      addstr("Score: #{@board.score}")
 
+      y = 1
       @board.layout.each do |row|
         show_row(row, y)
         y += TILE_HEIGHT + 1

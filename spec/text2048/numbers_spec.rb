@@ -7,7 +7,7 @@ describe Text2048::Numbers, '.new' do
     describe '#right' do
       When(:result) { numbers.right }
 
-      Then { result == [0, 0, 0, 0] }
+      Then { result[0] == [0, 0, 0, 0] }
     end
   end
 
@@ -17,7 +17,7 @@ describe Text2048::Numbers, '.new' do
     describe '#right' do
       When(:result) { numbers.right }
 
-      Then { result == [0, 0, 0, 2] }
+      Then { result[0] == [0, 0, 0, 2] }
     end
   end
 
@@ -27,7 +27,7 @@ describe Text2048::Numbers, '.new' do
     describe '#right' do
       When(:result) { numbers.right }
 
-      Then { result == [0, 0, 0, 2] }
+      Then { result[0] == [0, 0, 0, 2] }
     end
   end
 
@@ -37,7 +37,7 @@ describe Text2048::Numbers, '.new' do
     describe '#right' do
       When(:result) { numbers.right }
 
-      Then { result == [0, 0, 0, 2] }
+      Then { result[0] == [0, 0, 0, 2] }
     end
   end
 
@@ -47,7 +47,7 @@ describe Text2048::Numbers, '.new' do
     describe '#right' do
       When(:result) { numbers.right }
 
-      Then { result == [0, 0, 0, 2] }
+      Then { result[0] == [0, 0, 0, 2] }
     end
   end
 
@@ -57,7 +57,7 @@ describe Text2048::Numbers, '.new' do
     describe '#right' do
       When(:result) { numbers.right }
 
-      Then { result == [0, 0, 0, 4] }
+      Then { result[0] == [0, 0, 0, 4] }
     end
   end
 
@@ -67,7 +67,7 @@ describe Text2048::Numbers, '.new' do
     describe '#right' do
       When(:result) { numbers.right }
 
-      Then { result == [0, 0, 2, 4] }
+      Then { result[0] == [0, 0, 2, 4] }
     end
   end
 
@@ -77,7 +77,7 @@ describe Text2048::Numbers, '.new' do
     describe '#right' do
       When(:result) { numbers.right }
 
-      Then { result == [0, 0, 4, 4] }
+      Then { result[0] == [0, 0, 4, 4] }
     end
   end
 
@@ -87,7 +87,7 @@ describe Text2048::Numbers, '.new' do
     describe '#right' do
       When(:result) { numbers.right }
 
-      Then { result == [0, 0, 8, 4] }
+      Then { result[0] == [0, 0, 8, 4] }
     end
   end
 
@@ -97,7 +97,7 @@ describe Text2048::Numbers, '.new' do
     describe '#right' do
       When(:result) { numbers.right }
 
-      Then { result == [0, 0, 4, 2] }
+      Then { result[0] == [0, 0, 4, 2] }
     end
   end
 
@@ -107,7 +107,7 @@ describe Text2048::Numbers, '.new' do
     describe '#right' do
       When(:result) { numbers.right }
 
-      Then { result == [16, 8, 4, 2] }
+      Then { result[0] == [16, 8, 4, 2] }
     end
   end
 end

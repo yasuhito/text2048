@@ -15,6 +15,7 @@ Feature: Move right
     _ _ _ _
     _ _ _ _
     """
+    And the score is 0
 
   Scenario: Move numbers
     Given a board:
@@ -32,6 +33,7 @@ Feature: Move right
     _ _ _ 2
     _ _ _ 2
     """
+    And the score is 0
 
   Scenario: Merge numbers
     Given a board:
@@ -49,6 +51,7 @@ Feature: Move right
     _ _ _ 4
     _ _ _ 2
     """
+    And the score is 8
 
   Scenario: Move and merge mix of numbers
     Given a board:
@@ -66,3 +69,4 @@ Feature: Move right
     _ _ 2 4
     _ _ _ 2
     """
+    And the score is 4

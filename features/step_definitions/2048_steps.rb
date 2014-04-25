@@ -34,3 +34,7 @@ end
 Then(/^the board has two random numbers$/) do
   output.messages.split(//).select! { |each| /\d/=~ each }.size == 2
 end
+
+Then(/^the score is (\d+)$/) do |score|
+  @board.score.should eq(score.to_i)
+end

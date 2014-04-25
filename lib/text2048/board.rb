@@ -3,9 +3,11 @@ require 'text2048/numbers'
 module Text2048
   # Game board
   class Board
+    attr_reader :score
     attr_reader :layout
 
     def initialize(layout = nil)
+      @score = 0
       @layout = Array.new(4) { Array.new(4, 0) }
       if layout
         load_layout(layout)
@@ -16,27 +18,31 @@ module Text2048
 
     def right!
       @layout.each_with_index do |each, index|
-        @layout[index] = Numbers.new(each).right
+        @layout[index], score = Numbers.new(each).right
+        @score += score
       end
     end
 
     def left!
       @layout.each_with_index do |each, index|
-        @layout[index] = Numbers.new(each).left
+        @layout[index], score = Numbers.new(each).left
+        @score += score
       end
     end
 
     def up!
       @layout.transpose.each_with_index do |each, index|
-        column = Numbers.new(each).left
+        column, score = Numbers.new(each).left
         0.upto(3).each { |y| @layout[y][index] = column[y] }
+        @score += score
       end
     end
 
     def down!
       @layout.transpose.each_with_index do |each, index|
-        column = Numbers.new(each).right
+        column, score = Numbers.new(each).right
         0.upto(3).each { |y| @layout[y][index] = column[y] }
+        @score += score
       end
     end
 

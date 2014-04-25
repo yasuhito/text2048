@@ -6,14 +6,16 @@ module Text2048
       # 2048 related methods
       module Game
         def rmerge
+          score = 0
           numbers = dup
           size.downto(1) do |each|
             if numbers[each - 1] == numbers[each]
               numbers[each] *= 2
               numbers[each - 1] = 0
+              score += numbers[each]
             end
           end
-          numbers
+          [numbers, score]
         end
 
         def rshrink
