@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 require 'curses'
+require 'text2048/curses_tile'
 
 module Text2048
   # Curses UI
@@ -21,72 +22,6 @@ module Text2048
       1024 => COLOR_MAGENTA,
       2048 => COLOR_RED
     }
-    COLOR_BOX = 16
-
-    class Tile
-      include Curses
-
-      DEFAULT_HEIGHT = 3
-      DEFAULT_WIDTH = 5
-
-      def initialize(number, y, x, scale = 1)
-        @number = number
-        @y = y
-        @x = x
-        @height = (DEFAULT_HEIGHT * scale).to_i
-        @width = (DEFAULT_WIDTH * scale).to_i
-      end
-
-      def show
-        attron(color_pair(COLOR_BOX)) { draw_box }
-        attron(color_pair(COLORS[@number])) { fill }
-        self
-      end
-
-      def flash
-        attron(color_pair(COLOR_YELLOW)) { draw_box }
-        refresh
-        sleep 0.2
-        attron(color_pair(COLOR_BOX)) { draw_box }
-        refresh
-      end
-
-      private
-
-      def yc
-        (@height + 1) * @y + 2
-      end
-
-      def xc
-        (@width + 1) * @x + 1
-      end
-
-      def draw_box
-        setpos(yc - 1, xc - 1)
-        addstr("+#{'-' * @width}+")
-
-        (0..(@height - 1)).each do |dy|
-          setpos(yc + dy, xc - 1)
-          addstr('|')
-          setpos(yc + dy, xc + @width)
-          addstr('|')
-        end
-
-        setpos(yc + @height, xc - 1)
-        addstr("+#{'-' * @width}+")
-      end
-
-      def fill
-        (0..(@height - 1)).each do |dy|
-          setpos(yc + dy, xc)
-          if @number != 0 && dy == @height / 2
-            addstr @number.to_s.center(@width)
-          else
-            addstr(' ' * @width)
-          end
-        end
-      end
-    end
 
     def initialize
       @tiles = Array.new(4) { Array.new(4) }
@@ -102,7 +37,6 @@ module Text2048
       COLORS.each_pair do |_key, value|
         init_pair value, COLOR_BLACK, value
       end
-      init_pair COLOR_BOX, COLOR_WHITE, COLOR_BLACK
       at_exit { close_screen }
     end
 
@@ -138,7 +72,7 @@ module Text2048
 
     def draw_row(numbers, y)
       numbers.each_with_index do |each, x|
-        @tiles[y][x] = Tile.new(each, y, x, @scale).show
+        @tiles[y][x] = CursesTile.new(each, y, x, COLORS[each], @scale).show
       end
       refresh
     end
