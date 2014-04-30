@@ -18,11 +18,11 @@ module Text2048
     end
 
     def start
-      @view.init
+      @view.start
     end
 
     def draw
-      @view.draw(@board.layout, @score)
+      @view.update(@board.layout, @score)
       @view.flash_tile(*@new_tile) if @new_tile
     end
 
@@ -36,10 +36,6 @@ module Text2048
       __send__ command
       return if last == @board.layout
       @new_tile = @board.generate
-    end
-
-    def quit
-      exit 0
     end
 
     def left!
@@ -64,6 +60,10 @@ module Text2048
 
     def smaller!
       @view.smaller!(@board.layout, @score)
+    end
+
+    def quit
+      exit 0
     end
   end
 end

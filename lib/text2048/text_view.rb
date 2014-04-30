@@ -5,7 +5,7 @@ module Text2048
       @output = output
     end
 
-    def draw(layout, _score)
+    def update(layout, _score)
       string = layout.map do |row|
         row.map { |num| num != 0 ? num : '_' }.join(' ')
       end.join("\n")

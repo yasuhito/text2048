@@ -7,9 +7,6 @@ module Text2048
   class CursesView
     include Curses
 
-    TILE_HEIGHT = 3
-    TILE_WIDTH = 5
-
     COLORS = {
       0 => COLOR_BLACK,
       2 => COLOR_WHITE,
@@ -26,12 +23,77 @@ module Text2048
     }
     COLOR_BOX = 16
 
-    def initialize
-      @tile_height = TILE_HEIGHT
-      @tile_width = TILE_WIDTH
+    class Tile
+      include Curses
+
+      DEFAULT_HEIGHT = 3
+      DEFAULT_WIDTH = 5
+
+      def initialize(number, y, x, scale = 1)
+        @number = number
+        @y = y
+        @x = x
+        @height = (DEFAULT_HEIGHT * scale).to_i
+        @width = (DEFAULT_WIDTH * scale).to_i
+      end
+
+      def show
+        attron(color_pair(COLOR_BOX)) { draw_box }
+        attron(color_pair(COLORS[@number])) { fill }
+        self
+      end
+
+      def flash
+        attron(color_pair(COLOR_YELLOW)) { draw_box }
+        refresh
+        sleep 0.2
+        attron(color_pair(COLOR_BOX)) { draw_box }
+        refresh
+      end
+
+      private
+
+      def yc
+        (@height + 1) * @y + 2
+      end
+
+      def xc
+        (@width + 1) * @x + 1
+      end
+
+      def draw_box
+        setpos(yc - 1, xc - 1)
+        addstr("+#{'-' * @width}+")
+
+        (0..(@height - 1)).each do |dy|
+          setpos(yc + dy, xc - 1)
+          addstr('|')
+          setpos(yc + dy, xc + @width)
+          addstr('|')
+        end
+
+        setpos(yc + @height, xc - 1)
+        addstr("+#{'-' * @width}+")
+      end
+
+      def fill
+        (0..(@height - 1)).each do |dy|
+          setpos(yc + dy, xc)
+          if @number != 0 && dy == @height / 2
+            addstr @number.to_s.center(@width)
+          else
+            addstr(' ' * @width)
+          end
+        end
+      end
     end
 
-    def init
+    def initialize
+      @tiles = Array.new(4) { Array.new(4) }
+      @scale = 1
+    end
+
+    def start
       init_screen
       curs_set(0)
       start_color
@@ -44,33 +106,27 @@ module Text2048
       at_exit { close_screen }
     end
 
-    def draw(layout, score)
+    def update(layout, score)
       draw_score(score)
       layout.each_with_index do |row, y|
         draw_row(row, y)
       end
     end
 
-    def flash_tile(_number, y, x)
-      draw_box(color_pair(COLOR_YELLOW), y, x)
-      refresh
-      sleep 0.2
-      draw_box(color_pair(COLOR_BOX), y, x)
-      refresh
-    end
-
     def larger!(layout, score)
-      @tile_height *= 2
-      @tile_width *= 2
+      @scale += 0.5
       clear
-      draw layout, score
+      update(layout, score)
     end
 
     def smaller!(layout, score)
-      @tile_height /= 2
-      @tile_width /= 2
+      @scale -= 0.5
       clear
-      draw layout, score
+      update(layout, score)
+    end
+
+    def flash_tile(y, x)
+      @tiles[y][x].flash
     end
 
     private
@@ -80,52 +136,11 @@ module Text2048
       addstr("Score: #{score}")
     end
 
-    def draw_box(color, y, x)
-      cy = (@tile_height + 1) * y + 2
-      cx = (@tile_width + 1) * x + 1
-
-      attron(color) do
-        setpos(cy - 1, cx - 1)
-        addstr('+')
-        addstr('-' * @tile_width)
-        addstr('+')
-
-        (cy..(cy + @tile_height - 1)).each do |tcy|
-          setpos(tcy, cx - 1)
-          addstr('|')
-          setpos(tcy, cx + @tile_width)
-          addstr('|')
-        end
-
-        setpos(cy + @tile_height, cx - 1)
-        addstr('+')
-        addstr('-' * @tile_width)
-        addstr('+')
-      end
-    end
-
     def draw_row(numbers, y)
       numbers.each_with_index do |each, x|
-        draw_box(color_pair(COLOR_BOX), y, x)
-        draw_tile(each, y, x)
-        refresh
+        @tiles[y][x] = Tile.new(each, y, x, @scale).show
       end
-    end
-
-    def draw_tile(number, y, x)
-      cy = (@tile_height + 1) * y + 2
-      cx = (@tile_width + 1) * x + 1
-
-      attron(color_pair(COLORS[number]) | A_BOLD) do
-        (0..(@tile_height - 1)).each do |d|
-          setpos(cy + d, cx)
-          if number != 0 && d == @tile_height / 2
-            addstr number.to_s.center(@tile_width)
-          else
-            addstr(' ' * @tile_width)
-          end
-        end
-      end
+      refresh
     end
   end
 end
