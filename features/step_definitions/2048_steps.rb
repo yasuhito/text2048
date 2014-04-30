@@ -4,37 +4,30 @@ Given(/^a board:$/) do |string|
   layout = string.split("\n").reduce([]) do |result, row|
     result << row.split(' ').map(&:to_i)
   end
-  @board = Text2048::Board.new(layout)
+  @game = Text2048::Game.new(Text2048::TextView.new(output), layout)
 end
 
 When(/^I move the board to the right$/) do
-  @board.right!
+  @game.right!
 end
 
 When(/^I move the board to the left$/) do
-  @board.left!
+  @game.left!
 end
 
 When(/^I move the board up$/) do
-  @board.up!
+  @game.up!
 end
 
 When(/^I move the board down$/) do
-  @board.down!
+  @game.down!
 end
 
 Then(/^the board is:$/) do |string|
-  @board.to_s.should eq(string)
-end
-
-When(/^I start a new game$/) do
-  Text2048::Game.new(output).start
-end
-
-Then(/^the board has two random numbers$/) do
-  output.messages.split(//).select! { |each| /\d/=~ each }.size == 2
+  @game.draw
+  output.messages.should eq(string)
 end
 
 Then(/^the score is (\d+)$/) do |score|
-  @board.score.should eq(score.to_i)
+  @game.score.should eq(score.to_i)
 end

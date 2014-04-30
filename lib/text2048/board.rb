@@ -3,11 +3,9 @@ require 'text2048/numbers'
 module Text2048
   # Game board
   class Board
-    attr_reader :score
     attr_reader :layout
 
     def initialize(layout = nil)
-      @score = 0
       @layout = Array.new(4) { Array.new(4, 0) }
       if layout
         load_layout(layout)
@@ -42,12 +40,6 @@ module Text2048
       end
     end
 
-    def to_s
-      @layout.map do |row|
-        row.map { |num| num != 0 ? num : '_' }.join(' ')
-      end.join("\n")
-    end
-
     def generate
       loop do
         x = rand(4)
@@ -62,17 +54,20 @@ module Text2048
     private
 
     def move!(direction)
+      score = 0
       @layout.map! do |each|
-        row, score = Numbers.new(each).__send__ direction
-        @score += score
+        row, sc = Numbers.new(each).__send__ direction
+        score += sc
         row
       end
+      score
     end
 
     def transpose
       @layout = @layout.transpose
-      yield
+      score = yield
       @layout = @layout.transpose
+      score
     end
 
     def load_layout(layout)

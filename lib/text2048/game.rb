@@ -7,10 +7,13 @@ module Text2048
   # A class responsible of handling all the command line interface
   # logic.
   class Game
+    attr_reader :score
+
     extend Forwardable
 
-    def initialize(view)
-      @board = Board.new
+    def initialize(view, layout = nil)
+      @score = 0
+      @board = Board.new(layout)
       @view = view
     end
 
@@ -19,7 +22,7 @@ module Text2048
     end
 
     def draw
-      @view.draw(@board.layout, @board.score)
+      @view.draw(@board.layout, @score)
     end
 
     def lose?
@@ -37,6 +40,20 @@ module Text2048
       exit 0
     end
 
-    def_delegators :@board, :left!, :right!, :up!, :down!
+    def left!
+      @score += @board.left!
+    end
+
+    def right!
+      @score += @board.right!
+    end
+
+    def up!
+      @score += @board.up!
+    end
+
+    def down!
+      @score += @board.down!
+    end
   end
 end

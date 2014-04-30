@@ -4,7 +4,7 @@ require 'curses'
 
 module Text2048
   # Curses UI
-  class CursesBoard
+  class CursesView
     include Curses
 
     TILE_HEIGHT = 3
