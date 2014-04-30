@@ -57,5 +57,13 @@ module Text2048
     def down!
       @score += @board.down!
     end
+
+    def larger!
+      @view.larger!(@board.layout, @score)
+    end
+
+    def smaller!
+      @view.smaller!(@board.layout, @score)
+    end
   end
 end

@@ -11,6 +11,7 @@ KEYS = {
   'h' => :left!, 'l' => :right!, 'k' => :up!, 'j' => :down!,
   Key::LEFT => :left!, Key::RIGHT => :right!,
   Key::UP => :up!, Key::DOWN => :down!,
+  '+' => :larger!, '-' => :smaller!,
   'q' => :quit
 }
 

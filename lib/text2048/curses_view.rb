@@ -26,6 +26,11 @@ module Text2048
     }
     COLOR_BOX = 16
 
+    def initialize
+      @tile_height = TILE_HEIGHT
+      @tile_width = TILE_WIDTH
+    end
+
     def init
       init_screen
       curs_set(0)
@@ -49,9 +54,23 @@ module Text2048
     def flash_tile(_number, y, x)
       draw_box(color_pair(COLOR_YELLOW), y, x)
       refresh
-      sleep 0.5
+      sleep 0.2
       draw_box(color_pair(COLOR_BOX), y, x)
       refresh
+    end
+
+    def larger!(layout, score)
+      @tile_height *= 2
+      @tile_width *= 2
+      clear
+      draw layout, score
+    end
+
+    def smaller!(layout, score)
+      @tile_height /= 2
+      @tile_width /= 2
+      clear
+      draw layout, score
     end
 
     private
@@ -62,26 +81,26 @@ module Text2048
     end
 
     def draw_box(color, y, x)
-      cy = (TILE_HEIGHT + 1) * y + 2
-      cx = (TILE_WIDTH + 1) * x + 1
+      cy = (@tile_height + 1) * y + 2
+      cx = (@tile_width + 1) * x + 1
 
       attron(color) do
         setpos(cy - 1, cx - 1)
-        addstr('+-----+')
-        setpos(cy, cx - 1)
-        addstr('|')
-        setpos(cy, cx + TILE_WIDTH)
-        addstr('|')
-        setpos(cy + 1, cx - 1)
-        addstr('|')
-        setpos(cy + 1, cx + TILE_WIDTH)
-        addstr('|')
-        setpos(cy + 2, cx - 1)
-        addstr('|')
-        setpos(cy + 2, cx + TILE_WIDTH)
-        addstr('|')
-        setpos(cy + 3, cx - 1)
-        addstr('+-----+')
+        addstr('+')
+        addstr('-' * @tile_width)
+        addstr('+')
+
+        (cy..(cy + @tile_height - 1)).each do |tcy|
+          setpos(tcy, cx - 1)
+          addstr('|')
+          setpos(tcy, cx + @tile_width)
+          addstr('|')
+        end
+
+        setpos(cy + @tile_height, cx - 1)
+        addstr('+')
+        addstr('-' * @tile_width)
+        addstr('+')
       end
     end
 
@@ -94,16 +113,18 @@ module Text2048
     end
 
     def draw_tile(number, y, x)
-      cy = (TILE_HEIGHT + 1) * y + 2
-      cx = (TILE_WIDTH + 1) * x + 1
+      cy = (@tile_height + 1) * y + 2
+      cx = (@tile_width + 1) * x + 1
 
       attron(color_pair(COLORS[number]) | A_BOLD) do
-        setpos(cy, cx)
-        addstr(' ' * TILE_WIDTH)
-        setpos(cy + 1, cx)
-        addstr(number != 0 ? number.to_s.center(TILE_WIDTH) : ' ' * TILE_WIDTH)
-        setpos(cy + 2, cx)
-        addstr(' ' * TILE_WIDTH)
+        (0..(@tile_height - 1)).each do |d|
+          setpos(cy + d, cx)
+          if number != 0 && d == @tile_height / 2
+            addstr number.to_s.center(@tile_width)
+          else
+            addstr(' ' * @tile_width)
+          end
+        end
       end
     end
   end
