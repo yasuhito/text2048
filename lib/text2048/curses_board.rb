@@ -54,6 +54,7 @@ module Text2048
     def draw_row(numbers, y)
       numbers.each_with_index do |each, x|
         draw_tile(each, y, x)
+        refresh
       end
     end
 
