@@ -23,6 +23,7 @@ module Text2048
 
     def draw
       @view.draw(@board.layout, @score)
+      @view.flash_tile(*@new_tile) if @new_tile
     end
 
     def lose?
@@ -30,10 +31,11 @@ module Text2048
     end
 
     def input(command)
+      @new_tile = nil
       last = @board.layout.dup
       __send__ command
       return if last == @board.layout
-      @board.generate
+      @new_tile = @board.generate
     end
 
     def quit

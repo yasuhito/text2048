@@ -22,8 +22,9 @@ module Text2048
       256 => COLOR_YELLOW,
       512 => COLOR_YELLOW,
       1024 => COLOR_MAGENTA,
-      2048 => COLOR_MAGENTA
+      2048 => COLOR_RED
     }
+    COLOR_BOX = 16
 
     def init
       init_screen
@@ -34,6 +35,7 @@ module Text2048
       COLORS.each_pair do |_key, value|
         init_pair value, COLOR_BLACK, value
       end
+      init_pair COLOR_BOX, COLOR_WHITE, COLOR_BLACK
       at_exit { close_screen }
     end
 
@@ -44,6 +46,14 @@ module Text2048
       end
     end
 
+    def flash_tile(_number, y, x)
+      draw_box(color_pair(COLOR_YELLOW), y, x)
+      refresh
+      sleep 0.5
+      draw_box(color_pair(COLOR_BOX), y, x)
+      refresh
+    end
+
     private
 
     def draw_score(score)
@@ -51,51 +61,50 @@ module Text2048
       addstr("Score: #{score}")
     end
 
+    def draw_box(color, y, x)
+      cy = (TILE_HEIGHT + 1) * y + 2
+      cx = (TILE_WIDTH + 1) * x + 1
+
+      attron(color) do
+        setpos(cy - 1, cx - 1)
+        addstr('+-----+')
+        setpos(cy, cx - 1)
+        addstr('|')
+        setpos(cy, cx + TILE_WIDTH)
+        addstr('|')
+        setpos(cy + 1, cx - 1)
+        addstr('|')
+        setpos(cy + 1, cx + TILE_WIDTH)
+        addstr('|')
+        setpos(cy + 2, cx - 1)
+        addstr('|')
+        setpos(cy + 2, cx + TILE_WIDTH)
+        addstr('|')
+        setpos(cy + 3, cx - 1)
+        addstr('+-----+')
+      end
+    end
+
     def draw_row(numbers, y)
       numbers.each_with_index do |each, x|
+        draw_box(color_pair(COLOR_BOX), y, x)
         draw_tile(each, y, x)
         refresh
       end
     end
 
     def draw_tile(number, y, x)
-      y = (TILE_HEIGHT + 1) * y + 2
-      x = (TILE_WIDTH + 1) * x + 1
+      cy = (TILE_HEIGHT + 1) * y + 2
+      cx = (TILE_WIDTH + 1) * x + 1
 
-      color = color_pair(COLORS[number]) | A_BOLD
-
-      setpos(y - 1, x - 1)
-      addstr('+-----+')
-
-      setpos(y, x - 1)
-      addstr('|')
-      attron(color) do
-        setpos(y, x)
+      attron(color_pair(COLORS[number]) | A_BOLD) do
+        setpos(cy, cx)
         addstr(' ' * TILE_WIDTH)
-      end
-      setpos(y, x + TILE_WIDTH)
-      addstr('|')
-
-      setpos(y + 1, x - 1)
-      addstr('|')
-      attron(color) do
-        setpos(y + 1, x)
+        setpos(cy + 1, cx)
         addstr(number != 0 ? number.to_s.center(TILE_WIDTH) : ' ' * TILE_WIDTH)
-      end
-      setpos(y + 1, x + TILE_WIDTH)
-      addstr('|')
-
-      setpos(y + 2, x - 1)
-      addstr('|')
-      attron(color) do
-        setpos(y + 2, x)
+        setpos(cy + 2, cx)
         addstr(' ' * TILE_WIDTH)
       end
-      setpos(y + 2, x + TILE_WIDTH)
-      addstr('|')
-
-      setpos(y + 3, x - 1)
-      addstr('+-----+')
     end
   end
 end
