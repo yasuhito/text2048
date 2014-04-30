@@ -51,6 +51,12 @@ module Text2048
       end
     end
 
+    def numbers
+      layout.reduce([]) do |result, row|
+        result + row.select { |each| each != 0 }
+      end
+    end
+
     private
 
     def move!(direction)

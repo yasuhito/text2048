@@ -27,7 +27,13 @@ module Text2048
     end
 
     def lose?
-      false
+      return false if @board.numbers.size < 4 * 4
+      b = @board.dup
+      b.right!
+      b.left!
+      b.up!
+      b.down!
+      b.numbers.size == 4 * 4
     end
 
     def input(command)
@@ -60,6 +66,10 @@ module Text2048
 
     def smaller!
       @view.smaller!(@board.layout, @score)
+    end
+
+    def game_over
+      @view.game_over
     end
 
     def quit

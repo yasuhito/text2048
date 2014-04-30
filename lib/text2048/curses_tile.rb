@@ -3,6 +3,7 @@
 require 'curses'
 
 module Text2048
+  # Shows numbers in curses.
   class CursesTile
     include Curses
 

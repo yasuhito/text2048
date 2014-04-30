@@ -63,6 +63,11 @@ module Text2048
       @tiles[y][x].flash
     end
 
+    def game_over
+      setpos(0, 16)
+      attron(color_pair(COLOR_RED)) { addstr('GAME OVER') }
+    end
+
     private
 
     def draw_score(score)
