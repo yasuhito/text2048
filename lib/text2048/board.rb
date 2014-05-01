@@ -1,21 +1,30 @@
-require 'text2048/numbers'
+# encoding: utf-8
+
+require 'text2048/tile'
+require 'text2048/tiles'
 
 module Text2048
   # Game board
   class Board
-    attr_reader :layout
+    attr_reader :tiles
 
-    def initialize(layout = nil)
-      @layout = Array.new(4) { Array.new(4, 0) }
-      if layout
-        load_layout(layout)
+    def initialize(tiles = nil)
+      @tiles = Array.new(4) { Array.new(4) { Tile.new(0) } }
+      if tiles
+        load_tiles(tiles)
       else
         2.times { generate }
       end
     end
 
     def initialize_copy(board)
-      @layout = board.layout.dup
+      @tiles = board.tiles.dup
+    end
+
+    def layout
+      @tiles.map do |row|
+        row.map { |each| each.to_i }
+      end
     end
 
     def right!
@@ -35,24 +44,33 @@ module Text2048
     end
 
     def ==(other)
-      @layout.zip(other.layout).reduce(true) do |result, each|
-        result && Numbers.new(each[0]) == Numbers.new(each[1])
+      @tiles.zip(other.tiles).reduce(true) do |result, each|
+        result && Tiles.new(each[0]) == Tiles.new(each[1])
       end
+    end
+
+    def new_tile
+      @tiles.each_with_index do |row, y|
+        row.each_with_index do |each, x|
+          return [y, x] if each.status == :generated
+        end
+      end
+      nil
     end
 
     def generate
       loop do
         x = rand(4)
         y = rand(4)
-        if @layout[y][x] == 0
-          @layout[y][x] = (rand < 0.8 ? 2 : 4)
-          return [y, x]
+        if @tiles[y][x] == 0
+          @tiles[y][x] = Tile.new(rand < 0.8 ? 2 : 4, :generated)
+          return
         end
       end
     end
 
     def numbers
-      layout.reduce([]) do |result, row|
+      tiles.reduce([]) do |result, row|
         result + row.select { |each| each != 0 }
       end
     end
@@ -61,8 +79,8 @@ module Text2048
 
     def move!(direction)
       score = 0
-      @layout.map! do |each|
-        row, sc = Numbers.new(each).__send__ direction
+      @tiles.map! do |each|
+        row, sc = Tiles.new(each).__send__ direction
         score += sc
         row
       end
@@ -70,16 +88,16 @@ module Text2048
     end
 
     def transpose
-      @layout = @layout.transpose
+      @tiles = @tiles.transpose
       score = yield
-      @layout = @layout.transpose
+      @tiles = @tiles.transpose
       score
     end
 
-    def load_layout(layout)
-      layout.each_with_index do |row, y|
+    def load_tiles(tiles)
+      tiles.each_with_index do |row, y|
         row.each_with_index do |number, x|
-          @layout[y][x] = number
+          @tiles[y][x] = Tile.new(number)
         end
       end
     end

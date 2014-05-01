@@ -3,15 +3,15 @@
 require 'curses'
 
 module Text2048
-  # Shows numbers in curses.
+  # Shows tiles in curses.
   class CursesTile
     include Curses
 
     DEFAULT_HEIGHT = 3
     DEFAULT_WIDTH = 5
 
-    def initialize(number, y, x, color, scale = 1)
-      @number = number
+    def initialize(value, y, x, color, scale = 1)
+      @value = value.to_i
       @y = y
       @x = x
       @color = color
@@ -30,6 +30,28 @@ module Text2048
       refresh
       sleep 0.2
       draw_box
+      refresh
+    end
+
+    def zoom
+      attron(color_pair(COLOR_BLACK)) { fill }
+      refresh
+
+      setpos(yc + 1, xc + 2)
+      attron(color_pair(@color)) { addstr("#{@value}") }
+      refresh
+      sleep 0.1
+
+      setpos(yc, xc + 1)
+      attron(color_pair(@color)) { addstr('   ') }
+      setpos(yc + 1, xc + 1)
+      attron(color_pair(@color)) { addstr(" #{@value} ") }
+      setpos(yc + 2, xc + 1)
+      attron(color_pair(@color)) { addstr('   ') }
+      refresh
+      sleep 0.1
+
+      attron(color_pair(@color)) { fill }
       refresh
     end
 
@@ -61,8 +83,8 @@ module Text2048
     def fill
       (0..(@height - 1)).each do |dy|
         setpos(yc + dy, xc)
-        if @number != 0 && dy == @height / 2
-          addstr @number.to_s.center(@width)
+        if @value != 0 && dy == @height / 2
+          addstr @value.to_s.center(@width)
         else
           addstr(' ' * @width)
         end

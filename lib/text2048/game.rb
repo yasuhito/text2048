@@ -11,9 +11,9 @@ module Text2048
 
     extend Forwardable
 
-    def initialize(view, layout = nil)
+    def initialize(view, tiles = nil)
       @score = 0
-      @board = Board.new(layout)
+      @board = Board.new(tiles)
       @view = view
     end
 
@@ -22,12 +22,11 @@ module Text2048
     end
 
     def draw
-      @view.update(@board.layout, @score)
-      @view.flash_tile(*@new_tile) if @new_tile
+      @view.update(@board.tiles, @score)
+      @view.zoom_tile(*@board.new_tile) if @board.new_tile
     end
 
     def lose?
-      return false if @board.numbers.size < 4 * 4
       b = @board.dup
       b.right!
       b.left!
@@ -37,11 +36,10 @@ module Text2048
     end
 
     def input(command)
-      @new_tile = nil
-      last = @board.layout.dup
+      last = @board.tiles.dup
       __send__ command
-      return if last == @board.layout
-      @new_tile = @board.generate
+      return if last == @board.tiles
+      @board.generate
     end
 
     def left!
@@ -61,11 +59,11 @@ module Text2048
     end
 
     def larger!
-      @view.larger!(@board.layout, @score)
+      @view.larger!(@board.tiles, @score)
     end
 
     def smaller!
-      @view.smaller!(@board.layout, @score)
+      @view.smaller!(@board.tiles, @score)
     end
 
     def game_over

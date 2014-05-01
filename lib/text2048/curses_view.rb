@@ -40,27 +40,27 @@ module Text2048
       at_exit { close_screen }
     end
 
-    def update(layout, score)
+    def update(tiles, score)
       draw_score(score)
-      layout.each_with_index do |row, y|
+      tiles.each_with_index do |row, y|
         draw_row(row, y)
       end
     end
 
-    def larger!(layout, score)
+    def larger!(tiles, score)
       @scale += 0.5
       clear
-      update(layout, score)
+      update(tiles, score)
     end
 
-    def smaller!(layout, score)
+    def smaller!(tiles, score)
       @scale -= 0.5
       clear
-      update(layout, score)
+      update(tiles, score)
     end
 
-    def flash_tile(y, x)
-      @tiles[y][x].flash
+    def zoom_tile(y, x)
+      @tiles[y][x].zoom
     end
 
     def game_over
@@ -75,9 +75,10 @@ module Text2048
       addstr("Score: #{score}")
     end
 
-    def draw_row(numbers, y)
-      numbers.each_with_index do |each, x|
-        @tiles[y][x] = CursesTile.new(each, y, x, COLORS[each], @scale).show
+    def draw_row(tiles, y)
+      tiles.each_with_index do |each, x|
+        @tiles[y][x] = CursesTile.new(each, y, x, COLORS[each.to_i], @scale).show
+        # @tiles[y][x] = CursesTile.new(each, y, x, COLORS[0], @scale).show
       end
       refresh
     end
