@@ -37,30 +37,29 @@ module Text2048
     end
 
     def input(command)
-      last = @board.tiles.dup
+      @last = @board.tiles.dup
       __send__ command
-      return if last == @board.tiles
-      @board.generate
     end
 
     def left!
       @score += @board.left!
-      draw
     end
 
     def right!
       @score += @board.right!
-      draw
     end
 
     def up!
       @score += @board.up!
-      draw
     end
 
     def down!
       @score += @board.down!
-      draw
+    end
+
+    def generate
+      return if @last == @board.tiles
+      @board.generate
     end
 
     def larger!

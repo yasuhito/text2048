@@ -23,4 +23,11 @@ loop do
   game.game_over if game.lose?
   command = KEYS[Curses.getch]
   game.input(command) if command
+  case command
+  when :left!, :right!, :up!, :down!
+    game.generate
+    game.draw
+  else
+    # noop
+  end
 end
