@@ -36,6 +36,7 @@ module Text2048
       noecho
       COLORS.each_pair do |_key, value|
         init_pair value, COLOR_BLACK, value
+        init_pair value + 100, value, value
       end
       at_exit { close_screen }
     end
@@ -54,9 +55,24 @@ module Text2048
     end
 
     def smaller!(tiles, score)
+      return if @scale <= 1.0
       @scale -= 0.5
       clear
       update(tiles, score)
+    end
+
+    def pop_tiles(list)
+      list.each do |y, x|
+        attron(color_pair(@tiles[y][x].color + 100)) do
+          @tiles[y][x].pop1
+        end
+      end
+      refresh
+      sleep 0.1
+
+      list.each do |y, x|
+        @tiles[y][x].pop2
+      end
     end
 
     def zoom_tiles(list)
@@ -64,7 +80,7 @@ module Text2048
         list.each do |y, x|
           @tiles[y][x].__send__ each
         end
-        sleep 0.1
+        sleep 0.05
       end
     end
 

@@ -49,6 +49,16 @@ module Text2048
       end
     end
 
+    def merged_tiles
+      result = []
+      @tiles.each_with_index do |row, y|
+        row.each_with_index do |each, x|
+          result << [y, x] if each.status == :merged
+        end
+      end
+      result
+    end
+
     def generated_tiles
       result = []
       @tiles.each_with_index do |row, y|

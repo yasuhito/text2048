@@ -10,7 +10,7 @@ module Text2048
     extend Forwardable
 
     def initialize(value, status = nil)
-      @value = value
+      @value = value.to_i
       @status = status
     end
 

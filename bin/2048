@@ -23,5 +23,4 @@ loop do
   game.game_over if game.lose?
   command = KEYS[Curses.getch]
   game.input(command) if command
-  game.draw
 end

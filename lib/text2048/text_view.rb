@@ -12,6 +12,10 @@ module Text2048
       @output.puts string
     end
 
+    def pop_tiles(_list)
+      # noop
+    end
+
     def zoom_tiles(_list)
       # noop
     end

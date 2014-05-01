@@ -10,19 +10,17 @@ module Text2048
     extend Forwardable
 
     def initialize(list)
-      @list = list.map { |each| each.to_i }
+      @list = list.map { |each| Tile.new(each) }
     end
 
     def right
       list, score = @list.rshrink.rmerge
-      result = list.rshrink.map { |each| Tile.new(each) }
-      [result, score]
+      [list.rshrink, score]
     end
 
     def left
       list, score = @list.reverse.rshrink.rmerge
-      result = list.rshrink.reverse.map { |each| Tile.new(each) }
-      [result, score]
+      [list.rshrink.reverse, score]
     end
 
     def ==(other)

@@ -23,6 +23,7 @@ module Text2048
 
     def draw
       @view.update(@board.tiles, @score)
+      @view.pop_tiles(@board.merged_tiles)
       @view.zoom_tiles(@board.generated_tiles)
     end
 
@@ -44,18 +45,22 @@ module Text2048
 
     def left!
       @score += @board.left!
+      draw
     end
 
     def right!
       @score += @board.right!
+      draw
     end
 
     def up!
       @score += @board.up!
+      draw
     end
 
     def down!
       @score += @board.down!
+      draw
     end
 
     def larger!

@@ -8,11 +8,11 @@ module Text2048
         def rmerge
           score = 0
           tiles = dup
-          size.downto(1) do |each|
+          (size - 1).downto(1) do |each|
             if tiles[each - 1] == tiles[each]
-              tiles[each] *= 2
-              tiles[each - 1] = 0
-              score += tiles[each]
+              tiles[each] = Text2048::Tile.new(tiles[each].to_i * 2, :merged)
+              tiles[each - 1] = Text2048::Tile.new(0)
+              score += tiles[each].to_i
             end
           end
           [tiles, score]
@@ -22,7 +22,7 @@ module Text2048
           tiles = dup
           orig_size = tiles.size
           tiles.select! { |each| each != 0 }
-          ::Array.new(orig_size - tiles.size, 0) + tiles
+          ::Array.new(orig_size - tiles.size) { Text2048::Tile.new(0) } + tiles
         end
       end
     end

@@ -5,6 +5,8 @@ require 'curses'
 module Text2048
   # Shows tiles in curses.
   class CursesTile
+    attr_reader :color
+
     include Curses
 
     DEFAULT_HEIGHT = 3
@@ -21,39 +23,53 @@ module Text2048
 
     def show
       draw_box
-      attron(color_pair(@color)) { fill }
+      attron(color_pair(@color + 100)) { fill }
+      attron(color_pair(@color)) { draw_number }
       self
     end
 
-    def flash
-      attron(color_pair(COLOR_YELLOW)) { draw_box }
-      refresh
-      sleep 0.2
+    def pop1
+      setpos(yc - 1, xc - 1)
+      addstr('.' * (@width + 2))
+
+      (0..(@height - 1)).each do |dy|
+        setpos(yc + dy, xc - 1)
+        addstr('.')
+        setpos(yc + dy, xc + @width)
+        addstr('.')
+      end
+
+      setpos(yc + @height, xc - 1)
+      addstr('.' * (@width + 2))
+    end
+
+    def pop2
       draw_box
       refresh
     end
 
     def zoom1
-      attron(color_pair(COLOR_BLACK)) { fill }
-      refresh
-
-      setpos(yc + 1, xc + 2)
-      attron(color_pair(@color)) { addstr("#{@value}") }
+      attron(color_pair(COLOR_BLACK + 100)) { fill }
+      attron(color_pair(@color)) { draw_number }
       refresh
     end
 
     def zoom2
-      setpos(yc, xc + 1)
-      attron(color_pair(@color)) { addstr('   ') }
-      setpos(yc + 1, xc + 1)
-      attron(color_pair(@color)) { addstr(" #{@value} ") }
-      setpos(yc + 2, xc + 1)
-      attron(color_pair(@color)) { addstr('   ') }
+      setpos(yc + @height / 2 - 1, xc + @width / 2 - 1)
+      attron(color_pair(@color + 100)) { addstr('...') }
+      setpos(yc + @height / 2, xc + @width / 2 - 1)
+      attron(color_pair(@color + 100)) { addstr('...') }
+      setpos(yc + @height / 2 + 1, xc + @width / 2 - 1)
+      attron(color_pair(@color + 100)) { addstr('...') }
+
+      attron(color_pair(@color)) { draw_number }
+
       refresh
     end
 
     def zoom3
-      attron(color_pair(@color)) { fill }
+      attron(color_pair(@color + 100)) { fill }
+      attron(color_pair(@color)) { draw_number }
       refresh
     end
 
@@ -88,9 +104,15 @@ module Text2048
         if @value != 0 && dy == @height / 2
           addstr @value.to_s.center(@width)
         else
-          addstr(' ' * @width)
+          addstr('.' * @width)
         end
       end
+    end
+
+    def draw_number
+      return if @value == 0
+      setpos(yc + @height / 2, xc)
+      addstr @value.to_s.center(@width)
     end
   end
 end
