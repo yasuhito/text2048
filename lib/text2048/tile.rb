@@ -3,7 +3,6 @@
 module Text2048
   class Tile
     attr_reader :status
-    attr_accessor :value
 
     def initialize(value, status = nil)
       @value = value
