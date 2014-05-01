@@ -11,5 +11,9 @@ module Text2048
       end.join("\n")
       @output.puts string
     end
+
+    def zoom_tiles(_list)
+      # noop
+    end
   end
 end

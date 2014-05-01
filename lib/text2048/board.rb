@@ -49,13 +49,14 @@ module Text2048
       end
     end
 
-    def new_tile
+    def generated_tiles
+      result = []
       @tiles.each_with_index do |row, y|
         row.each_with_index do |each, x|
-          return [y, x] if each.status == :generated
+          result << [y, x] if each.status == :generated
         end
       end
-      nil
+      result
     end
 
     def generate

@@ -23,7 +23,7 @@ module Text2048
 
     def draw
       @view.update(@board.tiles, @score)
-      @view.zoom_tile(*@board.new_tile) if @board.new_tile
+      @view.zoom_tiles(@board.generated_tiles)
     end
 
     def lose?

@@ -33,15 +33,16 @@ module Text2048
       refresh
     end
 
-    def zoom
+    def zoom1
       attron(color_pair(COLOR_BLACK)) { fill }
       refresh
 
       setpos(yc + 1, xc + 2)
       attron(color_pair(@color)) { addstr("#{@value}") }
       refresh
-      sleep 0.1
+    end
 
+    def zoom2
       setpos(yc, xc + 1)
       attron(color_pair(@color)) { addstr('   ') }
       setpos(yc + 1, xc + 1)
@@ -49,8 +50,9 @@ module Text2048
       setpos(yc + 2, xc + 1)
       attron(color_pair(@color)) { addstr('   ') }
       refresh
-      sleep 0.1
+    end
 
+    def zoom3
       attron(color_pair(@color)) { fill }
       refresh
     end

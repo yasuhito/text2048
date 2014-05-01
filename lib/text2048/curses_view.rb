@@ -59,8 +59,13 @@ module Text2048
       update(tiles, score)
     end
 
-    def zoom_tile(y, x)
-      @tiles[y][x].zoom
+    def zoom_tiles(list)
+      [:zoom1, :zoom2, :zoom3].each do |each|
+        list.each do |y, x|
+          @tiles[y][x].__send__ each
+        end
+        sleep 0.1
+      end
     end
 
     def game_over
@@ -77,8 +82,8 @@ module Text2048
 
     def draw_row(tiles, y)
       tiles.each_with_index do |each, x|
-        @tiles[y][x] = CursesTile.new(each, y, x, COLORS[each.to_i], @scale).show
-        # @tiles[y][x] = CursesTile.new(each, y, x, COLORS[0], @scale).show
+        @tiles[y][x] =
+          CursesTile.new(each, y, x, COLORS[each.to_i], @scale).show
       end
       refresh
     end
