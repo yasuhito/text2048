@@ -18,10 +18,6 @@ module Text2048
       @value.to_s
     end
 
-    def *(number)
-      @value *= number
-    end
-
     def ==(other)
       @value == other.to_i
     end
