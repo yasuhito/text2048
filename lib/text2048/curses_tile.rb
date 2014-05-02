@@ -26,8 +26,8 @@ module Text2048
 
     def show
       draw_box
-      attron(color_pair(@color + 100)) { fill }
-      attron(color_pair(@color)) { draw_number }
+      fill_tile_color
+      draw_number
       self
     end
 
@@ -38,18 +38,31 @@ module Text2048
     end
 
     def draw_box
-      setpos(yc - 1, xc - 1)
-      addstr("+#{'-' * @width}+")
-      draw_vertical_line(yc, xc - 1, @height)
-      draw_vertical_line(yc, xc + @width, @height)
-      setpos(yc + @height, xc - 1)
-      addstr("+#{'-' * @width}+")
+      draw_square
+      [[yc - 1, xc - 1],
+       [yc - 1, xc + @width],
+       [yc + @height, xc - 1],
+       [yc + @height, xc + @width]].each do |y, x|
+        setpos(y, x)
+        addstr('+')
+      end
     end
 
-    def zoom1
+    def fill_tile_color
+      attron(color_pair(@color + 100)) { fill }
+    end
+
+    def fill_black
       attron(color_pair(COLOR_BLACK + 100)) { fill }
-      attron(color_pair(@color)) { draw_number }
       refresh
+    end
+
+    def draw_number
+      return if @value == 0
+      setpos(yc + @height / 2, xc)
+      attron(color_pair(@color)) do
+        addstr @value.to_s.center(@width)
+      end
     end
 
     def zoom2
@@ -60,14 +73,14 @@ module Text2048
       setpos(yc + @height / 2 + 1, xc + @width / 2 - 1)
       attron(color_pair(@color + 100)) { addstr('...') }
 
-      attron(color_pair(@color)) { draw_number }
+      draw_number
 
       refresh
     end
 
     def zoom3
       attron(color_pair(@color + 100)) { fill }
-      attron(color_pair(@color)) { draw_number }
+      draw_number
       refresh
     end
 
@@ -81,9 +94,16 @@ module Text2048
       (@width + 1) * @x + 1
     end
 
-    def draw_horizonal_line(y, x, length, char)
+    def draw_square
+      draw_horizonal_line(yc - 1, xc - 1, @width + 2)
+      draw_vertical_line(yc, xc - 1, @height)
+      draw_vertical_line(yc, xc + @width, @height)
+      draw_horizonal_line(yc + @height, xc - 1, @width + 2)
+    end
+
+    def draw_horizonal_line(y, x, length)
       setpos(y, x)
-      addstr(char * length)
+      addstr('-' * length)
     end
 
     def draw_vertical_line(y, x, length)
@@ -102,12 +122,6 @@ module Text2048
           addstr('.' * @width)
         end
       end
-    end
-
-    def draw_number
-      return if @value == 0
-      setpos(yc + @height / 2, xc)
-      addstr @value.to_s.center(@width)
     end
   end
 end
