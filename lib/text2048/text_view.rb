@@ -4,15 +4,23 @@
 module Text2048
   # Simple text view.
   class TextView
+    # Board row in text.
+    class Row
+      def initialize(row)
+        @row = row
+      end
+
+      def to_s
+        @row.map { |each| each != 0 ? each : '_' }.join(' ')
+      end
+    end
+
     def initialize(output)
       @output = output
     end
 
-    def update(layout, _score)
-      string = layout.map do |row|
-        row.map { |num| num != 0 ? num : '_' }.join(' ')
-      end.join("\n")
-      @output.puts string
+    def update(tiles, _score)
+      @output.puts tiles.map { |row| Row.new(row).to_s }.join("\n")
     end
 
     def pop_tiles(_list)
