@@ -10,6 +10,7 @@ group :development do
 end
 
 group :test do
+  gem 'coveralls', '~> 0.7.0', require: false
   gem 'cucumber', '~> 1.3.14'
   gem 'reek', '~> 1.3.7'
   gem 'rspec-given', '~> 3.5.4'

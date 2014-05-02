@@ -1,9 +1,13 @@
 # encoding: utf-8
 
 require 'bundler/gem_tasks'
+require 'coveralls/rake/task'
 
-task default: [:spec, :cucumber, :reek, :rubocop]
+task default: [:test, :reek, :rubocop]
+task test: [:spec, :cucumber, 'coveralls:push']
 task travis: :default
+
+Coveralls::RakeTask.new
 
 begin
   require 'rspec/core/rake_task'
