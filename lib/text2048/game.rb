@@ -3,6 +3,7 @@
 require 'forwardable'
 require 'text2048/board'
 
+# This module smells of :reek:UncommunicativeModuleName
 module Text2048
   # A class responsible of handling all the command line interface
   # logic.

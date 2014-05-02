@@ -2,6 +2,7 @@
 
 require 'curses'
 
+# This module smells of :reek:UncommunicativeModuleName
 module Text2048
   # Shows tiles in curses.
   class CursesTile

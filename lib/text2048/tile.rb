@@ -2,6 +2,7 @@
 
 require 'forwardable'
 
+# This module smells of :reek:UncommunicativeModuleName
 module Text2048
   # 2048 tile
   class Tile

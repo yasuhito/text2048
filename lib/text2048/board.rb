@@ -3,6 +3,7 @@
 require 'text2048/tile'
 require 'text2048/tiles'
 
+# This module smells of :reek:UncommunicativeModuleName
 module Text2048
   # Game board
   class Board

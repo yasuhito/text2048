@@ -3,6 +3,7 @@
 require 'curses'
 require 'text2048/curses_tile'
 
+# This module smells of :reek:UncommunicativeModuleName
 module Text2048
   # Curses UI
   class CursesView

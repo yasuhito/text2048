@@ -4,6 +4,7 @@ require 'forwardable'
 require 'text2048/monkey_patch/array'
 require 'text2048/tile'
 
+# This module smells of :reek:UncommunicativeModuleName
 module Text2048
   # Each row or column of a game board.
   class Tiles
