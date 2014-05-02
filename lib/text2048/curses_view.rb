@@ -43,9 +43,7 @@ module Text2048
 
     def update(tiles, score)
       draw_score(score)
-      tiles.each_with_index do |row, y|
-        draw_row(row, y)
-      end
+      tiles.each_with_index { |row, y| draw_row(row, y) }
     end
 
     def larger!(tiles, score)
@@ -86,14 +84,19 @@ module Text2048
     end
 
     def game_over
-      width = (@tiles[0][0].width + 1) * 4 + 1
-      height = (@tiles[0][0].height + 1) * 4 + 2
-
       setpos(height / 2, width / 2 - 4)
       attron(color_pair(COLOR_RED)) { addstr('GAME OVER') }
     end
 
     private
+
+    def width
+      (@tiles[0][0].width + 1) * 4 + 1
+    end
+
+    def height
+      (@tiles[0][0].height + 1) * 4 + 2
+    end
 
     def init_color_pairs
       COLORS.each_pair do |_key, value|
