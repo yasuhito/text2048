@@ -3,6 +3,7 @@
 require 'bundler/gem_tasks'
 
 task default: [:spec, :cucumber, :reek, :rubocop]
+task travis: :default
 
 begin
   require 'rspec/core/rake_task'
