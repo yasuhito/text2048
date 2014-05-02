@@ -29,12 +29,8 @@ module Text2048
     end
 
     def lose?
-      b = @board.dup
-      b.right!
-      b.left!
-      b.up!
-      b.down!
-      b.numbers.size == 4 * 4
+      @board.dup
+        .right.left.up.down.numbers.size == 4 * 4
     end
 
     def input(command)

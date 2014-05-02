@@ -10,10 +10,10 @@ module Text2048
     attr_reader :tiles
 
     def initialize(tiles = nil)
-      @tiles = Array.new(4) { Array.new(4) { Tile.new(0) } }
       if tiles
-        load_tiles(tiles)
+        @tiles = tiles.dup
       else
+        @tiles = Array.new(4) { Array.new(4) { Tile.new(0) } }
         2.times { generate }
       end
     end
@@ -28,16 +28,36 @@ module Text2048
       end
     end
 
+    def right
+      tiles, = move(:right)
+      self.class.new tiles
+    end
+
     def right!
       move! :right
+    end
+
+    def left
+      tiles, = move(:left)
+      self.class.new tiles
     end
 
     def left!
       move! :left
     end
 
+    def up
+      tiles, = transpose { move :left }
+      self.class.new tiles
+    end
+
     def up!
       transpose { move! :left }
+    end
+
+    def down
+      tiles, = transpose { move :right }
+      self.class.new tiles
     end
 
     def down!
@@ -51,23 +71,11 @@ module Text2048
     end
 
     def merged_tiles
-      result = []
-      @tiles.each_with_index do |row, y|
-        row.each_with_index do |each, x|
-          result << [y, x] if each.status == :merged
-        end
-      end
-      result
+      find_tiles :merged
     end
 
     def generated_tiles
-      result = []
-      @tiles.each_with_index do |row, y|
-        row.each_with_index do |each, x|
-          result << [y, x] if each.status == :generated
-        end
-      end
-      result
+      find_tiles :generated
     end
 
     def generate
@@ -89,14 +97,29 @@ module Text2048
 
     private
 
-    def move!(direction)
+    def move(direction)
       score = 0
-      @tiles.map! do |each|
+      tiles = @tiles.map do |each|
         row, sc = Tiles.new(each).__send__ direction
         score += sc
         row
       end
+      [tiles, score]
+    end
+
+    def move!(direction)
+      @tiles, score = move(direction)
       score
+    end
+
+    def find_tiles(status)
+      list = []
+      @tiles.each_with_index do |row, y|
+        row.each_with_index do |each, x|
+          list << [y, x] if each.status == status
+        end
+      end
+      list
     end
 
     def transpose
@@ -104,14 +127,6 @@ module Text2048
       score = yield
       @tiles = @tiles.transpose
       score
-    end
-
-    def load_tiles(tiles)
-      tiles.each_with_index do |row, y|
-        row.each_with_index do |number, x|
-          @tiles[y][x] = Tile.new(number)
-        end
-      end
     end
   end
 end
