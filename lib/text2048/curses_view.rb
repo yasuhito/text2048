@@ -47,6 +47,7 @@ module Text2048
     def update(tiles, score)
       draw_score(score)
       tiles.each_with_index { |row, line| draw_row(row, line) }
+      refresh
     end
 
     def larger!(tiles, score)
@@ -64,15 +65,10 @@ module Text2048
     end
 
     def pop_tiles(list)
-      list.each do |line, col|
-        @tiles[line][col].pop
-      end
+      pop(list)
       refresh
       sleep 0.1
-
-      list.each do |line, col|
-        @tiles[line][col].draw_box
-      end
+      draw_box(list)
       refresh
     end
 
@@ -85,18 +81,20 @@ module Text2048
     end
 
     def game_over
+      height = (@tiles[0][0].height + 1) * 4 + 2
+      width = (@tiles[0][0].width + 1) * 4 + 1
       setpos(height / 2, width / 2 - 4)
       attron(color_pair(COLOR_RED)) { addstr('GAME OVER') }
     end
 
     private
 
-    def width
-      (@tiles[0][0].width + 1) * 4 + 1
+    def pop(list)
+      list.each { |line, col| @tiles[line][col].pop }
     end
 
-    def height
-      (@tiles[0][0].height + 1) * 4 + 2
+    def draw_box(list)
+      list.each { |line, col| @tiles[line][col].draw_box }
     end
 
     def init_color_pairs
@@ -122,7 +120,6 @@ module Text2048
         @tiles[line][col] =
           CursesTile.new(each, line, col, COLORS[each.to_i], @scale).show
       end
-      refresh
     end
   end
 end
