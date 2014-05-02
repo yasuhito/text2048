@@ -5,6 +5,8 @@ require 'curses'
 module Text2048
   # Shows tiles in curses.
   class CursesTile
+    attr_reader :width
+    attr_reader :height
     attr_reader :color
 
     include Curses

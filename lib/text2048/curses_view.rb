@@ -26,7 +26,7 @@ module Text2048
     def initialize
       @tiles = Array.new(4) { Array.new(4) }
       @scale = 2
-      @min_scale = 1
+      @scale_min = 1
       @scale_step = 0.5
     end
 
@@ -37,7 +37,6 @@ module Text2048
       stdscr.keypad(true)
       noecho
       init_color_pairs
-      @max_scale = max_scale
       at_exit { close_screen }
     end
 
@@ -49,14 +48,14 @@ module Text2048
     end
 
     def larger!(tiles, score)
-      return if @scale > @max_scale
+      return if @scale > scale_max
       @scale += @scale_step
       clear
       update(tiles, score)
     end
 
     def smaller!(tiles, score)
-      return if @scale <= @min_scale
+      return if @scale <= @scale_min
       @scale -= @scale_step
       clear
       update(tiles, score)
@@ -86,7 +85,10 @@ module Text2048
     end
 
     def game_over
-      setpos(0, 16)
+      width = (@tiles[0][0].width + 1) * 4 + 1
+      height = (@tiles[0][0].height + 1) * 4 + 2
+
+      setpos(height / 2, width / 2 - 4)
       attron(color_pair(COLOR_RED)) { addstr('GAME OVER') }
     end
 
@@ -99,10 +101,10 @@ module Text2048
       end
     end
 
-    def max_scale
-      width = (CursesTile::DEFAULT_WIDTH + 1) * 4 + 1
-      height = (CursesTile::DEFAULT_HEIGHT + 1) * 4 + 2
-      (cols - 1) / width < lines / height ? (cols - 1) / width : lines / height
+    def scale_max
+      w = (CursesTile::DEFAULT_WIDTH + 1) * 4 + 1
+      h = (CursesTile::DEFAULT_HEIGHT + 1) * 4 + 2
+      (cols - 1) / w < lines / h ? (cols - 1) / w : lines / h
     end
 
     def draw_score(score)
