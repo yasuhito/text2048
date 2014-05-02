@@ -40,8 +40,8 @@ module Text2048
     def draw_box
       setpos(yc - 1, xc - 1)
       addstr("+#{'-' * @width}+")
-      draw_vertical_line(yc, xc - 1, @height, '|')
-      draw_vertical_line(yc, xc + @width, @height, '|')
+      draw_vertical_line(yc, xc - 1, @height)
+      draw_vertical_line(yc, xc + @width, @height)
       setpos(yc + @height, xc - 1)
       addstr("+#{'-' * @width}+")
     end
@@ -86,10 +86,10 @@ module Text2048
       addstr(char * length)
     end
 
-    def draw_vertical_line(y, x, length, char)
+    def draw_vertical_line(y, x, length)
       (0..(length - 1)).each do |dy|
         setpos(y + dy, x)
-        addstr(char)
+        addstr('|')
       end
     end
 
