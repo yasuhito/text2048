@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gem 'rake', '~> 10.3.0'
+
 group :development do
   gem 'guard', '~> 2.6.0'
   gem 'guard-bundler', '~> 2.0.0'
