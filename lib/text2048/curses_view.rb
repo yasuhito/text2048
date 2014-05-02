@@ -62,16 +62,15 @@ module Text2048
 
     def pop_tiles(list)
       list.each do |y, x|
-        attron(color_pair(@tiles[y][x].color + 100)) do
-          @tiles[y][x].pop1
-        end
+        @tiles[y][x].pop
       end
       refresh
       sleep 0.1
 
       list.each do |y, x|
-        @tiles[y][x].pop2
+        @tiles[y][x].draw_box
       end
+      refresh
     end
 
     def zoom_tiles(list)

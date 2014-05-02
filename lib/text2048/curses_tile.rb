@@ -31,24 +31,19 @@ module Text2048
       self
     end
 
-    def pop1
-      setpos(yc - 1, xc - 1)
-      addstr('.' * (@width + 2))
-
-      (0..(@height - 1)).each do |dy|
-        setpos(yc + dy, xc - 1)
-        addstr('.')
-        setpos(yc + dy, xc + @width)
-        addstr('.')
+    def pop
+      attron(color_pair(@color + 100)) do
+        draw_box
       end
-
-      setpos(yc + @height, xc - 1)
-      addstr('.' * (@width + 2))
     end
 
-    def pop2
-      draw_box
-      refresh
+    def draw_box
+      setpos(yc - 1, xc - 1)
+      addstr("+#{'-' * @width}+")
+      draw_vertical_line(yc, xc - 1, @height, '|')
+      draw_vertical_line(yc, xc + @width, @height, '|')
+      setpos(yc + @height, xc - 1)
+      addstr("+#{'-' * @width}+")
     end
 
     def zoom1
@@ -86,19 +81,16 @@ module Text2048
       (@width + 1) * @x + 1
     end
 
-    def draw_box
-      setpos(yc - 1, xc - 1)
-      addstr("+#{'-' * @width}+")
+    def draw_horizonal_line(y, x, length, char)
+      setpos(y, x)
+      addstr(char * length)
+    end
 
-      (0..(@height - 1)).each do |dy|
-        setpos(yc + dy, xc - 1)
-        addstr('|')
-        setpos(yc + dy, xc + @width)
-        addstr('|')
+    def draw_vertical_line(y, x, length, char)
+      (0..(length - 1)).each do |dy|
+        setpos(y + dy, x)
+        addstr(char)
       end
-
-      setpos(yc + @height, xc - 1)
-      addstr("+#{'-' * @width}+")
     end
 
     def fill
