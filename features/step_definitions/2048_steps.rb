@@ -34,3 +34,7 @@ end
 Then(/^the score is (\d+)$/) do |score|
   @game.score.should eq(score.to_i)
 end
+
+Then(/^it is game over$/) do
+  @game.lose?.should be_true
+end
