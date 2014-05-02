@@ -6,6 +6,10 @@ Text mode 2048 game.
 How to Play
 ===========
 
+```
+$ 2048
+```
+
 - Use your arrow keys to move the tiles.
 - +/- for increase or decrease the size of the tiles displayed.
 
