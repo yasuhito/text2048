@@ -22,3 +22,8 @@ Installation
 ```
 $ gem install text2048
 ```
+
+Link
+====
+
+ * [The official version of 2048](http://gabrielecirulli.github.io/2048/) by Gabriele Cirulli
