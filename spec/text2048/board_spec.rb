@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'text2048'
 
 describe Text2048::Board, '.new' do

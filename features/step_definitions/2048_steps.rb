@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'text2048'
 
 Given(/^a board:$/) do |string|

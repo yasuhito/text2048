@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module Text2048
   # Simple text view.
   class TextView
