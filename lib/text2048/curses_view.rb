@@ -74,7 +74,7 @@ module Text2048
     end
 
     def zoom_tiles(list)
-      [:fill_black, :draw_number, :zoom2, :zoom3].each do |each|
+      [:fill_black, :draw_number, :show].each do |each|
         list.each do |y, x|
           @tiles[y][x].__send__ each
         end

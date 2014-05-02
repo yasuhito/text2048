@@ -15,13 +15,15 @@ module Text2048
     DEFAULT_HEIGHT = 3
     DEFAULT_WIDTH = 5
 
-    def initialize(value, y, x, color, scale = 1)
+    def initialize(value, line, col, color, scale = 1)
       @value = value.to_i
-      @y = y
-      @x = x
-      @color = color
       @height = (DEFAULT_HEIGHT * scale).to_i
+      @box_height = @height + 2
       @width = (DEFAULT_WIDTH * scale).to_i
+      @box_width = @width + 2
+      @line = (@height + 1) * line + 2
+      @col = (@width + 1) * col + 1
+      @color = color
     end
 
     def show
@@ -39,11 +41,9 @@ module Text2048
 
     def draw_box
       draw_square
-      [[yc - 1, xc - 1],
-       [yc - 1, xc + @width],
-       [yc + @height, xc - 1],
-       [yc + @height, xc + @width]].each do |y, x|
-        setpos(y, x)
+      [box_upper_left, box_upper_right,
+       box_lower_left, box_lower_right].each do |line, col|
+        setpos(line, col)
         addstr('+')
       end
     end
@@ -59,64 +59,53 @@ module Text2048
 
     def draw_number
       return if @value == 0
-      setpos(yc + @height / 2, xc)
+      setpos(@line + @height / 2, @col)
       attron(color_pair(@color)) do
         addstr @value.to_s.center(@width)
       end
     end
 
-    def zoom2
-      setpos(yc + @height / 2 - 1, xc + @width / 2 - 1)
-      attron(color_pair(@color + 100)) { addstr('...') }
-      setpos(yc + @height / 2, xc + @width / 2 - 1)
-      attron(color_pair(@color + 100)) { addstr('...') }
-      setpos(yc + @height / 2 + 1, xc + @width / 2 - 1)
-      attron(color_pair(@color + 100)) { addstr('...') }
-
-      draw_number
-
-      refresh
-    end
-
-    def zoom3
-      attron(color_pair(@color + 100)) { fill }
-      draw_number
-      refresh
-    end
-
     private
 
-    def yc
-      (@height + 1) * @y + 2
+    def box_upper_left
+      [@line - 1, @col - 1]
     end
 
-    def xc
-      (@width + 1) * @x + 1
+    def box_upper_right
+      [@line - 1, @col + @width]
+    end
+
+    def box_lower_left
+      [@line + @height, @col - 1]
+    end
+
+    def box_lower_right
+      [@line + @height, @col + @width]
     end
 
     def draw_square
-      draw_horizonal_line(yc - 1, xc - 1, @width + 2)
-      draw_vertical_line(yc, xc - 1, @height)
-      draw_vertical_line(yc, xc + @width, @height)
-      draw_horizonal_line(yc + @height, xc - 1, @width + 2)
+      draw_horizonal_line(*box_upper_left, @box_width)
+      draw_vertical_line(*box_upper_left, @box_height)
+      draw_vertical_line(*box_upper_right, @box_height)
+      draw_horizonal_line(*box_lower_left, @box_width)
     end
 
-    def draw_horizonal_line(y, x, length)
-      setpos(y, x)
+    def draw_horizonal_line(line, col, length)
+      setpos(line, col)
       addstr('-' * length)
     end
 
-    def draw_vertical_line(y, x, length)
-      (0..(length - 1)).each do |dy|
-        setpos(y + dy, x)
+    def draw_vertical_line(line, col, length)
+      (0..(length - 1)).each do |each|
+        setpos(line + each, col)
         addstr('|')
       end
     end
 
     def fill
-      (0..(@height - 1)).each do |dy|
-        setpos(yc + dy, xc)
-        if @value != 0 && dy == @height / 2
+      (0..(@height - 1)).each do |each|
+        setpos(@line + each, @col)
+        if @value != 0 && each == @height / 2
           addstr @value.to_s.center(@width)
         else
           addstr('.' * @width)
