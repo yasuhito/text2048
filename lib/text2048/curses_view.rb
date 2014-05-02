@@ -7,7 +7,37 @@ require 'text2048/curses_tile'
 module Text2048
   # Curses UI
   class CursesView
+    # Curses tile effects
+    module TileEffects
+      def pop_tiles(list)
+        pop(list)
+        refresh
+        sleep 0.1
+        draw_box(list)
+        refresh
+      end
+
+      def zoom_tiles(list)
+        [:fill_black, :draw_number, :show].each do |each|
+          list.each { |line, col| @tiles[line][col].__send__ each }
+          refresh
+          sleep 0.05
+        end
+      end
+
+      private
+
+      def pop(list)
+        list.each { |line, col| @tiles[line][col].pop }
+      end
+
+      def draw_box(list)
+        list.each { |line, col| @tiles[line][col].draw_box }
+      end
+    end
+
     include Curses
+    include TileEffects
 
     COLORS = {
       0 => COLOR_BLACK,
@@ -50,6 +80,14 @@ module Text2048
       refresh
     end
 
+    def height
+      (tile[0][0].height + 1) * 4 + 2
+    end
+
+    def width
+      (tile[0][0].width + 1) * 4 + 1
+    end
+
     def larger!(tiles, score)
       return if @scale > scale_max
       @scale += @scale_step
@@ -64,38 +102,12 @@ module Text2048
       update(tiles, score)
     end
 
-    def pop_tiles(list)
-      pop(list)
-      refresh
-      sleep 0.1
-      draw_box(list)
-      refresh
-    end
-
-    def zoom_tiles(list)
-      [:fill_black, :draw_number, :show].each do |each|
-        list.each { |line, col| @tiles[line][col].__send__ each }
-        refresh
-        sleep 0.05
-      end
-    end
-
     def game_over
-      height = (@tiles[0][0].height + 1) * 4 + 2
-      width = (@tiles[0][0].width + 1) * 4 + 1
       setpos(height / 2, width / 2 - 4)
       attron(color_pair(COLOR_RED)) { addstr('GAME OVER') }
     end
 
     private
-
-    def pop(list)
-      list.each { |line, col| @tiles[line][col].pop }
-    end
-
-    def draw_box(list)
-      list.each { |line, col| @tiles[line][col].draw_box }
-    end
 
     def init_color_pairs
       COLORS.each_pair do |_key, value|
