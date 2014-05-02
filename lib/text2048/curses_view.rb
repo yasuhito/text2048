@@ -24,6 +24,9 @@ module Text2048
       2048 => COLOR_RED
     }
 
+    DEFAULT_WIDTH = (CursesTile::DEFAULT_WIDTH + 1) * 4 + 1
+    DEFAULT_HEIGHT = (CursesTile::DEFAULT_HEIGHT + 1) * 4 + 2
+
     def initialize
       @tiles = Array.new(4) { Array.new(4) }
       @scale = 2
@@ -43,7 +46,7 @@ module Text2048
 
     def update(tiles, score)
       draw_score(score)
-      tiles.each_with_index { |row, y| draw_row(row, y) }
+      tiles.each_with_index { |row, line| draw_row(row, line) }
     end
 
     def larger!(tiles, score)
@@ -61,23 +64,21 @@ module Text2048
     end
 
     def pop_tiles(list)
-      list.each do |y, x|
-        @tiles[y][x].pop
+      list.each do |line, col|
+        @tiles[line][col].pop
       end
       refresh
       sleep 0.1
 
-      list.each do |y, x|
-        @tiles[y][x].draw_box
+      list.each do |line, col|
+        @tiles[line][col].draw_box
       end
       refresh
     end
 
     def zoom_tiles(list)
       [:fill_black, :draw_number, :show].each do |each|
-        list.each do |y, x|
-          @tiles[y][x].__send__ each
-        end
+        list.each { |line, col| @tiles[line][col].__send__ each }
         refresh
         sleep 0.05
       end
@@ -106,9 +107,9 @@ module Text2048
     end
 
     def scale_max
-      w = (CursesTile::DEFAULT_WIDTH + 1) * 4 + 1
-      h = (CursesTile::DEFAULT_HEIGHT + 1) * 4 + 2
-      (cols - 1) / w < lines / h ? (cols - 1) / w : lines / h
+      ratio_width = (cols - 1) / DEFAULT_WIDTH
+      ratio_height = lines / DEFAULT_HEIGHT
+      ratio_width < ratio_height ? ratio_width : ratio_height
     end
 
     def draw_score(score)
@@ -116,10 +117,10 @@ module Text2048
       addstr("Score: #{score}")
     end
 
-    def draw_row(tiles, y)
-      tiles.each_with_index do |each, x|
-        @tiles[y][x] =
-          CursesTile.new(each, y, x, COLORS[each.to_i], @scale).show
+    def draw_row(tiles, line)
+      tiles.each_with_index do |each, col|
+        @tiles[line][col] =
+          CursesTile.new(each, line, col, COLORS[each.to_i], @scale).show
       end
       refresh
     end
