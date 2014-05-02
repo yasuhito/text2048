@@ -6,7 +6,8 @@ Given(/^a board:$/) do |string|
   layout = string.split("\n").reduce([]) do |result, row|
     result << row.split(' ').map(&:to_i)
   end
-  @game = Text2048::Game.new(Text2048::TextView.new(output), layout)
+  @game = Text2048::Game.new(Text2048::Board.new(layout),
+                             Text2048::TextView.new(output))
 end
 
 When(/^I move the board to the right$/) do

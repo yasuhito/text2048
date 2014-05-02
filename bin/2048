@@ -16,7 +16,7 @@ KEYS = {
   'q' => :quit
 }
 
-game = Text2048::Game.new(Text2048::CursesView.new)
+game = Text2048::Game.new
 game.start
 game.draw
 

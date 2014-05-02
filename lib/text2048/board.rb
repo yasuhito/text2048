@@ -28,15 +28,6 @@ module Text2048
       end
     end
 
-    def right
-      tiles, = move(:right)
-      self.class.new tiles
-    end
-
-    def right!
-      move! :right
-    end
-
     def left
       tiles, = move(:left)
       self.class.new tiles
@@ -44,6 +35,15 @@ module Text2048
 
     def left!
       move! :left
+    end
+
+    def right
+      tiles, = move(:right)
+      self.class.new tiles
+    end
+
+    def right!
+      move! :right
     end
 
     def up

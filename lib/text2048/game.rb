@@ -2,6 +2,7 @@
 
 require 'forwardable'
 require 'text2048/board'
+require 'text2048/curses_view'
 
 # This module smells of :reek:UncommunicativeModuleName
 module Text2048
@@ -12,10 +13,10 @@ module Text2048
 
     extend Forwardable
 
-    def initialize(view, tiles = nil)
-      @score = 0
-      @board = Board.new(tiles)
+    def initialize(board = Board.new, view = CursesView.new, score = 0)
+      @board = board
       @view = view
+      @score = score
     end
 
     def start
@@ -38,20 +39,36 @@ module Text2048
       __send__ command
     end
 
+    def left
+      move :left
+    end
+
     def left!
-      @score += @board.left!
+      move! :left
+    end
+
+    def right
+      move :right
     end
 
     def right!
-      @score += @board.right!
+      move! :right
+    end
+
+    def up
+      move :up
     end
 
     def up!
-      @score += @board.up!
+      move! :up
+    end
+
+    def down
+      move :down
     end
 
     def down!
-      @score += @board.down!
+      move! :down
     end
 
     def generate
@@ -73,6 +90,17 @@ module Text2048
 
     def quit
       exit 0
+    end
+
+    private
+
+    def move(direction)
+      board, score = @board.dup.__send__("#{direction}!")
+      self.class.new(board, @view, @score + score)
+    end
+
+    def move!(direction)
+      @score += @board.__send__("#{direction}!")
     end
   end
 end
