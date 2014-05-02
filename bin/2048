@@ -1,0 +1,33 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH.unshift(File.dirname(File.realpath(__FILE__)) + '/../lib')
+
+require 'curses'
+require 'text2048'
+
+include Curses
+
+KEYS = {
+  'h' => :left!, 'l' => :right!, 'k' => :up!, 'j' => :down!,
+  Key::LEFT => :left!, Key::RIGHT => :right!,
+  Key::UP => :up!, Key::DOWN => :down!,
+  '+' => :larger!, '-' => :smaller!,
+  'q' => :quit
+}
+
+game = Text2048::Game.new(Text2048::CursesView.new)
+game.start
+game.draw
+
+loop do
+  game.game_over if game.lose?
+  command = KEYS[Curses.getch]
+  game.input(command) if command
+  case command
+  when :left!, :right!, :up!, :down!
+    game.generate
+    game.draw
+  else
+    # noop
+  end
+end
