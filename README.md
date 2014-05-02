@@ -1,12 +1,14 @@
 text2048
 ========
 [![Gem Version](http://img.shields.io/gem/v/text2048.svg)][gem]
+[![Build Status](http://img.shields.io/travis/yasuhito/text2048/develop.svg)][travis]
 [![Code Climate](http://img.shields.io/codeclimate/github/yasuhito/text2048.svg)][codeclimate]
 [![Dependency Status](http://img.shields.io/gemnasium/yasuhito/text2048.svg)][gemnasium]
 
 Text mode 2048 game.
 
 [gem]: https://rubygems.org/gems/text2048
+[travis]: http://travis-ci.org/yasuhito/text2048
 [codeclimate]: https://codeclimate.com/github/yasuhito/text2048
 [gemnasium]: https://gemnasium.com/yasuhito/text2048
 
