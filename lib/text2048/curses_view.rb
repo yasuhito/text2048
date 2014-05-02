@@ -25,7 +25,9 @@ module Text2048
 
     def initialize
       @tiles = Array.new(4) { Array.new(4) }
-      @scale = 1
+      @scale = 2
+      @min_scale = 1
+      @scale_step = 0.5
     end
 
     def start
@@ -34,10 +36,8 @@ module Text2048
       start_color
       stdscr.keypad(true)
       noecho
-      COLORS.each_pair do |_key, value|
-        init_pair value, COLOR_BLACK, value
-        init_pair value + 100, value, value
-      end
+      init_color_pairs
+      @max_scale = max_scale
       at_exit { close_screen }
     end
 
@@ -49,14 +49,15 @@ module Text2048
     end
 
     def larger!(tiles, score)
-      @scale += 0.5
+      return if @scale > @max_scale
+      @scale += @scale_step
       clear
       update(tiles, score)
     end
 
     def smaller!(tiles, score)
-      return if @scale <= 1.0
-      @scale -= 0.5
+      return if @scale <= @min_scale
+      @scale -= @scale_step
       clear
       update(tiles, score)
     end
@@ -90,6 +91,19 @@ module Text2048
     end
 
     private
+
+    def init_color_pairs
+      COLORS.each_pair do |_key, value|
+        init_pair value, COLOR_BLACK, value
+        init_pair value + 100, value, value
+      end
+    end
+
+    def max_scale
+      width = (CursesTile::DEFAULT_WIDTH + 1) * 4 + 1
+      height = (CursesTile::DEFAULT_HEIGHT + 1) * 4 + 2
+      (cols - 1) / width < lines / height ? (cols - 1) / width : lines / height
+    end
 
     def draw_score(score)
       setpos(0, 0)
