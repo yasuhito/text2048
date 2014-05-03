@@ -23,6 +23,10 @@ module Text2048
       @view.zoom_tiles(@board.generated_tiles)
     end
 
+    def tiles
+      @board.tiles
+    end
+
     def layout
       @board.layout
     end
@@ -66,22 +70,6 @@ module Text2048
 
     def generate
       @board.generate
-    end
-
-    def larger!
-      @view.larger!(@board.tiles, @score)
-    end
-
-    def smaller!
-      @view.smaller!(@board.tiles, @score)
-    end
-
-    def game_over
-      @view.game_over
-    end
-
-    def quit
-      exit 0
     end
 
     private

@@ -3,37 +3,6 @@
 
 $LOAD_PATH.unshift(File.dirname(File.realpath(__FILE__)) + '/../lib')
 
-require 'curses'
-require 'text2048'
+require 'text2048/app'
 
-include Curses
-
-KEYS = {
-  'h' => :left!, 'l' => :right!, 'k' => :up!, 'j' => :down!,
-  Key::LEFT => :left!, Key::RIGHT => :right!,
-  Key::UP => :up!, Key::DOWN => :down!,
-  '+' => :larger!, '-' => :smaller!,
-  'q' => :quit
-}
-
-def input(game, command)
-  last = game.dup
-  game.__send__ command
-  last
-end
-
-game = Text2048::Game.new(Text2048::Board.new, Text2048::CursesView.new)
-game.draw
-
-loop do
-  game.game_over if game.lose?
-  command = KEYS[Curses.getch]
-  last = input(game, command) if command
-  case command
-  when :left!, :right!, :up!, :down!
-    game.generate if game != last
-    game.draw
-  else
-    # noop
-  end
-end
+Text2048::App.new.start
