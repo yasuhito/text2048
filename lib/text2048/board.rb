@@ -30,6 +30,12 @@ module Text2048
       end
     end
 
+    def win?
+      numbers.select do |each|
+        each.to_i >= 2048
+      end.size > 0
+    end
+
     def lose?
       right.left.up.down.numbers.size == 4 * 4
     end
@@ -105,6 +111,7 @@ module Text2048
       list
     end
 
+    # FIXME: this method is destructive.
     def transpose
       @tiles = @tiles.transpose
       @tiles, score = yield

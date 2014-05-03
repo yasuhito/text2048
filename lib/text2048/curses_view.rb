@@ -81,20 +81,25 @@ module Text2048
       (@tiles[0][0].width + 1) * 4 + 1
     end
 
-    def larger(tiles, score)
+    def larger(board)
       return if @scale > scale_max
       maybe_init_curses
       @scale += @scale_step
       clear
-      update(tiles, score)
+      update(board)
     end
 
-    def smaller(tiles, score)
+    def smaller(board)
       return if @scale <= @scale_min
       maybe_init_curses
       @scale -= @scale_step
       clear
-      update(tiles, score)
+      update(board)
+    end
+
+    def win
+      setpos(height / 2, width / 2 - 1)
+      attron(color_pair(COLOR_RED)) { addstr('WIN!') }
     end
 
     def game_over

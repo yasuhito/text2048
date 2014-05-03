@@ -25,9 +25,11 @@ module Text2048
 
     def start
       loop do
+        @view.win if @board.win?
         @view.game_over if @board.lose?
         input KEYS[Curses.getch]
       end
+      sleep
     end
 
     private
@@ -36,8 +38,8 @@ module Text2048
       case command
       when :left, :right, :up, :down
         move_and_generate(command)
-      when :larger!, :smaller!
-        @view.__send__ command, @board.tiles, @board.score
+      when :larger, :smaller
+        @view.__send__ command, @board
       when :quit
         exit 0
       end
