@@ -64,17 +64,8 @@ module Text2048
       @scale_step = 0.5
     end
 
-    def start
-      init_screen
-      curs_set(0)
-      start_color
-      stdscr.keypad(true)
-      noecho
-      init_color_pairs
-      at_exit { close_screen }
-    end
-
     def update(tiles, score)
+      maybe_init_curses
       draw_score(score)
       tiles.each_with_index { |row, line| draw_row(row, line) }
       refresh
@@ -90,6 +81,7 @@ module Text2048
 
     def larger!(tiles, score)
       return if @scale > scale_max
+      maybe_init_curses
       @scale += @scale_step
       clear
       update(tiles, score)
@@ -97,6 +89,7 @@ module Text2048
 
     def smaller!(tiles, score)
       return if @scale <= @scale_min
+      maybe_init_curses
       @scale -= @scale_step
       clear
       update(tiles, score)
@@ -108,6 +101,21 @@ module Text2048
     end
 
     private
+
+    def maybe_init_curses
+      @curses_initialized || init_curses
+      @curses_initialized = true
+    end
+
+    def init_curses
+      init_screen
+      curs_set(0)
+      start_color
+      stdscr.keypad(true)
+      noecho
+      init_color_pairs
+      at_exit { close_screen }
+    end
 
     def init_color_pairs
       COLORS.each_pair do |_key, value|

@@ -17,10 +17,6 @@ module Text2048
       @score = score
     end
 
-    def start
-      @view.start
-    end
-
     def draw
       @view.update(@board.tiles, @score)
       @view.pop_tiles(@board.merged_tiles)
