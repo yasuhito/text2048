@@ -1,8 +1,8 @@
 # encoding: utf-8
 
-require 'forwardable'
 require 'text2048/board'
 require 'text2048/curses_view'
+require 'text2048/text_view'
 
 # This module smells of :reek:UncommunicativeModuleName
 module Text2048
@@ -11,9 +11,7 @@ module Text2048
   class Game
     attr_reader :score
 
-    extend Forwardable
-
-    def initialize(board = Board.new, view = CursesView.new, score = 0)
+    def initialize(board = Board.new, view = TextView.new, score = 0)
       @board = board
       @view = view
       @score = score
@@ -27,6 +25,10 @@ module Text2048
       @view.update(@board.tiles, @score)
       @view.pop_tiles(@board.merged_tiles)
       @view.zoom_tiles(@board.generated_tiles)
+    end
+
+    def layout
+      @board.layout
     end
 
     def lose?
@@ -95,7 +97,8 @@ module Text2048
     private
 
     def move(direction)
-      board, score = @board.dup.__send__("#{direction}!")
+      board = @board.dup
+      score = board.__send__("#{direction}!")
       self.class.new(board, @view, @score + score)
     end
 

@@ -15,7 +15,7 @@ module Text2048
       end
     end
 
-    def initialize(output)
+    def initialize(output = STDOUT)
       @output = output
     end
 
