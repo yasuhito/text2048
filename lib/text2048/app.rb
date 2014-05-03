@@ -10,22 +10,22 @@ module Text2048
     include Curses
 
     KEYS = {
-      'h' => :left!, 'l' => :right!, 'k' => :up!, 'j' => :down!,
-      Key::LEFT => :left!, Key::RIGHT => :right!,
-      Key::UP => :up!, Key::DOWN => :down!,
+      'h' => :left, 'l' => :right, 'k' => :up, 'j' => :down,
+      Key::LEFT => :left, Key::RIGHT => :right,
+      Key::UP => :up, Key::DOWN => :down,
       '+' => :larger, '-' => :smaller,
       'q' => :quit
     }
 
     def initialize
       @view = CursesView.new
-      @game = Game.new(Board.new)
-      @view.update(@game)
+      @board = Board.new
+      @view.update(@board)
     end
 
     def start
       loop do
-        @view.game_over if @game.lose?
+        @view.game_over if @board.lose?
         input KEYS[Curses.getch]
       end
     end
@@ -34,10 +34,10 @@ module Text2048
 
     def input(command)
       case command
-      when :left!, :right!, :up!, :down!
+      when :left, :right, :up, :down
         move_and_generate(command)
       when :larger!, :smaller!
-        @view.__send__ command, @game.tiles, @game.score
+        @view.__send__ command, @board.tiles, @board.score
       when :quit
         exit 0
       end
@@ -45,19 +45,18 @@ module Text2048
 
     def move_and_generate(command)
       last = move(command)
-      generate(last) if @game != last
+      generate if @board != last
     end
 
     def move(command)
-      last = @game.dup
-      @game.__send__ command
-      @view.update(@game)
+      last = @board.dup
+      @board = @board.__send__(command)
       last
     end
 
     def generate
-      @game.generate
-      @view.update(@game)
+      @board.generate
+      @view.update(@board)
     end
   end
 end

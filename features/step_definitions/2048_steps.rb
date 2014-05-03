@@ -7,34 +7,34 @@ Given(/^a board:$/) do |string|
     result << row.split(' ').map(&:to_i)
   end
   @view = Text2048::TextView.new(output)
-  @game = Text2048::Game.new(Text2048::Board.new(layout))
+  @board = Text2048::Board.new(layout)
 end
 
 When(/^I move the board to the right$/) do
-  @game.right!
+  @board = @board.right
 end
 
 When(/^I move the board to the left$/) do
-  @game.left!
+  @board = @board.left
 end
 
 When(/^I move the board up$/) do
-  @game.up!
+  @board = @board.up
 end
 
 When(/^I move the board down$/) do
-  @game.down!
+  @board = @board.down
 end
 
 Then(/^the board is:$/) do |string|
-  @view.update(@game)
+  @view.update(@board)
   output.messages.should eq(string)
 end
 
 Then(/^the score is (\d+)$/) do |score|
-  @game.score.should eq(score.to_i)
+  @board.score.should eq(score.to_i)
 end
 
 Then(/^it is game over$/) do
-  @game.lose?.should be_true
+  @board.lose?.should be_true
 end

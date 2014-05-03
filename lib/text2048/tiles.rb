@@ -24,10 +24,6 @@ module Text2048
       [list.rshrink.reverse, score]
     end
 
-    def ==(other)
-      rshrink == other.rshrink
-    end
-
     def_delegators :@list, :map, :rshrink
   end
 end

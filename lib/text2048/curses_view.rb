@@ -64,21 +64,21 @@ module Text2048
       @scale_step = 0.5
     end
 
-    def update(game)
+    def update(board)
       maybe_init_curses
-      draw_score(game.score)
-      draw_tiles(game.tiles)
+      draw_score(board.score)
+      draw_tiles(board.tiles)
       refresh
-      pop_tiles(game.merged_tiles)
-      zoom_tiles(game.generated_tiles)
+      pop_tiles(board.merged_tiles)
+      zoom_tiles(board.generated_tiles)
     end
 
     def height
-      (tile[0][0].height + 1) * 4 + 2
+      (@tiles[0][0].height + 1) * 4 + 2
     end
 
     def width
-      (tile[0][0].width + 1) * 4 + 1
+      (@tiles[0][0].width + 1) * 4 + 1
     end
 
     def larger(tiles, score)

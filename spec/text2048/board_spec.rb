@@ -3,7 +3,7 @@
 require 'text2048'
 
 describe Text2048::Board, '.new' do
-  context 'with no numbers' do
+  context 'with all zeroes' do
     Given(:board) do
       Text2048::Board.new([[0, 0, 0, 0],
                            [0, 0, 0, 0],
@@ -12,13 +12,13 @@ describe Text2048::Board, '.new' do
     end
 
     describe '#right' do
-      When { board.right! }
+      When(:result) { board.right }
 
       Then do
-        board.layout == [[0, 0, 0, 0],
-                         [0, 0, 0, 0],
-                         [0, 0, 0, 0],
-                         [0, 0, 0, 0]]
+        result.layout == [[0, 0, 0, 0],
+                          [0, 0, 0, 0],
+                          [0, 0, 0, 0],
+                          [0, 0, 0, 0]]
       end
     end
   end
@@ -32,25 +32,14 @@ describe Text2048::Board, '.new' do
     end
 
     describe '#right' do
-      When { board.right! }
+      When(:result) { board.right }
 
       Then do
-        board.layout == [[0, 0, 0, 2],
-                         [0, 0, 0, 2],
-                         [0, 0, 0, 2],
-                         [0, 0, 0, 2]]
+        result.layout == [[0, 0, 0, 2],
+                          [0, 0, 0, 2],
+                          [0, 0, 0, 2],
+                          [0, 0, 0, 2]]
       end
-    end
-
-    describe '#==' do
-      When(:result) do
-        board == Text2048::Board.new([[0, 0, 0, 2],
-                                      [0, 0, 2, 0],
-                                      [0, 2, 0, 0],
-                                      [2, 0, 0, 0]])
-      end
-
-      Then { result == true }
     end
   end
 
@@ -63,13 +52,13 @@ describe Text2048::Board, '.new' do
     end
 
     describe '#right' do
-      When { board.right! }
+      When(:result) { board.right }
 
       Then do
-        board.layout == [[0, 0, 0, 4],
-                         [0, 0, 0, 2],
-                         [0, 0, 0, 4],
-                         [0, 0, 0, 2]]
+        result.layout == [[0, 0, 0, 4],
+                          [0, 0, 0, 2],
+                          [0, 0, 0, 4],
+                          [0, 0, 0, 2]]
       end
     end
   end

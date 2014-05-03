@@ -7,9 +7,11 @@ require 'text2048/tiles'
 module Text2048
   # Game board
   class Board
+    attr_reader :score
     attr_reader :tiles
 
-    def initialize(tiles = nil)
+    def initialize(tiles = nil, score = 0)
+      @score = score
       if tiles
         @tiles = tiles.dup
       else
@@ -28,46 +30,32 @@ module Text2048
       end
     end
 
-    def left
-      tiles, = move(:left)
-      self.class.new tiles
+    def lose?
+      right.left.up.down.numbers.size == 4 * 4
     end
 
-    def left!
-      move! :left
+    def left
+      tiles, score = move(:left)
+      self.class.new tiles, @score + score
     end
 
     def right
-      tiles, = move(:right)
-      self.class.new tiles
-    end
-
-    def right!
-      move! :right
+      tiles, score = move(:right)
+      self.class.new tiles, @score + score
     end
 
     def up
-      tiles, = transpose { move :left }
-      self.class.new tiles
-    end
-
-    def up!
-      transpose { move! :left }
+      tiles, score = transpose { move(:left) }
+      self.class.new tiles, @score + score
     end
 
     def down
-      tiles, = transpose { move :right }
-      self.class.new tiles
-    end
-
-    def down!
-      transpose { move! :right }
+      tiles, score = transpose { move(:right) }
+      self.class.new tiles, @score + score
     end
 
     def ==(other)
-      @tiles.zip(other.tiles).reduce(true) do |result, each|
-        result && Tiles.new(each[0]) == Tiles.new(each[1])
-      end
+      layout == other.layout
     end
 
     def merged_tiles
@@ -107,11 +95,6 @@ module Text2048
       [tiles, score]
     end
 
-    def move!(direction)
-      @tiles, score = move(direction)
-      score
-    end
-
     def find_tiles(status)
       list = []
       @tiles.each_with_index do |row, line|
@@ -124,9 +107,9 @@ module Text2048
 
     def transpose
       @tiles = @tiles.transpose
-      score = yield
+      @tiles, score = yield
       @tiles = @tiles.transpose
-      score
+      [@tiles, score]
     end
   end
 end
