@@ -29,7 +29,6 @@ module Text2048
         @view.game_over if @board.lose?
         input KEYS[Curses.getch]
       end
-      sleep
     end
 
     private
@@ -53,12 +52,15 @@ module Text2048
     def move(command)
       last = @board.dup
       @board = @board.__send__(command)
+      @view.update(@board)
+      @view.pop_tiles(@board.merged_tiles)
       last
     end
 
     def generate
       @board.generate
       @view.update(@board)
+      @view.zoom_tiles(@board.generated_tiles)
     end
   end
 end
