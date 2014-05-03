@@ -1,5 +1,8 @@
 # encoding: utf-8
 
+require 'coveralls'
+Coveralls.wear_merged!
+
 # Dummy output
 class Output
   def messages

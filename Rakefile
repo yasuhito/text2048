@@ -1,8 +1,13 @@
 # encoding: utf-8
 
 require 'bundler/gem_tasks'
+require 'coveralls/rake/task'
 
-task default: [:spec, :cucumber, :rubocop]
+task default: [:test, :reek, :rubocop]
+task test: [:spec, :cucumber, 'coveralls:push']
+task travis: :default
+
+Coveralls::RakeTask.new
 
 begin
   require 'rspec/core/rake_task'
@@ -28,5 +33,19 @@ begin
 rescue LoadError
   task :rubocop do
     $stderr.puts 'Rubocop is disabled'
+  end
+end
+
+begin
+  require 'reek/rake/task'
+  Reek::Rake::Task.new do |t|
+    t.fail_on_error = false
+    t.verbose = false
+    t.reek_opts = '--quiet'
+    t.source_files = FileList['lib/**/*.rb']
+  end
+rescue LoadError
+  task :reek do
+    $stderr.puts 'Reek is disabled'
   end
 end

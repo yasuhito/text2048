@@ -3,16 +3,19 @@
 require 'text2048/tile'
 require 'text2048/tiles'
 
+# This module smells of :reek:UncommunicativeModuleName
 module Text2048
   # Game board
   class Board
+    attr_reader :score
     attr_reader :tiles
 
-    def initialize(tiles = nil)
-      @tiles = Array.new(4) { Array.new(4) { Tile.new(0) } }
+    def initialize(tiles = nil, score = 0)
+      @score = score
       if tiles
-        load_tiles(tiles)
+        @tiles = tiles.dup
       else
+        @tiles = Array.new(4) { Array.new(4) { Tile.new(0) } }
         2.times { generate }
       end
     end
@@ -27,54 +30,54 @@ module Text2048
       end
     end
 
-    def right!
-      move! :right
+    def win?
+      numbers.select do |each|
+        each.to_i >= 2048
+      end.size > 0
     end
 
-    def left!
-      move! :left
+    def lose?
+      right.left.up.down.numbers.size == 4 * 4
     end
 
-    def up!
-      transpose { move! :left }
+    def left
+      tiles, score = move(:left)
+      self.class.new tiles, @score + score
     end
 
-    def down!
-      transpose { move! :right }
+    def right
+      tiles, score = move(:right)
+      self.class.new tiles, @score + score
+    end
+
+    def up
+      tiles, score = transpose { move(:left) }
+      self.class.new tiles, @score + score
+    end
+
+    def down
+      tiles, score = transpose { move(:right) }
+      self.class.new tiles, @score + score
     end
 
     def ==(other)
-      @tiles.zip(other.tiles).reduce(true) do |result, each|
-        result && Tiles.new(each[0]) == Tiles.new(each[1])
-      end
+      layout == other.layout
     end
 
     def merged_tiles
-      result = []
-      @tiles.each_with_index do |row, y|
-        row.each_with_index do |each, x|
-          result << [y, x] if each.status == :merged
-        end
-      end
-      result
+      find_tiles :merged
     end
 
     def generated_tiles
-      result = []
-      @tiles.each_with_index do |row, y|
-        row.each_with_index do |each, x|
-          result << [y, x] if each.status == :generated
-        end
-      end
-      result
+      find_tiles :generated
     end
 
     def generate
       loop do
-        x = rand(4)
-        y = rand(4)
-        if @tiles[y][x] == 0
-          @tiles[y][x] = Tile.new(rand < 0.8 ? 2 : 4, :generated)
+        line = rand(4)
+        col = rand(4)
+        if @tiles[line][col] == 0
+          @tiles[line][col] = Tile.new(rand < 0.8 ? 2 : 4, :generated)
           return
         end
       end
@@ -88,29 +91,32 @@ module Text2048
 
     private
 
-    def move!(direction)
+    def move(direction)
       score = 0
-      @tiles.map! do |each|
+      tiles = @tiles.map do |each|
         row, sc = Tiles.new(each).__send__ direction
         score += sc
         row
       end
-      score
+      [tiles, score]
     end
 
-    def transpose
-      @tiles = @tiles.transpose
-      score = yield
-      @tiles = @tiles.transpose
-      score
-    end
-
-    def load_tiles(tiles)
-      tiles.each_with_index do |row, y|
-        row.each_with_index do |number, x|
-          @tiles[y][x] = Tile.new(number)
+    def find_tiles(status)
+      list = []
+      @tiles.each_with_index do |row, line|
+        row.each_with_index do |each, col|
+          list << [line, col] if each.status == status
         end
       end
+      list
+    end
+
+    # FIXME: this method is destructive.
+    def transpose
+      @tiles = @tiles.transpose
+      @tiles, score = yield
+      @tiles = @tiles.transpose
+      [@tiles, score]
     end
   end
 end
