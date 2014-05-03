@@ -19,8 +19,8 @@ module Text2048
       @output = output
     end
 
-    def update(tiles, _score)
-      @output.puts tiles.map { |row| Row.new(row).to_s }.join("\n")
+    def update(game)
+      @output.puts game.tiles.map { |row| Row.new(row).to_s }.join("\n")
     end
 
     def pop_tiles(_list)

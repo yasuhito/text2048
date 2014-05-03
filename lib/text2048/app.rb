@@ -13,14 +13,14 @@ module Text2048
       'h' => :left!, 'l' => :right!, 'k' => :up!, 'j' => :down!,
       Key::LEFT => :left!, Key::RIGHT => :right!,
       Key::UP => :up!, Key::DOWN => :down!,
-      '+' => :larger!, '-' => :smaller!,
+      '+' => :larger, '-' => :smaller,
       'q' => :quit
     }
 
     def initialize
       @view = CursesView.new
-      @game = Game.new(Board.new, @view)
-      @game.draw
+      @game = Game.new(Board.new)
+      @view.update(@game)
     end
 
     def start
@@ -44,10 +44,20 @@ module Text2048
     end
 
     def move_and_generate(command)
+      last = move(command)
+      generate(last) if @game != last
+    end
+
+    def move(command)
       last = @game.dup
       @game.__send__ command
-      @game.generate if @game != last
-      @game.draw
+      @view.update(@game)
+      last
+    end
+
+    def generate
+      @game.generate
+      @view.update(@game)
     end
   end
 end

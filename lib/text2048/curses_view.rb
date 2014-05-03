@@ -64,11 +64,13 @@ module Text2048
       @scale_step = 0.5
     end
 
-    def update(tiles, score)
+    def update(game)
       maybe_init_curses
-      draw_score(score)
-      tiles.each_with_index { |row, line| draw_row(row, line) }
+      draw_score(game.score)
+      draw_tiles(game.tiles)
       refresh
+      pop_tiles(game.merged_tiles)
+      zoom_tiles(game.generated_tiles)
     end
 
     def height
@@ -79,7 +81,7 @@ module Text2048
       (tile[0][0].width + 1) * 4 + 1
     end
 
-    def larger!(tiles, score)
+    def larger(tiles, score)
       return if @scale > scale_max
       maybe_init_curses
       @scale += @scale_step
@@ -87,7 +89,7 @@ module Text2048
       update(tiles, score)
     end
 
-    def smaller!(tiles, score)
+    def smaller(tiles, score)
       return if @scale <= @scale_min
       maybe_init_curses
       @scale -= @scale_step
@@ -133,6 +135,10 @@ module Text2048
     def draw_score(score)
       setpos(0, 0)
       addstr("Score: #{score}")
+    end
+
+    def draw_tiles(tiles)
+      tiles.each_with_index { |row, line| draw_row(row, line) }
     end
 
     def draw_row(tiles, line)

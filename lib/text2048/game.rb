@@ -1,8 +1,6 @@
 # encoding: utf-8
 
 require 'text2048/board'
-require 'text2048/curses_view'
-require 'text2048/text_view'
 
 # This module smells of :reek:UncommunicativeModuleName
 module Text2048
@@ -11,20 +9,21 @@ module Text2048
   class Game
     attr_reader :score
 
-    def initialize(board = Board.new, view = TextView.new, score = 0)
+    def initialize(board = Board.new, score = 0)
       @board = board
-      @view = view
       @score = score
-    end
-
-    def draw
-      @view.update(@board.tiles, @score)
-      @view.pop_tiles(@board.merged_tiles)
-      @view.zoom_tiles(@board.generated_tiles)
     end
 
     def tiles
       @board.tiles
+    end
+
+    def merged_tiles
+      @board.merged_tiles
+    end
+
+    def generated_tiles
+      @board.generated_tiles
     end
 
     def layout
@@ -77,7 +76,7 @@ module Text2048
     def move(direction)
       board = @board.dup
       score = board.__send__("#{direction}!")
-      self.class.new(board, @view, @score + score)
+      self.class.new(board, @score + score)
     end
 
     def move!(direction)

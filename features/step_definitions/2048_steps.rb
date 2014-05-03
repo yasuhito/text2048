@@ -6,8 +6,8 @@ Given(/^a board:$/) do |string|
   layout = string.split("\n").reduce([]) do |result, row|
     result << row.split(' ').map(&:to_i)
   end
-  @game = Text2048::Game.new(Text2048::Board.new(layout),
-                             Text2048::TextView.new(output))
+  @view = Text2048::TextView.new(output)
+  @game = Text2048::Game.new(Text2048::Board.new(layout))
 end
 
 When(/^I move the board to the right$/) do
@@ -27,7 +27,7 @@ When(/^I move the board down$/) do
 end
 
 Then(/^the board is:$/) do |string|
-  @game.draw
+  @view.update(@game)
   output.messages.should eq(string)
 end
 
