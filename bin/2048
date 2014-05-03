@@ -16,16 +16,22 @@ KEYS = {
   'q' => :quit
 }
 
+def input(game, command)
+  last = game.dup
+  game.__send__ command
+  last
+end
+
 game = Text2048::Game.new(Text2048::Board.new, Text2048::CursesView.new)
 game.draw
 
 loop do
   game.game_over if game.lose?
   command = KEYS[Curses.getch]
-  game.input(command) if command
+  last = input(game, command) if command
   case command
   when :left!, :right!, :up!, :down!
-    game.generate
+    game.generate if game != last
     game.draw
   else
     # noop

@@ -32,11 +32,6 @@ module Text2048
         .right.left.up.down.numbers.size == 4 * 4
     end
 
-    def input(command)
-      @last = @board.tiles.dup
-      __send__ command
-    end
-
     def left
       move :left
     end
@@ -70,7 +65,6 @@ module Text2048
     end
 
     def generate
-      return if @last == @board.tiles
       @board.generate
     end
 
