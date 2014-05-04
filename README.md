@@ -8,11 +8,21 @@ text2048
 
 Text mode 2048 game.
 
+[![Screenshot](https://raw.github.com/yasuhito/text2048/develop/screen_shot.png)][screenshot]
+
 [gem]: https://rubygems.org/gems/text2048
 [travis]: http://travis-ci.org/yasuhito/text2048
 [codeclimate]: https://codeclimate.com/github/yasuhito/text2048
 [coveralls]: https://coveralls.io/r/yasuhito/text2048?branch=develop
 [gemnasium]: https://gemnasium.com/yasuhito/text2048
+[screenshot]: https://raw.github.com/yasuhito/text2048/develop/screen_shot.png
+
+Installation
+============
+
+```
+$ gem install text2048
+```
 
 How to Play
 ===========
@@ -24,17 +34,8 @@ $ 2048
 - Use your arrow keys to move the tiles.
 - +/- for increase or decrease the size of the tiles displayed.
 
-[![Screenshot](https://raw.github.com/yasuhito/text2048/develop/screen_shot.png)][screenshot]
-[screenshot]: https://raw.github.com/yasuhito/text2048/develop/screen_shot.png
-
-Installation
-============
-
-```
-$ gem install text2048
-```
-
 Link
 ====
 
  * [The official version of 2048](http://gabrielecirulli.github.io/2048/) by Gabriele Cirulli
+ * [term2048](https://github.com/bfontaine/term2048) terminal-based version in Python
