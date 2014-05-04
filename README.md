@@ -34,8 +34,8 @@ $ 2048
 - Use your arrow keys to move the tiles.
 - +/- for increase or decrease the size of the tiles displayed.
 
-Link
-====
+Links
+=====
 
  * [The official version of 2048](http://gabrielecirulli.github.io/2048/) by Gabriele Cirulli
- * [term2048](https://github.com/bfontaine/term2048) terminal-based version in Python
+ * [bfontaine/term2048](https://github.com/bfontaine/term2048) a terminal-based version in Python
