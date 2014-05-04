@@ -10,16 +10,16 @@ module Text2048
     # Curses tile effects
     module TileEffects
       def pop_tiles(list)
-        pop(list)
-        refresh
-        sleep 0.1
-        draw_box(list)
-        refresh
+        [:pop, :draw_box].each do |each|
+          list_do each, list
+          refresh
+          sleep 0.1
+        end
       end
 
       def zoom_tiles(list)
         [:fill_black, :draw_number, :show].each do |each|
-          list.each { |line, col| @tiles[line][col].__send__ each }
+          list_do each, list
           refresh
           sleep 0.05
         end
@@ -27,12 +27,8 @@ module Text2048
 
       private
 
-      def pop(list)
-        list.each { |line, col| @tiles[line][col].pop }
-      end
-
-      def draw_box(list)
-        list.each { |line, col| @tiles[line][col].draw_box }
+      def list_do(name, list)
+        list.each { |line, col| @tiles[line][col].__send__ name }
       end
     end
 
@@ -113,13 +109,8 @@ module Text2048
     end
 
     def init_curses
-      init_screen
-      curs_set(0)
       start_color
-      stdscr.keypad(true)
-      noecho
       init_color_pairs
-      at_exit { close_screen }
     end
 
     def init_color_pairs

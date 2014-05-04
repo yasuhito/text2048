@@ -20,6 +20,11 @@ module Text2048
     def initialize
       @view = CursesView.new
       @board = Board.new
+      init_screen
+      curs_set(0)
+      noecho
+      stdscr.keypad(true)
+      at_exit { close_screen }
     end
 
     def start
