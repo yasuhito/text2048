@@ -20,10 +20,10 @@ module Text2048
     def initialize
       @view = CursesView.new
       @board = Board.new
-      @view.update(@board)
     end
 
     def start
+      @view.update(@board)
       loop do
         @view.win if @board.win?
         @view.game_over if @board.lose?

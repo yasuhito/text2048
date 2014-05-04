@@ -69,7 +69,6 @@ module Text2048
       draw_score(board.score)
       draw_tiles(board.tiles)
       refresh
-      # zoom_tiles(board.generated_tiles)
     end
 
     def height
