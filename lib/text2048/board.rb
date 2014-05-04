@@ -74,12 +74,11 @@ module Text2048
 
     def generate
       loop do
-        line = rand(4)
+        line = @tiles.sample
         col = rand(4)
-        if @tiles[line][col] == 0
-          @tiles[line][col] = Tile.new(rand < 0.8 ? 2 : 4, :generated)
-          return
-        end
+        next if line[col] != 0
+        line[col] = Tile.new(rand < 0.8 ? 2 : 4, :generated)
+        return
       end
     end
 
