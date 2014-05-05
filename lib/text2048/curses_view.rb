@@ -76,7 +76,9 @@ module Text2048
     end
 
     def larger(board)
-      return if @scale > scale_max
+      rwidth = (Curses.cols - 1) / DEFAULT_WIDTH
+      rheight = Curses.lines / DEFAULT_HEIGHT
+      return if @scale > [rwidth, rheight].min
       change_scale(board, @scale_step)
     end
 
@@ -127,12 +129,6 @@ module Text2048
         init_pair value, COLOR_BLACK, value
         init_pair value + 100, value, value
       end
-    end
-
-    def scale_max
-      ratio_width = (Curses.cols - 1) / DEFAULT_WIDTH
-      ratio_height = Curses.lines / DEFAULT_HEIGHT
-      ratio_width < ratio_height ? ratio_width : ratio_height
     end
 
     def draw_score(score)
