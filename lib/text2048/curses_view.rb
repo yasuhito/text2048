@@ -28,7 +28,7 @@ module Text2048
       private
 
       def list_do(name, list)
-        list.each { |line, col| @tiles[line][col].__send__ name }
+        list.each { |row, col| @tiles[row][col].__send__ name }
       end
     end
 
@@ -122,7 +122,7 @@ module Text2048
 
     def scale_max
       ratio_width = (cols - 1) / DEFAULT_WIDTH
-      ratio_height = lines / DEFAULT_HEIGHT
+      ratio_height = rows / DEFAULT_HEIGHT
       ratio_width < ratio_height ? ratio_width : ratio_height
     end
 
@@ -132,13 +132,13 @@ module Text2048
     end
 
     def draw_tiles(tiles)
-      tiles.each_with_index { |row, line| draw_row(row, line) }
+      tiles.each_with_index { |each, row| draw_row(each, row) }
     end
 
-    def draw_row(tiles, line)
+    def draw_row(tiles, row)
       tiles.each_with_index do |each, col|
-        @tiles[line][col] =
-          CursesTile.new(each, line, col, COLORS[each.to_i], @scale).show
+        @tiles[row][col] =
+          CursesTile.new(each, row, col, COLORS[each.to_i], @scale).show
       end
     end
   end

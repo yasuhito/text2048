@@ -74,10 +74,10 @@ module Text2048
 
     def generate
       loop do
-        line = @tiles.sample
+        row = @tiles.sample
         col = rand(4)
-        next if line[col] != 0
-        line[col] = Tile.new(rand < 0.8 ? 2 : 4, :generated)
+        next if row[col] != 0
+        row[col] = Tile.new(rand < 0.8 ? 2 : 4, :generated)
         return
       end
     end
@@ -102,9 +102,9 @@ module Text2048
 
     def find_tiles(status)
       list = []
-      @tiles.each_with_index do |row, line|
-        row.each_with_index do |each, col|
-          list << [line, col] if each.status == status
+      @tiles.each_with_index do |rows, row|
+        rows.each_with_index do |each, col|
+          list << [row, col] if each.status == status
         end
       end
       list
