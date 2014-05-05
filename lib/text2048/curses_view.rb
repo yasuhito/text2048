@@ -68,11 +68,11 @@ module Text2048
     end
 
     def height
-      ((CursesTile::DEFAULT_HEIGHT * @scale).to_i + 1) * 4 + 1
+      (CursesTile.height(@scale) + 1) * 4 + 1
     end
 
     def width
-      ((CursesTile::DEFAULT_WIDTH * @scale).to_i + 1) * 4 + 1
+      (CursesTile.width(@scale) + 1) * 4 + 1
     end
 
     def larger(board)

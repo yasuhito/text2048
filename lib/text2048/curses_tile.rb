@@ -15,11 +15,20 @@ module Text2048
     DEFAULT_HEIGHT = 3
     DEFAULT_WIDTH = 5
 
-    def initialize(value, row, col, color, scale = 1)
-      @value = value.to_i
-      @height = (DEFAULT_HEIGHT * scale).to_i
-      @box_height = @height + 2
+    def self.width(scale)
       @width = (DEFAULT_WIDTH * scale).to_i
+    end
+
+    def self.height(scale)
+      (DEFAULT_HEIGHT * scale).to_i
+    end
+
+    def initialize(value, row, col, color, scale = 1)
+      klass = self.class
+      @value = value.to_i
+      @height = klass.height(scale)
+      @box_height = @height + 2
+      @width = klass.width(scale)
       @box_width = @width + 2
       @row = (@height + 1) * row + 2
       @col = (@width + 1) * col + 1
