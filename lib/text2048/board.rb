@@ -1,7 +1,7 @@
 # encoding: utf-8
 
+require 'text2048/monkey_patch/array'
 require 'text2048/tile'
-require 'text2048/tiles'
 
 # This module smells of :reek:UncommunicativeModuleName
 module Text2048
@@ -82,10 +82,25 @@ module Text2048
     private
 
     def move(direction)
-      to_a.reduce([[], 0]) do |(numbers, score), each|
-        tiles = Tiles.new(each).__send__(direction)
-        [numbers << tiles.to_a, score + tiles.score]
+      to_a.reduce([[], 0]) do |(board, score), each|
+        row, row_score = __send__("row_#{direction}", each)
+        [board << row, score + row_score]
       end
+    end
+
+    def row_right(row)
+      clear_status(row).rshrink.rmerge
+    end
+
+    def row_left(row)
+      list, score = clear_status(row).reverse.rshrink.rmerge
+      [list.reverse, score]
+    end
+
+    def clear_status(row)
+      row.map { |each| each && each.clear_status }
+    rescue NoMethodError
+      row.dup
     end
 
     def transpose(&block)
