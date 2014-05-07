@@ -10,13 +10,13 @@ module Text2048
           score = 0
           tiles = dup
           (size - 1).downto(1) do |each|
-            if tiles[each - 1] && tiles[each - 1] == tiles[each]
+            if tiles[each] && tiles[each] == tiles[each - 1]
               tiles[each] = Text2048::Tile.new(tiles[each].to_i * 2, :merged)
               tiles[each - 1] = nil
               score += tiles[each].to_i
             end
           end
-          [tiles, score]
+          [tiles.rshrink, score]
         end
 
         def rshrink

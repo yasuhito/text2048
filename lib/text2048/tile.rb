@@ -15,6 +15,15 @@ module Text2048
       @status = status
     end
 
+    def clear_status
+      @status = nil
+      self
+    end
+
+    def merged?
+      @status == :merged
+    end
+
     def ==(other)
       @value == other.to_i
     end

@@ -16,7 +16,6 @@ module Text2048
         @tiles = tiles.to_h
       else
         @tiles = (Array.new(4) { Array.new(4) }).to_h
-        2.times { generate }
       end
     end
 
@@ -27,7 +26,7 @@ module Text2048
     def to_a
       @tiles.reduce(Array.new(4) { Array.new(4) }) do |array, (key, value)|
         row, col = key
-        array[row][col] = value && value.to_i
+        array[row][col] = value
         array
       end
     end
@@ -43,23 +42,23 @@ module Text2048
     end
 
     def left
-      tiles, score = move(:left)
-      self.class.new tiles, @score + score
+      numbers, score = move(:left)
+      self.class.new numbers, @score + score
     end
 
     def right
-      tiles, score = move(:right)
-      self.class.new tiles, @score + score
+      numbers, score = move(:right)
+      self.class.new numbers, @score + score
     end
 
     def up
-      tiles, score = transpose { move(:left) }
-      self.class.new tiles, @score + score
+      numbers, score = transpose { move(:left) }
+      self.class.new numbers, @score + score
     end
 
     def down
-      tiles, score = transpose { move(:right) }
-      self.class.new tiles, @score + score
+      numbers, score = transpose { move(:right) }
+      self.class.new numbers, @score + score
     end
 
     def merged_tiles
@@ -83,21 +82,20 @@ module Text2048
     private
 
     def move(direction)
-      to_a.reduce([[], 0]) do |memo, each|
-        tiles, score = memo
-        row, sc = Tiles.new(each).__send__ direction
-        [tiles << row, score + sc]
+      to_a.reduce([[], 0]) do |(numbers, score), each|
+        tiles = Tiles.new(each).__send__(direction)
+        [numbers << tiles.to_a, score + tiles.score]
       end
-    end
-
-    def find_tiles(status)
-      @tiles.select { |_key, each| each && each.status == status }.keys
     end
 
     def transpose(&block)
       board = self.class.new(to_a.transpose, @score)
       tiles, score = board.instance_eval(&block)
       [tiles.transpose, score]
+    end
+
+    def find_tiles(status)
+      @tiles.select { |_key, each| each && each.status == status }.keys
     end
   end
 end

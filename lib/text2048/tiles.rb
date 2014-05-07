@@ -10,20 +10,35 @@ module Text2048
   class Tiles
     extend Forwardable
 
-    def initialize(list)
-      @list = list.map { |each| each ? Tile.new(each) : nil }
+    attr_reader :score
+
+    def initialize(list, score = 0)
+      @list = list.dup
+      @score = score
     end
 
     def right
-      list, score = @list.rshrink.rmerge
-      [list.rshrink, score]
+      list, score = list_status_cleared.rshrink.rmerge
+      self.class.new(list, score)
     end
 
     def left
-      list, score = @list.reverse.rshrink.rmerge
-      [list.rshrink.reverse, score]
+      list, score = list_status_cleared.reverse.rshrink.rmerge
+      self.class.new(list.reverse, score)
     end
 
-    def_delegators :@list, :map, :rshrink
+    def to_a
+      @list
+    end
+
+    def_delegators :@list, :[]
+
+    private
+
+    def list_status_cleared
+      @list.map { |each| each && each.clear_status }
+    rescue NoMethodError
+      @list.dup
+    end
   end
 end

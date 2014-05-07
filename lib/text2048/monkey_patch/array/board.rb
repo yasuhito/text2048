@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+require 'text2048/tile'
+
 # This module smells of :reek:UncommunicativeModuleName
 module Text2048
   module MonkeyPatch

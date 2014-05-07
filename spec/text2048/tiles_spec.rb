@@ -9,7 +9,15 @@ describe Text2048::Tiles, '.new' do
     describe '#right' do
       When(:result) { tiles.right }
 
-      Then { result[0] == [nil, nil, nil, nil] }
+      Then { result.to_a == [nil, nil, nil, nil] }
+      And { result.score == 0 }
+    end
+
+    describe '#left' do
+      When(:result) { tiles.left }
+
+      Then { result.to_a == [nil, nil, nil, nil] }
+      And { result.score == 0 }
     end
   end
 
@@ -19,7 +27,15 @@ describe Text2048::Tiles, '.new' do
     describe '#right' do
       When(:result) { tiles.right }
 
-      Then { result[0] == [nil, nil, nil, 2] }
+      Then { result.to_a == [nil, nil, nil, 2] }
+      And { result.score == 0 }
+    end
+
+    describe '#left' do
+      When(:result) { tiles.left }
+
+      Then { result.to_a == [2, nil, nil, nil] }
+      And { result.score == 0 }
     end
   end
 
@@ -29,7 +45,15 @@ describe Text2048::Tiles, '.new' do
     describe '#right' do
       When(:result) { tiles.right }
 
-      Then { result[0] == [nil, nil, nil, 2] }
+      Then { result.to_a == [nil, nil, nil, 2] }
+      And { result.score == 0 }
+    end
+
+    describe '#left' do
+      When(:result) { tiles.left }
+
+      Then { result.to_a == [2, nil, nil, nil] }
+      And { result.score == 0 }
     end
   end
 
@@ -39,7 +63,15 @@ describe Text2048::Tiles, '.new' do
     describe '#right' do
       When(:result) { tiles.right }
 
-      Then { result[0] == [nil, nil, nil, 2] }
+      Then { result.to_a == [nil, nil, nil, 2] }
+      And { result.score == 0 }
+    end
+
+    describe '#left' do
+      When(:result) { tiles.left }
+
+      Then { result.to_a == [2, nil, nil, nil] }
+      And { result.score == 0 }
     end
   end
 
@@ -49,7 +81,15 @@ describe Text2048::Tiles, '.new' do
     describe '#right' do
       When(:result) { tiles.right }
 
-      Then { result[0] == [nil, nil, nil, 2] }
+      Then { result.to_a == [nil, nil, nil, 2] }
+      And { result.score == 0 }
+    end
+
+    describe '#left' do
+      When(:result) { tiles.left }
+
+      Then { result.to_a == [2, nil, nil, nil] }
+      And { result.score == 0 }
     end
   end
 
@@ -59,7 +99,15 @@ describe Text2048::Tiles, '.new' do
     describe '#right' do
       When(:result) { tiles.right }
 
-      Then { result[0] == [nil, nil, nil, 4] }
+      Then { result.to_a == [nil, nil, nil, 4] }
+      And { result.score == 4 }
+    end
+
+    describe '#left' do
+      When(:result) { tiles.left }
+
+      Then { result.to_a == [4, nil, nil, nil] }
+      And { result.score == 4 }
     end
   end
 
@@ -69,7 +117,17 @@ describe Text2048::Tiles, '.new' do
     describe '#right' do
       When(:result) { tiles.right }
 
-      Then { result[0] == [nil, nil, 2, 4] }
+      Then { result.to_a == [nil, nil, 2, 4] }
+      And { result[3].merged? }
+      And { result.score == 4 }
+    end
+
+    describe '#left' do
+      When(:result) { tiles.left }
+
+      Then { result.to_a == [4, 2, nil, nil] }
+      And { result[0].merged? }
+      And { result.score == 4 }
     end
   end
 
@@ -79,7 +137,19 @@ describe Text2048::Tiles, '.new' do
     describe '#right' do
       When(:result) { tiles.right }
 
-      Then { result[0] == [nil, nil, 4, 4] }
+      Then { result.to_a == [nil, nil, 4, 4] }
+      And { result[2].merged? }
+      And { result[3].merged? }
+      And { result.score == 8 }
+    end
+
+    describe '#left' do
+      When(:result) { tiles.left }
+
+      Then { result.to_a == [4, 4, nil, nil] }
+      And { result[0].merged? }
+      And { result[1].merged? }
+      And { result.score == 8 }
     end
   end
 
@@ -89,7 +159,19 @@ describe Text2048::Tiles, '.new' do
     describe '#right' do
       When(:result) { tiles.right }
 
-      Then { result[0] == [nil, nil, 8, 4] }
+      Then { result.to_a == [nil, nil, 8, 4] }
+      And { result[2].merged? }
+      And { result[3].merged? }
+      And { result.score == 12 }
+    end
+
+    describe '#left' do
+      When(:result) { tiles.left }
+
+      Then { result.to_a == [8, 4, nil, nil] }
+      And { result[0].merged? }
+      And { result[1].merged? }
+      And { result.score == 12 }
     end
   end
 
@@ -99,7 +181,15 @@ describe Text2048::Tiles, '.new' do
     describe '#right' do
       When(:result) { tiles.right }
 
-      Then { result[0] == [nil, nil, 4, 2] }
+      Then { result.to_a == [nil, nil, 4, 2] }
+      And { result.score == 0 }
+    end
+
+    describe '#left' do
+      When(:result) { tiles.left }
+
+      Then { result.to_a == [4, 2, nil, nil] }
+      And { result.score == 0 }
     end
   end
 
@@ -109,7 +199,15 @@ describe Text2048::Tiles, '.new' do
     describe '#right' do
       When(:result) { tiles.right }
 
-      Then { result[0] == [16, 8, 4, 2] }
+      Then { result.to_a == [16, 8, 4, 2] }
+      And { result.score == 0 }
+    end
+
+    describe '#left' do
+      When(:result) { tiles.left }
+
+      Then { result.to_a == [16, 8, 4, 2] }
+      And { result.score == 0 }
     end
   end
 end
