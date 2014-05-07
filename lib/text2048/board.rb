@@ -13,9 +13,9 @@ module Text2048
     def initialize(tiles = nil, score = 0)
       @score = score
       if tiles
-        @tiles = tiles.dup
+        @tiles = tiles.to_h
       else
-        @tiles = Array.new(4) { Array.new(4) { Tile.new(0) } }
+        @tiles = (Array.new(4) { Array.new(4) }).to_h
         2.times { generate }
       end
     end
@@ -24,20 +24,22 @@ module Text2048
       @tiles = board.tiles.dup
     end
 
-    def layout
-      @tiles.map do |row|
-        row.map { |each| each.to_i }
+    def to_a
+      @tiles.reduce(Array.new(4) { Array.new(4) }) do |array, (key, value)|
+        row, col = key
+        array[row][col] = value && value.to_i
+        array
       end
     end
 
     def win?
-      numbers.select do |each|
-        each.to_i >= 2048
-      end.size > 0
+      @tiles.any? { |_key, value| value.to_i >= 2048 }
     end
 
     def lose?
-      right.left.up.down.numbers.size == 4 * 4
+      right.left.up.down.tiles.select do |_key, each|
+        each.to_i > 0
+      end.size == 4 * 4
     end
 
     def left
@@ -60,10 +62,6 @@ module Text2048
       self.class.new tiles, @score + score
     end
 
-    def ==(other)
-      layout == other.layout
-    end
-
     def merged_tiles
       find_tiles :merged
     end
@@ -74,49 +72,32 @@ module Text2048
 
     def generate
       loop do
-        line = rand(4)
-        col = rand(4)
-        if @tiles[line][col] == 0
-          @tiles[line][col] = Tile.new(rand < 0.8 ? 2 : 4, :generated)
+        sample = @tiles.keys.sample
+        unless @tiles[sample]
+          @tiles[sample] = Tile.new(rand < 0.8 ? 2 : 4, :generated)
           return
         end
-      end
-    end
-
-    def numbers
-      tiles.reduce([]) do |result, row|
-        result + row.select { |each| each != 0 }
       end
     end
 
     private
 
     def move(direction)
-      score = 0
-      tiles = @tiles.map do |each|
+      to_a.reduce([[], 0]) do |memo, each|
+        tiles, score = memo
         row, sc = Tiles.new(each).__send__ direction
-        score += sc
-        row
+        [tiles << row, score + sc]
       end
-      [tiles, score]
     end
 
     def find_tiles(status)
-      list = []
-      @tiles.each_with_index do |row, line|
-        row.each_with_index do |each, col|
-          list << [line, col] if each.status == status
-        end
-      end
-      list
+      @tiles.select { |_key, each| each && each.status == status }.keys
     end
 
-    # FIXME: this method is destructive.
-    def transpose
-      @tiles = @tiles.transpose
-      @tiles, score = yield
-      @tiles = @tiles.transpose
-      [@tiles, score]
+    def transpose(&block)
+      board = self.class.new(to_a.transpose, @score)
+      tiles, score = board.instance_eval(&block)
+      [tiles.transpose, score]
     end
   end
 end

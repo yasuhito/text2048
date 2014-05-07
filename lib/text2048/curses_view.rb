@@ -10,16 +10,16 @@ module Text2048
     # Curses tile effects
     module TileEffects
       def pop_tiles(list)
-        pop(list)
-        refresh
-        sleep 0.1
-        draw_box(list)
-        refresh
+        [:pop, :draw_box].each do |each|
+          list_do each, list
+          refresh
+          sleep 0.1
+        end
       end
 
       def zoom_tiles(list)
         [:fill_black, :draw_number, :show].each do |each|
-          list.each { |line, col| @tiles[line][col].__send__ each }
+          list_do each, list
           refresh
           sleep 0.05
         end
@@ -27,12 +27,8 @@ module Text2048
 
       private
 
-      def pop(list)
-        list.each { |line, col| @tiles[line][col].pop }
-      end
-
-      def draw_box(list)
-        list.each { |line, col| @tiles[line][col].draw_box }
+      def list_do(name, list)
+        list.each { |each| @tiles[each].__send__ name }
       end
     end
 
@@ -58,7 +54,7 @@ module Text2048
     DEFAULT_HEIGHT = (CursesTile::DEFAULT_HEIGHT + 1) * 4 + 2
 
     def initialize
-      @tiles = Array.new(4) { Array.new(4) }
+      @tiles = {}
       @scale = 2
       @scale_min = 1
       @scale_step = 0.5
@@ -67,46 +63,56 @@ module Text2048
     def update(board)
       maybe_init_curses
       draw_score(board.score)
-      draw_tiles(board.tiles)
+      draw_tiles(board.to_a)
       refresh
-      # zoom_tiles(board.generated_tiles)
     end
 
     def height
-      (@tiles[0][0].height + 1) * 4 + 2
+      (CursesTile.height(@scale) + 1) * 4 + 1
     end
 
     def width
-      (@tiles[0][0].width + 1) * 4 + 1
+      (CursesTile.width(@scale) + 1) * 4 + 1
     end
 
     def larger(board)
-      return if @scale > scale_max
-      maybe_init_curses
-      @scale += @scale_step
-      clear
-      update(board)
+      rwidth = (Curses.cols - 1) / DEFAULT_WIDTH
+      rheight = Curses.lines / DEFAULT_HEIGHT
+      return if @scale > [rwidth, rheight].min
+      change_scale(board, @scale_step)
     end
 
     def smaller(board)
       return if @scale <= @scale_min
-      maybe_init_curses
-      @scale -= @scale_step
-      clear
-      update(board)
+      change_scale(board, -1 * @scale_step)
     end
 
     def win
-      setpos(height / 2, width / 2 - 1)
+      setpos(rows_center, cols_center - 1)
       attron(color_pair(COLOR_RED)) { addstr('WIN!') }
     end
 
     def game_over
-      setpos(height / 2, width / 2 - 4)
+      setpos(rows_center, cols_center - 4)
       attron(color_pair(COLOR_RED)) { addstr('GAME OVER') }
     end
 
     private
+
+    def change_scale(board, scale_step)
+      maybe_init_curses
+      @scale += scale_step
+      clear
+      update(board)
+    end
+
+    def rows_center
+      height / 2
+    end
+
+    def cols_center
+      width / 2
+    end
 
     def maybe_init_curses
       @curses_initialized || init_curses
@@ -114,13 +120,8 @@ module Text2048
     end
 
     def init_curses
-      init_screen
-      curs_set(0)
       start_color
-      stdscr.keypad(true)
-      noecho
       init_color_pairs
-      at_exit { close_screen }
     end
 
     def init_color_pairs
@@ -130,25 +131,17 @@ module Text2048
       end
     end
 
-    def scale_max
-      ratio_width = (cols - 1) / DEFAULT_WIDTH
-      ratio_height = lines / DEFAULT_HEIGHT
-      ratio_width < ratio_height ? ratio_width : ratio_height
-    end
-
     def draw_score(score)
       setpos(0, 0)
       addstr("Score: #{score}")
     end
 
     def draw_tiles(tiles)
-      tiles.each_with_index { |row, line| draw_row(row, line) }
-    end
-
-    def draw_row(tiles, line)
-      tiles.each_with_index do |each, col|
-        @tiles[line][col] =
-          CursesTile.new(each, line, col, COLORS[each.to_i], @scale).show
+      [0, 1, 2, 3].product([0, 1, 2, 3]).each do |row, col|
+        tile = tiles[row][col]
+        @tiles[[row, col]] =
+          CursesTile.new(tile, row, col, COLORS[tile.to_i], @scale).show
+        refresh
       end
     end
   end

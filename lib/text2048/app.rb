@@ -20,10 +20,15 @@ module Text2048
     def initialize
       @view = CursesView.new
       @board = Board.new
-      @view.update(@board)
+      init_screen
+      curs_set(0)
+      noecho
+      stdscr.keypad(true)
+      at_exit { close_screen }
     end
 
     def start
+      @view.update(@board)
       loop do
         @view.win if @board.win?
         @view.game_over if @board.lose?
@@ -46,7 +51,7 @@ module Text2048
 
     def move_and_generate(command)
       last = move(command)
-      generate if @board != last
+      generate if @board.to_a != last.to_a
     end
 
     def move(command)

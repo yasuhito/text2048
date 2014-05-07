@@ -3,8 +3,8 @@
 require 'text2048'
 
 Given(/^a board:$/) do |string|
-  layout = string.split("\n").reduce([]) do |result, row|
-    result << row.split(' ').map(&:to_i)
+  layout = string.split("\n").reduce([]) do |memo, row|
+    memo << row.split(' ').map { |each| each == '_' ? nil : each.to_i }
   end
   @view = Text2048::TextView.new(output)
   @board = Text2048::Board.new(layout)

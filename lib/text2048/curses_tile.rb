@@ -15,13 +15,22 @@ module Text2048
     DEFAULT_HEIGHT = 3
     DEFAULT_WIDTH = 5
 
-    def initialize(value, line, col, color, scale = 1)
-      @value = value.to_i
-      @height = (DEFAULT_HEIGHT * scale).to_i
-      @box_height = @height + 2
+    def self.width(scale)
       @width = (DEFAULT_WIDTH * scale).to_i
+    end
+
+    def self.height(scale)
+      (DEFAULT_HEIGHT * scale).to_i
+    end
+
+    def initialize(value, row, col, color, scale = 1)
+      klass = self.class
+      @value = value.to_i
+      @height = klass.height(scale)
+      @box_height = @height + 2
+      @width = klass.width(scale)
       @box_width = @width + 2
-      @line = (@height + 1) * line + 2
+      @row = (@height + 1) * row + 2
       @col = (@width + 1) * col + 1
       @color = color
     end
@@ -42,8 +51,8 @@ module Text2048
     def draw_box
       draw_square
       [box_upper_left, box_upper_right,
-       box_lower_left, box_lower_right].each do |line, col|
-        setpos(line, col)
+       box_lower_left, box_lower_right].each do |row, col|
+        setpos(row, col)
         addstr('+')
       end
     end
@@ -59,7 +68,7 @@ module Text2048
 
     def draw_number
       return if @value == 0
-      setpos(@line + @height / 2, @col)
+      setpos(@row + @height / 2, @col)
       attron(color_pair(@color)) do
         addstr @value.to_s.center(@width)
       end
@@ -68,19 +77,19 @@ module Text2048
     private
 
     def box_upper_left
-      [@line - 1, @col - 1]
+      [@row - 1, @col - 1]
     end
 
     def box_upper_right
-      [@line - 1, @col + @width]
+      [@row - 1, @col + @width]
     end
 
     def box_lower_left
-      [@line + @height, @col - 1]
+      [@row + @height, @col - 1]
     end
 
     def box_lower_right
-      [@line + @height, @col + @width]
+      [@row + @height, @col + @width]
     end
 
     def draw_square
@@ -90,21 +99,21 @@ module Text2048
       draw_horizonal_line(*box_lower_left, @box_width)
     end
 
-    def draw_horizonal_line(line, col, length)
-      setpos(line, col)
+    def draw_horizonal_line(row, col, length)
+      setpos(row, col)
       addstr('-' * length)
     end
 
-    def draw_vertical_line(line, col, length)
+    def draw_vertical_line(row, col, length)
       (0..(length - 1)).each do |each|
-        setpos(line + each, col)
+        setpos(row + each, col)
         addstr('|')
       end
     end
 
     def fill
       (0..(@height - 1)).each do |each|
-        setpos(@line + each, @col)
+        setpos(@row + each, @col)
         if @value != 0 && each == @height / 2
           addstr @value.to_s.center(@width)
         else

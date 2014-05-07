@@ -11,7 +11,7 @@ module Text2048
     extend Forwardable
 
     def initialize(list)
-      @list = list.map { |each| Tile.new(each) }
+      @list = list.map { |each| each ? Tile.new(each) : nil }
     end
 
     def right
