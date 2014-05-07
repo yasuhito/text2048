@@ -51,7 +51,7 @@ module Text2048
 
     def move_and_generate(command)
       last = move(command)
-      generate if @board != last
+      generate if @board.to_a != last.to_a
     end
 
     def move(command)

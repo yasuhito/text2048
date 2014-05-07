@@ -63,7 +63,7 @@ module Text2048
     def update(board)
       maybe_init_curses
       draw_score(board.score)
-      draw_tiles(board.tiles)
+      draw_tiles(board.to_a)
       refresh
     end
 

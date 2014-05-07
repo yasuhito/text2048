@@ -11,7 +11,7 @@ module Text2048
       end
 
       def to_s
-        @row.map { |each| each != 0 ? each : '_' }.join(' ')
+        @row.map { |each| each ? each.to_s : '_' }.join(' ')
       end
     end
 
@@ -19,8 +19,8 @@ module Text2048
       @output = output
     end
 
-    def update(game)
-      @output.puts game.tiles.map { |row| Row.new(row).to_s }.join("\n")
+    def update(board)
+      @output.puts board.to_a.map { |row| Row.new(row).to_s }.join("\n")
     end
 
     def pop_tiles(_list)
