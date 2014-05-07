@@ -10,12 +10,12 @@ module Text2048
     attr_reader :score
     attr_reader :tiles
 
-    def initialize(tiles = nil, score = 0)
+    def initialize(tiles = Array.new(4) { Array.new(4) }, score = 0)
       @score = score
-      if tiles
-        @tiles = tiles.to_h
-      else
-        @tiles = (Array.new(4) { Array.new(4) }).to_h
+      coords = [0, 1, 2, 3].product([0, 1, 2, 3])
+      @tiles = coords.reduce({}) do |memo, (col, row)|
+        memo[[col, row]] = tiles[col][row]
+        memo
       end
     end
 
@@ -80,15 +80,9 @@ module Text2048
 
     def move_right
       to_a.reduce([[], 0]) do |(board, score), each|
-        row, row_score = clear_status(each).rshrink.rmerge
+        row, row_score = each.clear_status.rmerge
         [board << row, score + row_score]
       end
-    end
-
-    def clear_status(row)
-      row.map { |each| each && each.clear_status }
-    rescue NoMethodError
-      row.dup
     end
 
     def transpose(direction)
