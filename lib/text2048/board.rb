@@ -41,24 +41,21 @@ module Text2048
       end.size == 4 * 4
     end
 
-    def left
-      numbers, score = move(:left)
-      self.class.new numbers, @score + score
+    def right
+      board, score = move_right
+      self.class.new board, @score + score
     end
 
-    def right
-      numbers, score = move(:right)
-      self.class.new numbers, @score + score
+    def left
+      reverse :right
     end
 
     def up
-      numbers, score = transpose { move(:left) }
-      self.class.new numbers, @score + score
+      transpose :left
     end
 
     def down
-      numbers, score = transpose { move(:right) }
-      self.class.new numbers, @score + score
+      transpose :right
     end
 
     def merged_tiles
@@ -81,20 +78,11 @@ module Text2048
 
     private
 
-    def move(direction)
+    def move_right
       to_a.reduce([[], 0]) do |(board, score), each|
-        row, row_score = __send__("row_#{direction}", each)
+        row, row_score = clear_status(each).rshrink.rmerge
         [board << row, score + row_score]
       end
-    end
-
-    def row_right(row)
-      clear_status(row).rshrink.rmerge
-    end
-
-    def row_left(row)
-      list, score = clear_status(row).reverse.rshrink.rmerge
-      [list.reverse, score]
     end
 
     def clear_status(row)
@@ -103,10 +91,16 @@ module Text2048
       row.dup
     end
 
-    def transpose(&block)
-      board = self.class.new(to_a.transpose, @score)
-      tiles, score = board.instance_eval(&block)
-      [tiles.transpose, score]
+    def transpose(direction)
+      klass = self.class
+      board = klass.new(to_a.transpose, @score).__send__(direction)
+      klass.new board.to_a.transpose, board.score
+    end
+
+    def reverse(direction)
+      klass = self.class
+      board = klass.new(to_a.map(&:reverse), @score).__send__(direction)
+      klass.new board.to_a.map(&:reverse), board.score
     end
 
     def find_tiles(status)
