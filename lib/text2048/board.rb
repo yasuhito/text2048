@@ -10,21 +10,23 @@ module Text2048
     attr_reader :score
     attr_reader :tiles
 
-    def initialize(tiles = Array.new(4) { Array.new(4) }, score = 0)
+    DEFAULT_TILES = Array.new(4) { Array.new(4) { Tile.new(0) } }
+
+    def initialize(tiles = DEFAULT_TILES.dup, score = 0)
+      @tiles = tiles.to_h
       @score = score
-      coords = [0, 1, 2, 3].product([0, 1, 2, 3])
-      @tiles = coords.reduce({}) do |memo, (col, row)|
-        memo[[col, row]] = tiles[col][row]
-        memo
-      end
     end
 
     def initialize_copy(board)
       @tiles = board.tiles.dup
     end
 
+    def [](coord)
+      @tiles[coord]
+    end
+
     def to_a
-      @tiles.reduce(Array.new(4) { Array.new(4) }) do |array, (key, value)|
+      @tiles.reduce(DEFAULT_TILES.dup) do |array, (key, value)|
         row, col = key
         array[row][col] = value
         array
@@ -69,7 +71,7 @@ module Text2048
     def generate
       loop do
         sample = @tiles.keys.sample
-        unless @tiles[sample]
+        if @tiles[sample] == 0
           @tiles[sample] = Tile.new(rand < 0.8 ? 2 : 4, :generated)
           return
         end
@@ -80,7 +82,7 @@ module Text2048
 
     def move_right
       to_a.reduce([[], 0]) do |(board, score), each|
-        row, row_score = each.clear_status.rmerge
+        row, row_score = each.rmerge
         [board << row, score + row_score]
       end
     end
@@ -98,7 +100,7 @@ module Text2048
     end
 
     def find_tiles(status)
-      @tiles.select { |_key, each| each && each.status == status }.keys
+      @tiles.select { |_key, each| each.status == status }.keys
     end
   end
 end

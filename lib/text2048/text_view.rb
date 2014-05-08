@@ -11,7 +11,7 @@ module Text2048
       end
 
       def to_s
-        @row.map { |each| each ? each.to_s : '_' }.join(' ')
+        @row.map { |each| each != 0 ? each : '_' }.join(' ')
       end
     end
 

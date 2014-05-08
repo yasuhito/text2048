@@ -7,18 +7,11 @@ module Text2048
       # 2048 related methods
       module Tile
         def rmerge
-          compact!
-          score = (size - 1).downto(1).to_a.reduce(0) do |memo, each|
-            memo += merge_left(each) if merge_left?(each)
-            memo
+          shrink
+          score = (size - 1).downto(1).reduce(0) do |memo, each|
+            memo + (self[each] == self[each - 1] ? merge_left(each) : 0)
           end
           [fill_length(4), score]
-        end
-
-        def merge_left?(index)
-          me = self[index]
-          left = self[index - 1]
-          me && me == left
         end
 
         def merge_left(index)
@@ -28,15 +21,14 @@ module Text2048
           value
         end
 
-        def clear_status
-          map { |each| each && each.clear_status }
-        rescue NoMethodError
-          dup
+        def shrink
+          delete(0)
+          map! { |each| each.clear_status }
         end
 
         def fill_length(len)
           compact!
-          unshift(nil) until size == len
+          unshift(Text2048::Tile.new(0)) until size == len
           self
         end
       end
