@@ -28,7 +28,7 @@ module Text2048
     end
 
     def start
-      @view.update(@board)
+      generate 2
       loop do
         @view.win if @board.win?
         @view.game_over if @board.lose?
@@ -62,8 +62,8 @@ module Text2048
       last
     end
 
-    def generate
-      @board.generate
+    def generate(num_tiles = 1)
+      num_tiles.times { @board.generate }
       @view.update(@board)
       @view.zoom_tiles(@board.generated_tiles)
     end

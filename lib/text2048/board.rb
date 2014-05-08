@@ -1,7 +1,7 @@
 # encoding: utf-8
 
+require 'text2048/monkey_patch/array'
 require 'text2048/tile'
-require 'text2048/tiles'
 
 # This module smells of :reek:UncommunicativeModuleName
 module Text2048
@@ -10,26 +10,21 @@ module Text2048
     attr_reader :score
     attr_reader :tiles
 
-    def initialize(tiles = nil, score = 0)
+    def initialize(tiles = Array.new(4) { Array.new(4, 0) }, score = 0)
+      @tiles = tiles.to_h
       @score = score
-      if tiles
-        @tiles = tiles.to_h
-      else
-        @tiles = (Array.new(4) { Array.new(4) }).to_h
-        2.times { generate }
-      end
     end
 
     def initialize_copy(board)
       @tiles = board.tiles.dup
     end
 
+    def [](coord)
+      @tiles[coord]
+    end
+
     def to_a
-      @tiles.reduce(Array.new(4) { Array.new(4) }) do |array, (key, value)|
-        row, col = key
-        array[row][col] = value && value.to_i
-        array
-      end
+      [0, 1, 2, 3].map { |each| row(each) }
     end
 
     def win?
@@ -42,24 +37,21 @@ module Text2048
       end.size == 4 * 4
     end
 
-    def left
-      tiles, score = move(:left)
-      self.class.new tiles, @score + score
+    def right
+      board, score = move_right
+      self.class.new board, @score + score
     end
 
-    def right
-      tiles, score = move(:right)
-      self.class.new tiles, @score + score
+    def left
+      reverse :right
     end
 
     def up
-      tiles, score = transpose { move(:left) }
-      self.class.new tiles, @score + score
+      transpose :left
     end
 
     def down
-      tiles, score = transpose { move(:right) }
-      self.class.new tiles, @score + score
+      transpose :right
     end
 
     def merged_tiles
@@ -73,7 +65,7 @@ module Text2048
     def generate
       loop do
         sample = @tiles.keys.sample
-        unless @tiles[sample]
+        if @tiles[sample] == 0
           @tiles[sample] = Tile.new(rand < 0.8 ? 2 : 4, :generated)
           return
         end
@@ -82,22 +74,31 @@ module Text2048
 
     private
 
-    def move(direction)
-      to_a.reduce([[], 0]) do |memo, each|
-        tiles, score = memo
-        row, sc = Tiles.new(each).__send__ direction
-        [tiles << row, score + sc]
+    def move_right
+      to_a.reduce([[], 0]) do |(board, score), each|
+        row, row_score = each.rmerge
+        [board << row, score + row_score]
       end
     end
 
-    def find_tiles(status)
-      @tiles.select { |_key, each| each && each.status == status }.keys
+    def transpose(direction)
+      klass = self.class
+      board = klass.new(to_a.transpose, @score).__send__(direction)
+      klass.new board.to_a.transpose, board.score
     end
 
-    def transpose(&block)
-      board = self.class.new(to_a.transpose, @score)
-      tiles, score = board.instance_eval(&block)
-      [tiles.transpose, score]
+    def reverse(direction)
+      klass = self.class
+      board = klass.new(to_a.map(&:reverse), @score).__send__(direction)
+      klass.new board.to_a.map(&:reverse), board.score
+    end
+
+    def find_tiles(status)
+      @tiles.select { |_key, each| each.status == status }.keys
+    end
+
+    def row(index)
+      [index].product([0, 1, 2, 3]).map { |each| @tiles[each] }
     end
   end
 end

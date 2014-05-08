@@ -7,11 +7,12 @@ module Text2048
       # 2048 related methods
       module Board
         def to_h
-          tiles = {}
-          [0, 1, 2, 3].product([0, 1, 2, 3]).each do |col, row|
-            tiles[[col, row]] = self[col][row]
+          [0, 1, 2, 3].product([0, 1, 2, 3]).reduce({}) do |memo, (col, row)|
+            tile = self[col][row]
+            memo[[col, row]] =
+              tile.respond_to?(:status) ? tile : Text2048::Tile.new(tile)
+            memo
           end
-          tiles
         end
       end
     end

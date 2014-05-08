@@ -8,7 +8,7 @@ guard :bundler do
 end
 
 guard :rspec do
-  watch(%r{^spec/text2048/.+_spec\.rb$})
+  watch(%r{^spec/.+_spec\.rb$})
   watch(%r{^lib/text2048/(.+)\.rb$}) { |m| "spec/text2048/#{m[1]}_spec.rb" }
   watch('spec/spec_helper.rb') { 'spec' }
 end

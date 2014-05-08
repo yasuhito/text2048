@@ -7,22 +7,29 @@ module Text2048
       # 2048 related methods
       module Tile
         def rmerge
-          score = 0
-          tiles = dup
-          (size - 1).downto(1) do |each|
-            if tiles[each - 1] && tiles[each - 1] == tiles[each]
-              tiles[each] = Text2048::Tile.new(tiles[each].to_i * 2, :merged)
-              tiles[each - 1] = nil
-              score += tiles[each].to_i
-            end
+          shrink
+          score = (size - 1).downto(1).reduce(0) do |memo, each|
+            memo + (self[each] == self[each - 1] ? merge_left(each) : 0)
           end
-          [tiles, score]
+          [fill_length(4), score]
         end
 
-        def rshrink
-          orig_size = size
-          tiles = compact
-          ::Array.new(orig_size - tiles.size) + tiles
+        def merge_left(index)
+          value = self[index].to_i * 2
+          self[index] = Text2048::Tile.new(value, :merged)
+          self[index - 1] = nil
+          value
+        end
+
+        def shrink
+          delete(0)
+          map! { |each| each.clear_status }
+        end
+
+        def fill_length(len)
+          compact!
+          unshift(Text2048::Tile.new(0)) until size == len
+          self
         end
       end
     end
