@@ -9,6 +9,11 @@ describe Text2048::Board, '.new' do
     Then { board.generated_tiles.empty? }
     And { board.merged_tiles.empty? }
     And { board.score == 0 }
+
+    describe '#generate' do
+      When { board.generate }
+      Then { board.generated_tiles.size == 1 }
+    end
   end
 
   context 'with one 2048 tile' do

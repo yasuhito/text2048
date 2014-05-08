@@ -24,11 +24,7 @@ module Text2048
     end
 
     def to_a
-      @tiles.reduce(Array.new(4) { Array.new(4) }) do |array, (key, value)|
-        row, col = key
-        array[row][col] = value
-        array
-      end
+      [0, 1, 2, 3].map { |each| row(each) }
     end
 
     def win?
@@ -99,6 +95,10 @@ module Text2048
 
     def find_tiles(status)
       @tiles.select { |_key, each| each.status == status }.keys
+    end
+
+    def row(index)
+      [index].product([0, 1, 2, 3]).map { |each| @tiles[each] }
     end
   end
 end
