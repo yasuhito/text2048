@@ -10,9 +10,7 @@ module Text2048
     attr_reader :score
     attr_reader :tiles
 
-    DEFAULT_TILES = Array.new(4) { Array.new(4) { Tile.new(0) } }
-
-    def initialize(tiles = DEFAULT_TILES.dup, score = 0)
+    def initialize(tiles = Array.new(4) { Array.new(4, 0) }, score = 0)
       @tiles = tiles.to_h
       @score = score
     end
@@ -26,7 +24,7 @@ module Text2048
     end
 
     def to_a
-      @tiles.reduce(DEFAULT_TILES.dup) do |array, (key, value)|
+      @tiles.reduce(Array.new(4) { Array.new(4) }) do |array, (key, value)|
         row, col = key
         array[row][col] = value
         array
