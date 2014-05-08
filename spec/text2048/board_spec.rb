@@ -11,8 +11,8 @@ describe Text2048::Board, '.new' do
     And { board.score == 0 }
 
     describe '#generate' do
-      When { board.generate }
-      Then { board.generated_tiles.size == 1 }
+      When(:new_board) { board.generate }
+      Then { new_board.generated_tiles.size == 1 }
     end
   end
 

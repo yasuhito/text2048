@@ -66,16 +66,19 @@ module Text2048
     end
 
     def generate
-      loop do
-        sample = @tiles.keys.sample
-        if @tiles[sample] == 0
-          @tiles[sample] = Tile.new(rand < 0.8 ? 2 : 4, :generated)
-          return
-        end
-      end
+      new_board = dup
+      new_board.tiles[sample_zero_tile] =
+        Tile.new(rand < 0.8 ? 2 : 4, :generated)
+      new_board
     end
 
     private
+
+    def sample_zero_tile
+      zero_tiles = @tiles.select { |_key, each| each.to_i == 0 }
+      fail if zero_tiles.empty?
+      zero_tiles.keys.shuffle.first
+    end
 
     def transpose(direction)
       klass = self.class

@@ -63,7 +63,7 @@ module Text2048
     end
 
     def generate(num_tiles = 1)
-      num_tiles.times { @board.generate }
+      num_tiles.times { @board = @board.generate }
       @view.update(@board)
       @view.zoom_tiles(@board.generated_tiles)
     end
