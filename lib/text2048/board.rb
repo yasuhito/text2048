@@ -38,8 +38,11 @@ module Text2048
     end
 
     def right
-      board, score = move_right
-      self.class.new board, @score + score
+      new_board, dscore = to_a.reduce([[], 0]) do |(board, score), each|
+        row, row_score = each.rmerge
+        [board << row, score + row_score]
+      end
+      self.class.new new_board, @score + dscore
     end
 
     def left
@@ -73,13 +76,6 @@ module Text2048
     end
 
     private
-
-    def move_right
-      to_a.reduce([[], 0]) do |(board, score), each|
-        row, row_score = each.rmerge
-        [board << row, score + row_score]
-      end
-    end
 
     def transpose(direction)
       klass = self.class
