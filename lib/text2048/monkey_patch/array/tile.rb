@@ -8,23 +8,23 @@ module Text2048
       module Tile
         def rmerge
           compact!
-          score = (0..(size - 1)).to_a.reduce(0) do |memo, each|
-            memo += merge_right(each) if merge_right?(each)
+          score = (size - 1).downto(1).to_a.reduce(0) do |memo, each|
+            memo += merge_left(each) if merge_left?(each)
             memo
           end
           [fill_length(4), score]
         end
 
-        def merge_right?(index)
+        def merge_left?(index)
           me = self[index]
-          right = self[index + 1]
-          me && me == right
+          left = self[index - 1]
+          me && me == left
         end
 
-        def merge_right(index)
+        def merge_left(index)
           value = self[index].to_i * 2
           self[index] = Text2048::Tile.new(value, :merged)
-          delete_at(index + 1)
+          self[index - 1] = nil
           value
         end
 
@@ -35,6 +35,7 @@ module Text2048
         end
 
         def fill_length(len)
+          compact!
           unshift(nil) until size == len
           self
         end
