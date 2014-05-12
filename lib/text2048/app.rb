@@ -1,30 +1,14 @@
 # encoding: utf-8
 
-require 'curses'
 require 'text2048'
 
 # This module smells of :reek:UncommunicativeModuleName
 module Text2048
   # Controller class.
   class App
-    include Curses
-
-    KEYS = {
-      'h' => :left, 'l' => :right, 'k' => :up, 'j' => :down,
-      Key::LEFT => :left, Key::RIGHT => :right,
-      Key::UP => :up, Key::DOWN => :down,
-      '+' => :larger, '-' => :smaller,
-      'q' => :quit
-    }
-
     def initialize
       @view = CursesView.new
       @board = Board.new
-      init_screen
-      curs_set(0)
-      noecho
-      stdscr.keypad(true)
-      at_exit { close_screen }
     end
 
     def start
@@ -32,7 +16,7 @@ module Text2048
       loop do
         @view.win if @board.win?
         @view.game_over if @board.lose?
-        input KEYS[Curses.getch]
+        input @view.user_command
       end
     end
 
