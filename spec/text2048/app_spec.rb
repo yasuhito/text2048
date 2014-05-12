@@ -95,5 +95,12 @@ describe Text2048::App do
       Then { expect(board).to have_received(:down) }
       And { expect(view).to have_received(:update) }
     end
+
+    context 'with command = :quit' do
+      Given(:view) { double('view', command: :quit) }
+      Given(:app) { Text2048::App.new(view) }
+      When(:result) { app.step }
+      Then { result == Failure(SystemExit) }
+    end
   end
 end
