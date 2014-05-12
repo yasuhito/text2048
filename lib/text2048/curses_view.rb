@@ -40,7 +40,7 @@ module Text2048
       @keyboard = Keyboard.new
     end
 
-    def_delegator :@keyboard, :read, :user_command
+    def_delegator :@keyboard, :read, :command
 
     def update(board)
       maybe_init_curses

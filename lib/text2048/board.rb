@@ -37,6 +37,10 @@ module Text2048
       end.size == 4 * 4
     end
 
+    def generate?(other)
+      to_a != other.to_a
+    end
+
     def right
       new_board, dscore = to_a.reduce([[], 0]) do |(board, score), each|
         row, row_score = each.rmerge
