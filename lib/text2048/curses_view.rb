@@ -2,6 +2,7 @@
 
 require 'curses'
 require 'forwardable'
+require 'text2048/curses_view/colorize'
 require 'text2048/curses_view/keyboard'
 require 'text2048/curses_view/tile'
 require 'text2048/curses_view/tile_effects'
@@ -10,24 +11,10 @@ require 'text2048/curses_view/tile_effects'
 module Text2048
   # Curses UI
   class CursesView
+    include Colorize
     include Curses
     include TileEffects
     extend Forwardable
-
-    COLORS = {
-      0 => COLOR_BLACK,
-      2 => COLOR_WHITE,
-      4 => COLOR_GREEN,
-      8 => COLOR_GREEN,
-      16 => COLOR_CYAN,
-      32 => COLOR_CYAN,
-      64 => COLOR_BLUE,
-      128 => COLOR_BLUE,
-      256 => COLOR_YELLOW,
-      512 => COLOR_YELLOW,
-      1024 => COLOR_MAGENTA,
-      2048 => COLOR_RED
-    }
 
     DEFAULT_WIDTH = (Tile::DEFAULT_WIDTH + 1) * 4 + 1
     DEFAULT_HEIGHT = (Tile::DEFAULT_HEIGHT + 1) * 4 + 2
@@ -71,12 +58,12 @@ module Text2048
 
     def win
       setpos(rows_center, cols_center - 1)
-      attron(color_pair(COLOR_RED)) { addstr('WIN!') }
+      colorize(COLOR_RED) { addstr('WIN!') }
     end
 
     def game_over
       setpos(rows_center, cols_center - 4)
-      attron(color_pair(COLOR_RED)) { addstr('GAME OVER') }
+      colorize(COLOR_RED) { addstr('GAME OVER') }
     end
 
     private
@@ -105,16 +92,7 @@ module Text2048
     def init_curses
       init_screen
       curs_set(0)
-      init_color_pairs
       at_exit { close_screen }
-    end
-
-    def init_color_pairs
-      start_color
-      COLORS.each_pair do |_key, value|
-        init_pair value, COLOR_BLACK, value
-        init_pair value + 100, value, value
-      end
     end
 
     def draw_score(score)
@@ -126,7 +104,7 @@ module Text2048
       [0, 1, 2, 3].product([0, 1, 2, 3]).each do |row, col|
         tile = tiles[row][col]
         @tiles[[row, col]] =
-          Tile.new(tile, row, col, COLORS[tile.to_i], @scale).show
+          Tile.new(tile, row, col, color(tile.to_i), @scale).show
         refresh
       end
     end

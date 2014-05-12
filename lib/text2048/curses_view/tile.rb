@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 require 'curses'
+require 'text2048/curses_view/colorize'
 
 # This module smells of :reek:UncommunicativeModuleName
 module Text2048
@@ -12,6 +13,7 @@ module Text2048
       attr_reader :color
 
       include Curses
+      include Colorize
 
       DEFAULT_HEIGHT = 3
       DEFAULT_WIDTH = 5
@@ -44,7 +46,7 @@ module Text2048
       end
 
       def pop
-        attron(color_pair(@color + 100)) do
+        colorize(@color + 100) do
           draw_box
         end
       end
@@ -59,18 +61,18 @@ module Text2048
       end
 
       def fill_tile_color
-        attron(color_pair(@color + 100)) { fill }
+        colorize(@color + 100) { fill }
       end
 
       def fill_black
-        attron(color_pair(COLOR_BLACK + 100)) { fill }
+        colorize(COLOR_BLACK + 100) { fill }
         refresh
       end
 
       def draw_number
         return if @value == 0
         setpos(@row + @height / 2, @col)
-        attron(color_pair(@color)) do
+        colorize(@color) do
           addstr @value.to_s.center(@width)
         end
       end
