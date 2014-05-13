@@ -4,6 +4,11 @@ source 'https://rubygems.org'
 
 gem 'rake', '~> 10.3.0'
 
+group :docs do
+  gem 'inch', '~> 0.4.5'
+  gem 'yard', '~> 0.8.7.4'
+end
+
 group :development do
   gem 'guard', '~> 2.6.0'
   gem 'guard-bundler', '~> 2.0.0'
