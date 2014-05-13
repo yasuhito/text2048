@@ -12,7 +12,7 @@ module Text2048
     attr_reader :score
 
     def initialize(tiles = Array.new(4) { Array.new(4, 0) }, score = 0)
-      @all_tiles = tiles.to_h
+      @all_tiles = tiles.hashinize
       @score = score
     end
 

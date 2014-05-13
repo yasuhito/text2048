@@ -6,7 +6,7 @@ module Text2048
     module Array
       # 2048 related methods
       module Board
-        def to_h
+        def hashinize
           [0, 1, 2, 3].product([0, 1, 2, 3]).reduce({}) do |memo, (col, row)|
             tile = self[col][row]
             memo[[col, row]] =
