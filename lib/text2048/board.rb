@@ -107,7 +107,7 @@ module Text2048
 
     def flip_horizontal(&block)
       board = flipped_board.instance_eval(&block)
-      new_board(board.to_a.map(&:reverse), @score + board.score)
+      new_board(board.to_a.map(&:reverse), board.score)
     end
 
     def flipped_board
@@ -116,7 +116,7 @@ module Text2048
 
     def transpose(&block)
       board = transposed_board.instance_eval(&block)
-      new_board(board.to_a.transpose, @score + board.score)
+      new_board(board.to_a.transpose, board.score)
     end
 
     def transposed_board
