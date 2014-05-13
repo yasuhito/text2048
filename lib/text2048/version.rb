@@ -3,5 +3,5 @@
 # This module smells of :reek:UncommunicativeModuleName
 module Text2048
   # gem version.
-  VERSION = '0.5.0'.freeze
+  VERSION = '0.6.0'.freeze
 end
