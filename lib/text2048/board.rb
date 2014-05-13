@@ -84,16 +84,18 @@ module Text2048
       zero_tiles.keys.shuffle.first
     end
 
+    def new_board(tiles, score)
+      self.class.new(tiles, score)
+    end
+
     def transpose(direction)
-      klass = self.class
-      board = klass.new(to_a.transpose, @score).__send__(direction)
-      klass.new board.to_a.transpose, board.score
+      board = new_board(to_a.transpose, @score).__send__(direction)
+      new_board(board.to_a.transpose, board.score)
     end
 
     def reverse(direction)
-      klass = self.class
-      board = klass.new(to_a.map(&:reverse), @score).__send__(direction)
-      klass.new board.to_a.map(&:reverse), board.score
+      board = new_board(to_a.map(&:reverse), @score).__send__(direction)
+      new_board(board.to_a.map(&:reverse), board.score)
     end
 
     def find_tiles(status)
