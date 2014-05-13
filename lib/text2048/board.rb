@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 require 'text2048/monkey_patch/array'
+require 'text2048/monkey_patch/hash'
 require 'text2048/tile'
 
 # This module smells of :reek:UncommunicativeModuleName
