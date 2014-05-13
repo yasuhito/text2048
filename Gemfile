@@ -3,6 +3,7 @@
 source 'https://rubygems.org'
 
 gem 'rake', '~> 10.3.0'
+gem 'curses', '~> 1.0.1', platforms: [:ruby_21]
 
 group :docs do
   gem 'inch', '~> 0.4.5'
