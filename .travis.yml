@@ -3,6 +3,10 @@ language: ruby
 before_install: gem update bundler
 bundler_args: --without development
 
+env:
+  global:
+    - secure: "LjeWzJbaqeN0/tH3XRGasc21kHKLMeFVBWNKzM6b37OaB4I5/uTX7GsiMDjpf9qub2cH/HZdOtdUMRZrGKujlR97mmzEKkRGiGyQi4/NF90eb4EaA1Ne35nWYntalIs/mpwWnnO7fXqrbYgoWbEKEtC0IxSZsB1DzIH/+OBnyT0="
+
 rvm:
   - 1.9.3
   - 2.0.0

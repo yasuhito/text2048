@@ -5,4 +5,6 @@ $LOAD_PATH.unshift(File.dirname(File.realpath(__FILE__)) + '/../lib')
 
 require 'text2048/app'
 
-Text2048::App.new.start
+app = Text2048::App.new
+app.generate(2)
+loop { app.step }
