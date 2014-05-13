@@ -30,9 +30,7 @@ module Text2048
         klass = self.class
         @value = value.to_i
         @height = klass.height(scale)
-        @box_height = @height + 2
         @width = klass.width(scale)
-        @box_width = @width + 2
         @row = (@height + 1) * row + 2
         @col = (@width + 1) * col + 1
         @color = color
@@ -95,11 +93,19 @@ module Text2048
         [@row + @height, @col + @width]
       end
 
+      def box_height
+        @height + 2
+      end
+
+      def box_width
+        @width + 2
+      end
+
       def draw_square
-        draw_horizonal_line(*box_upper_left, @box_width)
-        draw_vertical_line(*box_upper_left, @box_height)
-        draw_vertical_line(*box_upper_right, @box_height)
-        draw_horizonal_line(*box_lower_left, @box_width)
+        draw_horizonal_line(*box_upper_left, box_width)
+        draw_vertical_line(*box_upper_left, box_height)
+        draw_vertical_line(*box_upper_right, box_height)
+        draw_horizonal_line(*box_lower_left, box_width)
       end
 
       def draw_horizonal_line(row, col, length)
