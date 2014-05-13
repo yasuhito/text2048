@@ -7,6 +7,7 @@ require 'text2048/tile'
 module Text2048
   # 2048 game board
   class Board
+    # @return [Number] returns the current score
     attr_reader :score
 
     def initialize(tiles = Array.new(4) { Array.new(4, 0) }, score = 0)
@@ -31,7 +32,7 @@ module Text2048
 
     # @macro move
     def left
-      reverse.right.reverse
+      flip_horizontal.right.flip_horizontal
     end
 
     # @macro move
@@ -46,13 +47,7 @@ module Text2048
 
     # @!endgroup
 
-    def initialize_copy(board)
-      @all_tiles = board.all_tiles.dup
-    end
-
     # @!group Tiles
-
-    attr_reader :all_tiles
 
     def tiles
       @all_tiles.select { |_key, each| each.to_i > 0 }
@@ -75,10 +70,9 @@ module Text2048
     end
 
     def generate
-      new_board = dup
-      new_board.all_tiles[sample_zero_tile] =
-        Tile.new(rand < 0.8 ? 2 : 4, :generated)
-      new_board
+      tiles = @all_tiles.dup
+      tiles[sample_zero_tile] = Tile.new(rand < 0.8 ? 2 : 4, :generated)
+      new_board(tiles, @score)
     end
 
     # @!endgroup
@@ -101,7 +95,7 @@ module Text2048
       [0, 1, 2, 3].map { |each| row(each) }
     end
 
-    def reverse
+    def flip_horizontal
       new_board(to_a.map(&:reverse), @score)
     end
 
@@ -113,8 +107,11 @@ module Text2048
 
     private
 
+    def zero_tiles
+      @all_tiles.select { |_key, each| each.to_i == 0 }
+    end
+
     def sample_zero_tile
-      zero_tiles = @all_tiles.select { |_key, each| each.to_i == 0 }
       fail if zero_tiles.empty?
       zero_tiles.keys.shuffle.first
     end

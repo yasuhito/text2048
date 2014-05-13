@@ -45,7 +45,7 @@ module Text2048
     end
 
     def move(command)
-      last = @board.dup
+      last = @board
       @board = @board.__send__(command)
       @view.update(@board)
       @view.pop_tiles(@board.merged_tiles)
