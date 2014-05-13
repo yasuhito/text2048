@@ -6,7 +6,7 @@ module Text2048
     module Array
       # 2048 related methods
       module Tile
-        def rmerge
+        def right
           shrink
           score = (size - 1).downto(1).reduce(0) do |memo, each|
             memo + (self[each] == self[each - 1] ? merge_left(each) : 0)
