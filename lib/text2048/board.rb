@@ -33,17 +33,17 @@ module Text2048
 
     # @macro move
     def left
-      flip_horizontal.right.flip_horizontal
+      flip_horizontal { right }
     end
 
     # @macro move
     def up
-      transpose.left.transpose
+      transpose { left }
     end
 
     # @macro move
     def down
-      transpose.right.transpose
+      transpose { right }
     end
 
     # @!endgroup
@@ -101,19 +101,27 @@ module Text2048
       [0, 1, 2, 3].map { |each| row(each) }
     end
 
-    # @return [Board] a horizontally flipped board
-    def flip_horizontal
-      new_board(to_a.map(&:reverse), @score)
-    end
-
-    # @return [Board] a transposed board
-    def transpose
-      new_board(to_a.transpose, @score)
-    end
-
     # @!endgroup
 
     private
+
+    def flip_horizontal(&block)
+      board = flipped_board.instance_eval(&block)
+      new_board(board.to_a.map(&:reverse), @score + board.score)
+    end
+
+    def flipped_board
+      new_board(to_a.map(&:reverse), @score)
+    end
+
+    def transpose(&block)
+      board = transposed_board.instance_eval(&block)
+      new_board(board.to_a.transpose, @score + board.score)
+    end
+
+    def transposed_board
+      new_board(to_a.transpose, @score)
+    end
 
     def zero_tiles
       @all_tiles.select { |_key, each| each.to_i == 0 }
