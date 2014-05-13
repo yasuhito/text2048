@@ -8,19 +8,23 @@ module Text2048
   # Game board
   class Board
     attr_reader :score
-    attr_reader :tiles
+    attr_reader :all_tiles
 
     def initialize(tiles = Array.new(4) { Array.new(4, 0) }, score = 0)
-      @tiles = tiles.to_h
+      @all_tiles = tiles.to_h
       @score = score
     end
 
     def initialize_copy(board)
-      @tiles = board.tiles.dup
+      @all_tiles = board.all_tiles.dup
+    end
+
+    def tiles
+      @all_tiles.select { |_key, each| each.to_i > 0 }
     end
 
     def [](coord)
-      @tiles[coord]
+      @all_tiles[coord]
     end
 
     def to_a
@@ -28,13 +32,11 @@ module Text2048
     end
 
     def win?
-      @tiles.any? { |_key, value| value.to_i >= 2048 }
+      @all_tiles.any? { |_key, value| value.to_i >= 2048 }
     end
 
     def lose?
-      right.left.up.down.tiles.select do |_key, each|
-        each.to_i > 0
-      end.size == 4 * 4
+      right.left.up.down.tiles.size == 4 * 4
     end
 
     def generate?(other)
@@ -71,7 +73,7 @@ module Text2048
 
     def generate
       new_board = dup
-      new_board.tiles[sample_zero_tile] =
+      new_board.all_tiles[sample_zero_tile] =
         Tile.new(rand < 0.8 ? 2 : 4, :generated)
       new_board
     end
@@ -79,7 +81,7 @@ module Text2048
     private
 
     def sample_zero_tile
-      zero_tiles = @tiles.select { |_key, each| each.to_i == 0 }
+      zero_tiles = @all_tiles.select { |_key, each| each.to_i == 0 }
       fail if zero_tiles.empty?
       zero_tiles.keys.shuffle.first
     end
@@ -99,11 +101,11 @@ module Text2048
     end
 
     def find_tiles(status)
-      @tiles.select { |_key, each| each.status == status }.keys
+      @all_tiles.select { |_key, each| each.status == status }.keys
     end
 
     def row(index)
-      [index].product([0, 1, 2, 3]).map { |each| @tiles[each] }
+      [index].product([0, 1, 2, 3]).map { |each| @all_tiles[each] }
     end
   end
 end
