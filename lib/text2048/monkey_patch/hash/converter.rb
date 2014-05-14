@@ -6,10 +6,8 @@ module Text2048
     module Hash
       # For 1.9 backword compatibility
       module Converter
-        if RUBY_VERSION < '2.0'
-          def to_h
-            self
-          end
+        def hashinize
+          self
         end
       end
     end
