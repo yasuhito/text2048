@@ -21,14 +21,14 @@ Text mode 2048 game.
 [screenshot]: https://raw.github.com/yasuhito/text2048/develop/screen_shot.png
 
 Installation
-============
+------------
 
 ```
 $ gem install text2048
 ```
 
 How to Play
-===========
+-----------
 
 ```
 $ 2048
@@ -38,7 +38,12 @@ $ 2048
 - +/- for increase or decrease the size of the tiles displayed.
 
 Links
-=====
+-----
 
  * [The official version of 2048](http://gabrielecirulli.github.io/2048/) by Gabriele Cirulli
  * [bfontaine/term2048](https://github.com/bfontaine/term2048) a terminal-based version in Python
+
+Author
+------
+
+[Yasuhito Takamiya](https://github.com/yasuhito) ([@yasuhito](http://twitter.com/yasuhito))
