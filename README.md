@@ -5,27 +5,30 @@ text2048
 [![Code Climate](http://img.shields.io/codeclimate/github/yasuhito/text2048.svg)][codeclimate]
 [![Coverage Status](http://img.shields.io/coveralls/yasuhito/text2048/develop.svg)][coveralls]
 [![Dependency Status](http://img.shields.io/gemnasium/yasuhito/text2048.svg)][gemnasium]
+[![Gittip](http://img.shields.io/gittip/yasuhito.svg)][gittip]
 
 Text mode 2048 game.
-
-[![Screenshot](https://raw.github.com/yasuhito/text2048/develop/screen_shot.png)][screenshot]
 
 [gem]: https://rubygems.org/gems/text2048
 [travis]: http://travis-ci.org/yasuhito/text2048
 [codeclimate]: https://codeclimate.com/github/yasuhito/text2048
 [coveralls]: https://coveralls.io/r/yasuhito/text2048?branch=develop
 [gemnasium]: https://gemnasium.com/yasuhito/text2048
+[gittip]: https://www.gittip.com/yasuhito/
+
+[![Screenshot](https://raw.github.com/yasuhito/text2048/develop/screen_shot.png)][screenshot]
+
 [screenshot]: https://raw.github.com/yasuhito/text2048/develop/screen_shot.png
 
 Installation
-============
+------------
 
 ```
 $ gem install text2048
 ```
 
 How to Play
-===========
+-----------
 
 ```
 $ 2048
@@ -35,7 +38,12 @@ $ 2048
 - +/- for increase or decrease the size of the tiles displayed.
 
 Links
-=====
+-----
 
  * [The official version of 2048](http://gabrielecirulli.github.io/2048/) by Gabriele Cirulli
  * [bfontaine/term2048](https://github.com/bfontaine/term2048) a terminal-based version in Python
+
+Author
+------
+
+[Yasuhito Takamiya](https://github.com/yasuhito) ([@yasuhito](http://twitter.com/yasuhito))
