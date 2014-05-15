@@ -7,7 +7,7 @@ text2048
 [![Dependency Status](http://img.shields.io/gemnasium/yasuhito/text2048.svg)][gemnasium]
 [![Gittip](http://img.shields.io/gittip/yasuhito.svg)][gittip]
 
-Text mode 2048 game.
+Text mode 2048 game. [Gameplay movie](https://asciinema.org/a/9577).
 
 [gem]: https://rubygems.org/gems/text2048
 [travis]: http://travis-ci.org/yasuhito/text2048
@@ -36,6 +36,7 @@ $ 2048
 
 - Use your arrow keys to move the tiles.
 - +/- for increase or decrease the size of the tiles displayed.
+
 
 Links
 -----
