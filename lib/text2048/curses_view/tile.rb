@@ -2,21 +2,22 @@
 
 require 'curses'
 require 'text2048/curses_view/colorize'
+require 'text2048/curses_view/lcd'
 
 # This module smells of :reek:UncommunicativeModuleName
 module Text2048
   class CursesView
     # Shows tiles in curses.
+    # rubocop:disable ClassLength
     class Tile
       attr_reader :width
       attr_reader :height
       attr_reader :color
 
-      include Curses
       include Colorize
 
-      DEFAULT_HEIGHT = 3
-      DEFAULT_WIDTH = 5
+      DEFAULT_HEIGHT = 7
+      DEFAULT_WIDTH = 16
 
       def self.width(scale)
         @width = (DEFAULT_WIDTH * scale).to_i
@@ -67,15 +68,30 @@ module Text2048
         refresh
       end
 
+      # @todo This method smells of :reek:DuplicateMethodCall
       def draw_number
         return if @value == 0
-        setpos(@row + @height / 2, @col)
-        colorize(@color) do
-          addstr @value.to_s.center(@width)
+        num_lcd = LCD.new.render(@value.to_s)
+        num_lcd.split("\n").each_with_index do |each, index|
+          draw_line(each, @row + index + 1)
         end
       end
 
       private
+
+      def col_padded
+        @col + (@width - @value.to_s.length * 3) / 2
+      end
+
+      # @todo This method smells of :reek:NestedIterators
+      # @todo This method smells of :reek:TooManyStatements
+      def draw_line(line, row)
+        line.split(//).each_with_index do |each, index|
+          setpos(row, col_padded + index)
+          color = each == '*' ? COLOR_BLACK + 100 : @color
+          colorize(color) { addstr each }
+        end
+      end
 
       def box_upper_left
         [@row - 1, @col - 1]
@@ -131,5 +147,6 @@ module Text2048
         end
       end
     end
+    # rubocop:enable ClassLength
   end
 end
