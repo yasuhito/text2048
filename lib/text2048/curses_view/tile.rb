@@ -17,7 +17,7 @@ module Text2048
       include Colorize
 
       DEFAULT_HEIGHT = 7
-      DEFAULT_WIDTH = 16
+      DEFAULT_WIDTH = 17
 
       def self.width(scale)
         @width = (DEFAULT_WIDTH * scale).to_i
@@ -35,6 +35,7 @@ module Text2048
         @row = (@height + 1) * row + 2
         @col = (@width + 1) * col + 1
         @color = color
+        @scale = scale
       end
 
       def show
@@ -68,24 +69,35 @@ module Text2048
         refresh
       end
 
-      # @todo This method smells of :reek:DuplicateMethodCall
       def draw_number
         return if @value == 0
-        num_lcd = LCD.new(@value).render
-        num_lcd.split("\n").each_with_index do |each, index|
-          draw_line(each, @row + index + 1)
+        if @scale >= 1
+          draw_lcd_number
+        else
+          setpos(@row + @height / 2, @col)
+          colorize(@color) do
+            addstr @value.to_s.center(@width)
+          end
         end
       end
 
       private
 
+      def draw_lcd_number
+        num_lcd = LCD.new(@value).render
+        num_lcd.split("\n").each_with_index do |each, index|
+          draw_lcd_line(each, @row + index + (@height - 5) / 2)
+        end
+      end
+
       def col_padded
-        @col + (@width - @value.to_s.length * 3) / 2
+        num_length = @value.to_s.length
+        @col + (@width - num_length * 4 + 1) / 2
       end
 
       # @todo This method smells of :reek:NestedIterators
       # @todo This method smells of :reek:TooManyStatements
-      def draw_line(line, row)
+      def draw_lcd_line(line, row)
         line.split(//).each_with_index do |each, index|
           setpos(row, col_padded + index)
           color = each == '*' ? COLOR_BLACK + 100 : @color

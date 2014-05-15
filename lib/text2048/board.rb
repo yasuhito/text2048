@@ -76,7 +76,7 @@ module Text2048
     # @return [Board] a new board
     def generate
       tiles = @all_tiles.dup
-      tiles[sample_zero_tile] = Tile.new(rand < 0.8 ? 2 : 4, :generated)
+      tiles[sample_zero_tile] = Tile.new(rand < 0.9 ? 2 : 4, :generated)
       new_board(tiles, @score)
     end
 

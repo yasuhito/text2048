@@ -23,7 +23,7 @@ module Text2048
     def initialize
       @tiles = {}
       @scale = 1
-      @scale_min = 1
+      @scale_min = 0.5
       @scale_step = 0.5
       @keyboard = Keyboard.new
     end
