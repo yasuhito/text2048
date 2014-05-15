@@ -4,7 +4,7 @@ require 'text2048'
 
 describe Text2048::CursesView::LCD do
   describe '#render' do
-    Given(:result) { Text2048::CursesView::LCD.new.render(number) }
+    Given(:result) { Text2048::CursesView::LCD.new(number).render }
 
     context 'with 0' do
       When(:number) { 0 }

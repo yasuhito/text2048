@@ -3,9 +3,9 @@
 # This module smells of :reek:UncommunicativeModuleName
 module Text2048
   class CursesView
-    # Displays numbers like LCD
+    # Renders numbers like LCDs
     class LCD
-      DIGITS = [
+      BITMAPS = [
         0b1111111110111,
         0b1010100100100,
         0b1111111011101,
@@ -33,37 +33,38 @@ module Text2048
       CORNER_BOTTOM_LEFT = 11
       CORNER_BOTTOM_RIGHT = 12
 
-      def render(number)
-        digits = number.to_s.scan(/./).map { |each| digit(each) }
+      def initialize(number)
+        @number = number
+      end
+
+      def render
+        digits = @number.to_s.split(//).map { |each| digit(each) }
         digits.transpose.map { |each| each.join(' ') }.join("\n")
       end
 
       private
 
-      def digit(digit)
-        digit = DIGITS[digit.to_i]
-        horizontal(digit, CORNER_TOP_LEFT, TOP, CORNER_TOP_RIGHT) +
-          vertical(digit, TOP_LEFT, TOP_RIGHT) +
-          horizontal(digit, CORNER_MIDDLE_LEFT, MIDDLE, CORNER_MIDDLE_RIGHT) +
-          vertical(digit, BOTTOM_LEFT, BOTTOM_RIGHT) +
-          horizontal(digit, CORNER_BOTTOM_LEFT, BOTTOM, CORNER_BOTTOM_RIGHT)
-      end
-
-      # @todo This method smells of :reek:LongParameterList
-      def horizontal(digit, left_bit, bit, right_bit)
-        [corner(digit, left_bit) + line(digit, bit) + corner(digit, right_bit)]
-      end
-
-      def vertical(digit, left_bit, right_bit)
-        [line(digit, left_bit) + ' ' + line(digit, right_bit)]
+      def digit(number)
+        lines =
+          [[CORNER_TOP_LEFT, TOP, CORNER_TOP_RIGHT],
+           [TOP_LEFT, nil, TOP_RIGHT],
+           [CORNER_MIDDLE_LEFT, MIDDLE, CORNER_MIDDLE_RIGHT],
+           [BOTTOM_LEFT, nil, BOTTOM_RIGHT],
+           [CORNER_BOTTOM_LEFT, BOTTOM, CORNER_BOTTOM_RIGHT]]
+        lines.map { |each| line(BITMAPS[number.to_i], each) }
       end
 
       # @todo This method smells of :reek:UtilityFunction
       # @todo This method smells of :reek:FeatureEnvy
-      def line(digit, bit)
-        (digit & 1 << bit).zero? ? ' ' : '*'
+      def line(bitmap, bits)
+        bits.map do |each|
+          if each
+            (bitmap & 1 << each).zero? ? ' ' : '*'
+          else
+            ' '
+          end
+        end.join
       end
-      alias_method :corner, :line
     end
   end
 end

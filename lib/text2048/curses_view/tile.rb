@@ -71,7 +71,7 @@ module Text2048
       # @todo This method smells of :reek:DuplicateMethodCall
       def draw_number
         return if @value == 0
-        num_lcd = LCD.new.render(@value.to_s)
+        num_lcd = LCD.new(@value).render
         num_lcd.split("\n").each_with_index do |each, index|
           draw_line(each, @row + index + 1)
         end
