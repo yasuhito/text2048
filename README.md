@@ -18,7 +18,7 @@ Text mode 2048 game. [Gameplay movie](https://asciinema.org/a/9577).
 
 [![Screenshot](https://raw.github.com/yasuhito/text2048/develop/screen_shot.png)][screenshot]
 
-[screenshot]: https://raw.github.com/yasuhito/text2048/develop/screen_shot.png
+[screenshot]: https://asciinema.org/a/9577
 
 Installation
 ------------
