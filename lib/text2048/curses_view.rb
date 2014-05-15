@@ -4,6 +4,7 @@ require 'curses'
 require 'forwardable'
 require 'text2048/curses_view/colorize'
 require 'text2048/curses_view/keyboard'
+require 'text2048/curses_view/lcd'
 require 'text2048/curses_view/tile'
 require 'text2048/curses_view/tile_effects'
 
@@ -21,8 +22,8 @@ module Text2048
 
     def initialize
       @tiles = {}
-      @scale = 2
-      @scale_min = 1
+      @scale = 1
+      @scale_min = 0.5
       @scale_step = 0.5
       @keyboard = Keyboard.new
     end
