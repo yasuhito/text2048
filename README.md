@@ -34,9 +34,9 @@ How to Play
 $ 2048
 ```
 
-- Use your arrow keys to move the tiles.
-- +/- for increase or decrease the size of the tiles displayed.
-
+- Use your arrow keys or vi keys ('h'/'j'/'k'/'l') to move the tiles.
+- '+'/'-' to increase or decrease the size of the tiles displayed.
+- 'q' to quit.
 
 Links
 -----
