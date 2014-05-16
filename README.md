@@ -4,7 +4,7 @@ text2048
 [![Build Status](http://img.shields.io/travis/yasuhito/text2048/develop.svg?style=flat)][travis]
 [![Code Climate](http://img.shields.io/codeclimate/github/yasuhito/text2048.svg?style=flat)][codeclimate]
 [![Coverage Status](http://img.shields.io/codeclimate/coverage/github/yasuhito/text2048.svg?style=flat)][codeclimate]
-[![Dependency Status](http://img.shields.io/gemnasium/yasuhito/text2048.svg)][gemnasium]
+[![Dependency Status](http://img.shields.io/gemnasium/yasuhito/text2048.svg?style=flat)][gemnasium]
 [![Gitter chat](https://badges.gitter.im/yasuhito/text2048.png)][gitter]
 [![Gittip](http://img.shields.io/gittip/yasuhito.svg)][gittip]
 
