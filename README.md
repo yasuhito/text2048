@@ -2,7 +2,7 @@ text2048
 ========
 [![Gem Version](http://img.shields.io/gem/v/text2048.svg?style=flat)][gem]
 [![Build Status](http://img.shields.io/travis/yasuhito/text2048/develop.svg?style=flat)][travis]
-[![Code Climate](http://img.shields.io/codeclimate/github/yasuhito/text2048.svg)][codeclimate]
+[![Code Climate](http://img.shields.io/codeclimate/github/yasuhito/text2048.svg?style=flat)][codeclimate]
 [![Coverage Status](http://img.shields.io/coveralls/yasuhito/text2048/develop.svg)][coveralls]
 [![Dependency Status](http://img.shields.io/gemnasium/yasuhito/text2048.svg)][gemnasium]
 [![Gitter chat](https://badges.gitter.im/yasuhito/text2048.png)][gitter]
