@@ -1,6 +1,6 @@
 text2048
 ========
-[![Gem Version](http://img.shields.io/gem/v/text2048.svg)][gem]
+[![Gem Version](http://img.shields.io/gem/v/text2048.svg?style=flat)][gem]
 [![Build Status](http://img.shields.io/travis/yasuhito/text2048/develop.svg)][travis]
 [![Code Climate](http://img.shields.io/codeclimate/github/yasuhito/text2048.svg)][codeclimate]
 [![Coverage Status](http://img.shields.io/coveralls/yasuhito/text2048/develop.svg)][coveralls]
