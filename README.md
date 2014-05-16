@@ -6,7 +6,7 @@ text2048
 [![Coverage Status](http://img.shields.io/codeclimate/coverage/github/yasuhito/text2048.svg?style=flat)][codeclimate]
 [![Dependency Status](http://img.shields.io/gemnasium/yasuhito/text2048.svg?style=flat)][gemnasium]
 [![Gitter chat](https://badges.gitter.im/yasuhito/text2048.png)][gitter]
-[![Gittip](http://img.shields.io/gittip/yasuhito.svg)][gittip]
+[![Gittip](http://img.shields.io/gittip/yasuhito.svg?style=flat)][gittip]
 
 Text mode 2048 game.
 
