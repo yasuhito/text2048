@@ -6,12 +6,24 @@ require 'text2048'
 module Text2048
   # Controller class.
   class App
+    HIGH_SCORE_FILE = File.expand_path('~/.text2048')
+
     attr_reader :board
     attr_reader :view
 
     def initialize(view = CursesView.new, board = Board.new)
       @view = view
       @board = board
+      @high_score = if FileTest.exists?(HIGH_SCORE_FILE)
+                      IO.read(HIGH_SCORE_FILE).to_i
+                    else
+                      0
+                    end
+    end
+
+    def update_high_score
+      File.open(HIGH_SCORE_FILE, 'w') { |file| file.print @high_score }
+      @view.high_score(@high_score)
     end
 
     def generate(num_tiles = 1)
@@ -24,6 +36,7 @@ module Text2048
       @view.win if @board.win?
       @view.game_over if @board.lose?
       input @view.command
+      update_high_score
     end
 
     private
@@ -42,6 +55,8 @@ module Text2048
     def move_and_generate(command)
       last = move(command)
       generate if @board.generate?(last)
+      score = @board.score
+      @high_score = score if score > @high_score
     end
 
     def move(command)

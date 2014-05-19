@@ -67,6 +67,12 @@ module Text2048
       colorize(COLOR_RED) { addstr('GAME OVER') }
     end
 
+    def high_score(score)
+      maybe_init_curses
+      setpos(0, 15)
+      addstr("High Score: #{score}")
+    end
+
     private
 
     def change_scale(board, scale_step)
