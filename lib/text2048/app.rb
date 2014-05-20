@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 require 'text2048'
+require 'timeout'
 
 # This module smells of :reek:UncommunicativeModuleName
 module Text2048
@@ -9,9 +10,23 @@ module Text2048
     attr_reader :board
     attr_reader :view
 
-    def initialize(view = CursesView.new, board = Board.new)
+    def initialize(view = CursesView.new,
+                   board = Board.new,
+                   high_score = HighScore.new)
       @view = view
       @board = board
+      @high_score = high_score
+    end
+
+    def show_title
+      @view.high_score(@high_score)
+      @view.message = 'PRESS ANY KEY TO START'
+      @board = Board.new([[0, 0, 0, 0],
+                          [2, 0, 4, 8],
+                          [0, 0, 0, 0],
+                          [0, 0, 0, 0]])
+      @view.update(@board)
+      @view.wait_any_key
     end
 
     def generate(num_tiles = 1)
@@ -24,6 +39,20 @@ module Text2048
       @view.win if @board.win?
       @view.game_over if @board.lose?
       input @view.command
+      @view.high_score(@high_score)
+    end
+
+    def wait_any_key(seconds)
+      begin
+        timeout(seconds) { @view.wait_any_key }
+      rescue Timeout::Error
+        return false
+      end
+      true
+    end
+
+    def demo
+      input [:left, :right, :up, :down][rand(5)]
     end
 
     private
@@ -42,6 +71,7 @@ module Text2048
     def move_and_generate(command)
       last = move(command)
       generate if @board.generate?(last)
+      @high_score.maybe_update(@board.score)
     end
 
     def move(command)

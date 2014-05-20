@@ -17,7 +17,9 @@ describe Text2048::App do
   end
 
   describe '#generate' do
-    Given(:view) { double('view', update: nil, zoom_tiles: nil) }
+    Given(:view) do
+      double('view', update: nil, zoom_tiles: nil, high_score: nil)
+    end
     Given(:app) { Text2048::App.new(view) }
 
     context 'with no arguments' do
@@ -33,18 +35,22 @@ describe Text2048::App do
 
   describe '#step' do
     Given(:new_board) do
-      double('new_board', merged_tiles: nil, generate?: nil)
+      double('new_board', merged_tiles: nil, generate?: nil, score: 0)
     end
 
     context 'with command = :larger' do
-      Given(:view) { double('view', command: :larger, larger: nil) }
+      Given(:view) do
+        double('view', command: :larger, larger: nil, high_score: nil)
+      end
       Given(:app) { Text2048::App.new(view) }
       When { app.step }
       Then { expect(view).to have_received(:larger) }
     end
 
     context 'with command = :smaller' do
-      Given(:view) { double('view', command: :smaller, smaller: nil) }
+      Given(:view) do
+        double('view', command: :smaller, smaller: nil, high_score: nil)
+      end
       Given(:app) { Text2048::App.new(view) }
       When { app.step }
       Then { expect(view).to have_received(:smaller) }
@@ -52,10 +58,12 @@ describe Text2048::App do
 
     context 'with command = :left' do
       Given(:view) do
-        double('view', command: :left, update: nil, pop_tiles: nil)
+        double('view',
+               command: :left, update: nil, pop_tiles: nil, high_score: nil)
       end
       Given(:board) { double('board', left: new_board, win?: nil, lose?: nil) }
-      Given(:app) { Text2048::App.new(view, board) }
+      Given(:high_score) { double('high_score', maybe_update: nil) }
+      Given(:app) { Text2048::App.new(view, board, high_score) }
       When { app.step }
       Then { expect(board).to have_received(:left) }
       And { expect(view).to have_received(:update) }
@@ -63,12 +71,14 @@ describe Text2048::App do
 
     context 'with command = :right' do
       Given(:view) do
-        double('view', command: :right, update: nil, pop_tiles: nil)
+        double('view',
+               command: :right, update: nil, pop_tiles: nil, high_score: nil)
       end
       Given(:board) do
         double('board', right: new_board, win?: nil, lose?: nil)
       end
-      Given(:app) { Text2048::App.new(view, board) }
+      Given(:high_score) { double('high_score', maybe_update: nil) }
+      Given(:app) { Text2048::App.new(view, board, high_score) }
       When { app.step }
       Then { expect(board).to have_received(:right) }
       And { expect(view).to have_received(:update) }
@@ -76,10 +86,12 @@ describe Text2048::App do
 
     context 'with command = :up' do
       Given(:view) do
-        double('view', command: :up, update: nil, pop_tiles: nil)
+        double('view',
+               command: :up, update: nil, pop_tiles: nil, high_score: nil)
       end
       Given(:board) { double('board', up: new_board, win?: nil, lose?: nil) }
-      Given(:app) { Text2048::App.new(view, board) }
+      Given(:high_score) { double('high_score', maybe_update: nil) }
+      Given(:app) { Text2048::App.new(view, board, high_score) }
       When { app.step }
       Then { expect(board).to have_received(:up) }
       And { expect(view).to have_received(:update) }
@@ -87,10 +99,12 @@ describe Text2048::App do
 
     context 'with command = :down' do
       Given(:view) do
-        double('view', command: :down, update: nil, pop_tiles: nil)
+        double('view',
+               command: :down, update: nil, pop_tiles: nil, high_score: nil)
       end
       Given(:board) { double('board', down: new_board, win?: nil, lose?: nil) }
-      Given(:app) { Text2048::App.new(view, board) }
+      Given(:high_score) { double('high_score', maybe_update: nil) }
+      Given(:app) { Text2048::App.new(view, board, high_score) }
       When { app.step }
       Then { expect(board).to have_received(:down) }
       And { expect(view).to have_received(:update) }

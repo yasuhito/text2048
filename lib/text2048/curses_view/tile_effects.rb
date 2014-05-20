@@ -15,6 +15,7 @@ module Text2048
           refresh
           sleep 0.1
         end
+        draw_message
       end
 
       def zoom_tiles(list)
@@ -23,6 +24,7 @@ module Text2048
           refresh
           sleep 0.05
         end
+        draw_message
       end
 
       private

@@ -20,20 +20,25 @@ module Text2048
     DEFAULT_WIDTH = (Tile::DEFAULT_WIDTH + 1) * 4 + 1
     DEFAULT_HEIGHT = (Tile::DEFAULT_HEIGHT + 1) * 4 + 2
 
+    attr_writer :message
+
     def initialize
       @tiles = {}
       @scale = 1
       @scale_min = 0.5
       @scale_step = 0.5
+      @message = nil
       @keyboard = Keyboard.new
     end
 
     def_delegator :@keyboard, :read, :command
+    def_delegators :@keyboard, :wait_any_key
 
     def update(board)
       maybe_init_curses
       draw_score(board.score)
       draw_tiles(board.to_a)
+      draw_message
       refresh
     end
 
@@ -58,13 +63,25 @@ module Text2048
     end
 
     def win
-      setpos(rows_center, cols_center - 1)
-      colorize(COLOR_RED) { addstr('WIN!') }
+      @message = 'WIN!'
+      draw_message
     end
 
     def game_over
-      setpos(rows_center, cols_center - 4)
-      colorize(COLOR_RED) { addstr('GAME OVER') }
+      @message = 'GAME OVER'
+      draw_message
+    end
+
+    def high_score(score)
+      maybe_init_curses
+      setpos(0, 15)
+      addstr("High Score: #{score.to_i}")
+    end
+
+    def draw_message
+      return unless @message
+      setpos(rows_center, cols_center - @message.length / 2)
+      colorize(COLOR_MAGENTA) { addstr(@message) }
     end
 
     private
@@ -77,7 +94,7 @@ module Text2048
     end
 
     def rows_center
-      height / 2
+      height / 2 + 1
     end
 
     def cols_center
