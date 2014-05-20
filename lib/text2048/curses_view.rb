@@ -73,6 +73,12 @@ module Text2048
       addstr("High Score: #{score.to_i}")
     end
 
+    def press_any_key
+      setpos(rows_center, cols_center - 11)
+      colorize(COLOR_MAGENTA) { addstr('PRESS ANY KEY TO START') }
+      @keyboard.wait_any_key
+    end
+
     private
 
     def change_scale(board, scale_step)
@@ -83,7 +89,7 @@ module Text2048
     end
 
     def rows_center
-      height / 2
+      height / 2 + 1
     end
 
     def cols_center

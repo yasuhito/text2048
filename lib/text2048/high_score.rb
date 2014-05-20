@@ -7,6 +7,7 @@ module Text2048
     DB_FILE = File.expand_path('~/.text2048')
 
     def initialize
+      @score = 0
       load
     end
 
@@ -16,6 +17,7 @@ module Text2048
     end
 
     def maybe_update(score)
+      load
       save(score) if score > @score
     end
 

@@ -17,11 +17,20 @@ module Text2048
       @high_score = high_score
     end
 
+    def show_title
+      @view.high_score(@high_score)
+      board = Board.new([[0, 0, 0, 0],
+                         [2, 0, 4, 8],
+                         [0, 0, 0, 0],
+                         [0, 0, 0, 0]])
+      @view.update(board)
+      @view.press_any_key
+    end
+
     def generate(num_tiles = 1)
       num_tiles.times { @board = @board.generate }
       @view.update(@board)
       @view.zoom_tiles(@board.generated_tiles)
-      @view.high_score(@high_score)
     end
 
     def step

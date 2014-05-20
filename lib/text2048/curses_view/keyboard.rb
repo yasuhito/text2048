@@ -22,6 +22,10 @@ module Text2048
         KEYS[getch]
       end
 
+      def wait_any_key
+        getch
+      end
+
       private
 
       def maybe_init
