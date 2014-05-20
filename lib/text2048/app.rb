@@ -9,10 +9,12 @@ module Text2048
     attr_reader :board
     attr_reader :view
 
-    def initialize(view = CursesView.new, board = Board.new)
+    def initialize(view = CursesView.new,
+                   board = Board.new,
+                   high_score = HighScore.new)
       @view = view
       @board = board
-      @high_score = HighScore.new
+      @high_score = high_score
     end
 
     def generate(num_tiles = 1)

@@ -62,7 +62,8 @@ describe Text2048::App do
                command: :left, update: nil, pop_tiles: nil, high_score: nil)
       end
       Given(:board) { double('board', left: new_board, win?: nil, lose?: nil) }
-      Given(:app) { Text2048::App.new(view, board) }
+      Given(:high_score) { double('high_score', maybe_update: nil) }
+      Given(:app) { Text2048::App.new(view, board, high_score) }
       When { app.step }
       Then { expect(board).to have_received(:left) }
       And { expect(view).to have_received(:update) }
@@ -76,7 +77,8 @@ describe Text2048::App do
       Given(:board) do
         double('board', right: new_board, win?: nil, lose?: nil)
       end
-      Given(:app) { Text2048::App.new(view, board) }
+      Given(:high_score) { double('high_score', maybe_update: nil) }
+      Given(:app) { Text2048::App.new(view, board, high_score) }
       When { app.step }
       Then { expect(board).to have_received(:right) }
       And { expect(view).to have_received(:update) }
@@ -88,7 +90,8 @@ describe Text2048::App do
                command: :up, update: nil, pop_tiles: nil, high_score: nil)
       end
       Given(:board) { double('board', up: new_board, win?: nil, lose?: nil) }
-      Given(:app) { Text2048::App.new(view, board) }
+      Given(:high_score) { double('high_score', maybe_update: nil) }
+      Given(:app) { Text2048::App.new(view, board, high_score) }
       When { app.step }
       Then { expect(board).to have_received(:up) }
       And { expect(view).to have_received(:update) }
@@ -100,7 +103,8 @@ describe Text2048::App do
                command: :down, update: nil, pop_tiles: nil, high_score: nil)
       end
       Given(:board) { double('board', down: new_board, win?: nil, lose?: nil) }
-      Given(:app) { Text2048::App.new(view, board) }
+      Given(:high_score) { double('high_score', maybe_update: nil) }
+      Given(:app) { Text2048::App.new(view, board, high_score) }
       When { app.step }
       Then { expect(board).to have_received(:down) }
       And { expect(view).to have_received(:update) }
