@@ -4,9 +4,18 @@
 $LOAD_PATH.unshift(File.dirname(File.realpath(__FILE__)) + '/../lib')
 
 require 'text2048/app'
+require 'timeout'
 
 app = Text2048::App.new
-app.show_title
+begin
+  timeout(60) { app.show_title }
+rescue Timeout::Error
+  loop do
+    app.demo
+    break if app.wait_any_key(0.5)
+  end
+end
 
+app = Text2048::App.new
 app.generate(2)
 loop { app.step }

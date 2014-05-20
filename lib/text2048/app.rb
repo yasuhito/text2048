@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 require 'text2048'
+require 'timeout'
 
 # This module smells of :reek:UncommunicativeModuleName
 module Text2048
@@ -19,12 +20,13 @@ module Text2048
 
     def show_title
       @view.high_score(@high_score)
-      board = Board.new([[0, 0, 0, 0],
-                         [2, 0, 4, 8],
-                         [0, 0, 0, 0],
-                         [0, 0, 0, 0]])
-      @view.update(board)
-      @view.press_any_key
+      @view.message = 'PRESS ANY KEY TO START'
+      @board = Board.new([[0, 0, 0, 0],
+                          [2, 0, 4, 8],
+                          [0, 0, 0, 0],
+                          [0, 0, 0, 0]])
+      @view.update(@board)
+      @view.wait_any_key
     end
 
     def generate(num_tiles = 1)
@@ -38,6 +40,19 @@ module Text2048
       @view.game_over if @board.lose?
       input @view.command
       @view.high_score(@high_score)
+    end
+
+    def wait_any_key(seconds)
+      begin
+        timeout(seconds) { @view.wait_any_key }
+      rescue Timeout::Error
+        return false
+      end
+      true
+    end
+
+    def demo
+      input [:left, :right, :up, :down][rand(5)]
     end
 
     private
