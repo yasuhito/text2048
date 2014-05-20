@@ -70,7 +70,7 @@ module Text2048
     def high_score(score)
       maybe_init_curses
       setpos(0, 15)
-      addstr("High Score: #{score}")
+      addstr("High Score: #{score.to_i}")
     end
 
     private

@@ -6,6 +6,5 @@ $LOAD_PATH.unshift(File.dirname(File.realpath(__FILE__)) + '/../lib')
 require 'text2048/app'
 
 app = Text2048::App.new
-app.update_high_score
 app.generate(2)
 loop { app.step }
