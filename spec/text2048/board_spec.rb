@@ -45,10 +45,10 @@ describe Text2048::Board do
       When(:result) { board.right }
 
       Then do
-        result.to_a == [[0, 0, 0, 0],
-                        [0, 0, 0, 0],
-                        [0, 0, 0, 0],
-                        [0, 0, 0, 0]]
+        result.to_a == [[nil, nil, nil, nil],
+                        [nil, nil, nil, nil],
+                        [nil, nil, nil, nil],
+                        [nil, nil, nil, nil]]
       end
       And { result.score == 0 }
     end
@@ -57,10 +57,10 @@ describe Text2048::Board do
       When(:result) { board.left }
 
       Then do
-        result.to_a == [[0, 0, 0, 0],
-                        [0, 0, 0, 0],
-                        [0, 0, 0, 0],
-                        [0, 0, 0, 0]]
+        result.to_a == [[nil, nil, nil, nil],
+                        [nil, nil, nil, nil],
+                        [nil, nil, nil, nil],
+                        [nil, nil, nil, nil]]
       end
       And { result.score == 0 }
     end
@@ -69,10 +69,10 @@ describe Text2048::Board do
       When(:result) { board.up }
 
       Then do
-        result.to_a == [[0, 0, 0, 0],
-                        [0, 0, 0, 0],
-                        [0, 0, 0, 0],
-                        [0, 0, 0, 0]]
+        result.to_a == [[nil, nil, nil, nil],
+                        [nil, nil, nil, nil],
+                        [nil, nil, nil, nil],
+                        [nil, nil, nil, nil]]
       end
       And { result.score == 0 }
     end
@@ -81,10 +81,10 @@ describe Text2048::Board do
       When(:result) { board.down }
 
       Then do
-        result.to_a == [[0, 0, 0, 0],
-                        [0, 0, 0, 0],
-                        [0, 0, 0, 0],
-                        [0, 0, 0, 0]]
+        result.to_a == [[nil, nil, nil, nil],
+                        [nil, nil, nil, nil],
+                        [nil, nil, nil, nil],
+                        [nil, nil, nil, nil]]
       end
       And { result.score == 0 }
     end
@@ -92,20 +92,20 @@ describe Text2048::Board do
     describe '#to_a' do
       When(:result) { board.to_a }
       Then do
-        result == [[0, 0, 0, 0],
-                   [0, 0, 0, 0],
-                   [0, 0, 0, 0],
-                   [0, 0, 0, 0]]
+        result == [[nil, nil, nil, nil],
+                   [nil, nil, nil, nil],
+                   [nil, nil, nil, nil],
+                   [nil, nil, nil, nil]]
       end
     end
   end
 
   context 'with four 2s in diagonal' do
     Given(:initial_tiles) do
-      [[2, 0, 0, 0],
-       [0, 2, 0, 0],
-       [0, 0, 2, 0],
-       [0, 0, 0, 2]]
+      [[2, nil, nil, nil],
+       [nil, 2, nil, nil],
+       [nil, nil, 2, nil],
+       [nil, nil, nil, 2]]
     end
 
     describe '#tiles' do
@@ -144,10 +144,10 @@ describe Text2048::Board do
       When(:result) { board.right }
 
       Then do
-        result.to_a == [[0, 0, 0, 2],
-                        [0, 0, 0, 2],
-                        [0, 0, 0, 2],
-                        [0, 0, 0, 2]]
+        result.to_a == [[nil, nil, nil, 2],
+                        [nil, nil, nil, 2],
+                        [nil, nil, nil, 2],
+                        [nil, nil, nil, 2]]
       end
       And { result.merged_tiles.empty? }
       And { result.score == 0 }
@@ -157,10 +157,10 @@ describe Text2048::Board do
       When(:result) { board.left }
 
       Then do
-        result.to_a == [[2, 0, 0, 0],
-                        [2, 0, 0, 0],
-                        [2, 0, 0, 0],
-                        [2, 0, 0, 0]]
+        result.to_a == [[2, nil, nil, nil],
+                        [2, nil, nil, nil],
+                        [2, nil, nil, nil],
+                        [2, nil, nil, nil]]
       end
       And { result.merged_tiles.empty? }
       And { result.score == 0 }
@@ -171,9 +171,9 @@ describe Text2048::Board do
 
       Then do
         result.to_a == [[2, 2, 2, 2],
-                        [0, 0, 0, 0],
-                        [0, 0, 0, 0],
-                        [0, 0, 0, 0]]
+                        [nil, nil, nil, nil],
+                        [nil, nil, nil, nil],
+                        [nil, nil, nil, nil]]
       end
       And { result.merged_tiles.empty? }
       And { result.score == 0 }
@@ -183,9 +183,9 @@ describe Text2048::Board do
       When(:result) { board.down }
 
       Then do
-        result.to_a == [[0, 0, 0, 0],
-                        [0, 0, 0, 0],
-                        [0, 0, 0, 0],
+        result.to_a == [[nil, nil, nil, nil],
+                        [nil, nil, nil, nil],
+                        [nil, nil, nil, nil],
                         [2, 2, 2, 2]]
       end
       And { result.merged_tiles.empty? }
@@ -195,20 +195,20 @@ describe Text2048::Board do
     describe '#to_a' do
       When(:result) { board.to_a }
       Then do
-        result == [[2, 0, 0, 0],
-                   [0, 2, 0, 0],
-                   [0, 0, 2, 0],
-                   [0, 0, 0, 2]]
+        result == [[2, nil, nil, nil],
+                   [nil, 2, nil, nil],
+                   [nil, nil, 2, nil],
+                   [nil, nil, nil, 2]]
       end
     end
   end
 
   context 'with six 2s that can be merged' do
     Given(:initial_tiles) do
-      [[2, 0, 2, 0],
-       [0, 2, 0, 0],
-       [0, 2, 0, 2],
-       [0, 0, 0, 2]]
+      [[2, nil, 2, nil],
+       [nil, 2, nil, nil],
+       [nil, 2, nil, 2],
+       [nil, nil, nil, 2]]
     end
 
     describe '#tiles' do
@@ -249,10 +249,10 @@ describe Text2048::Board do
       When(:result) { board.right }
 
       Then do
-        result.to_a == [[0, 0, 0, 4],
-                        [0, 0, 0, 2],
-                        [0, 0, 0, 4],
-                        [0, 0, 0, 2]]
+        result.to_a == [[nil, nil, nil, 4],
+                        [nil, nil, nil, 2],
+                        [nil, nil, nil, 4],
+                        [nil, nil, nil, 2]]
       end
       And { result.to_a[0][3].merged? }
       And { result.to_a[2][3].merged? }
@@ -264,10 +264,10 @@ describe Text2048::Board do
       When(:result) { board.left }
 
       Then do
-        result.to_a == [[4, 0, 0, 0],
-                        [2, 0, 0, 0],
-                        [4, 0, 0, 0],
-                        [2, 0, 0, 0]]
+        result.to_a == [[4, nil, nil, nil],
+                        [2, nil, nil, nil],
+                        [4, nil, nil, nil],
+                        [2, nil, nil, nil]]
       end
       And { result.to_a[0][0].merged? }
       And { result.to_a[2][0].merged? }
@@ -280,9 +280,9 @@ describe Text2048::Board do
 
       Then do
         result.to_a == [[2, 4, 2, 4],
-                        [0, 0, 0, 0],
-                        [0, 0, 0, 0],
-                        [0, 0, 0, 0]]
+                        [nil, nil, nil, nil],
+                        [nil, nil, nil, nil],
+                        [nil, nil, nil, nil]]
       end
       And { result.to_a[0][1].merged? }
       And { result.to_a[0][3].merged? }
@@ -294,9 +294,9 @@ describe Text2048::Board do
       When(:result) { board.down }
 
       Then do
-        result.to_a == [[0, 0, 0, 0],
-                        [0, 0, 0, 0],
-                        [0, 0, 0, 0],
+        result.to_a == [[nil, nil, nil, nil],
+                        [nil, nil, nil, nil],
+                        [nil, nil, nil, nil],
                         [2, 4, 2, 4]]
       end
       And { result.to_a[3][1].merged? }
@@ -308,20 +308,20 @@ describe Text2048::Board do
     describe '#to_a' do
       When(:result) { board.to_a }
       Then do
-        result == [[2, 0, 2, 0],
-                   [0, 2, 0, 0],
-                   [0, 2, 0, 2],
-                   [0, 0, 0, 2]]
+        result == [[2, nil, 2, nil],
+                   [nil, 2, nil, nil],
+                   [nil, 2, nil, 2],
+                   [nil, nil, nil, 2]]
       end
     end
   end
 
   context 'with one 2048 tile' do
     Given(:initial_tiles) do
-      [[0, 0, 0, 0],
-       [0, 0, 0, 0],
-       [0, 2048, 0, 0],
-       [0, 0, 0, 0]]
+      [[nil, nil, nil, nil],
+       [nil, nil, nil, nil],
+       [nil, 2048, nil, nil],
+       [nil, nil, nil, nil]]
     end
 
     describe '#win?' do

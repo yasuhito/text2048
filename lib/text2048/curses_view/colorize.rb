@@ -10,7 +10,8 @@ module Text2048
       include Curses
 
       COLORS = {
-        0 => COLOR_BLACK,
+        nil => COLOR_BLACK,
+        0 => COLOR_WHITE,
         2 => COLOR_WHITE,
         4 => COLOR_GREEN,
         8 => COLOR_GREEN,

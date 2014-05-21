@@ -27,9 +27,9 @@ module Text2048
         (DEFAULT_HEIGHT * scale).to_i
       end
 
-      def initialize(value, row, col, color, scale = 1)
+      def initialize(tile, row, col, color, scale = 1)
         klass = self.class
-        @value = value.to_i
+        @value = tile.value
         @height = klass.height(scale)
         @width = klass.width(scale)
         @row = (@height + 1) * row + 2
@@ -70,7 +70,7 @@ module Text2048
       end
 
       def draw_number
-        return if @value == 0
+        return unless @value
         if @scale >= 1
           draw_lcd_number
         else
@@ -91,7 +91,7 @@ module Text2048
       end
 
       def col_padded
-        num_length = @value.to_s.length
+        num_length = @value.to_i.to_s.length
         @col + (@width - num_length * 4 + 1) / 2
       end
 
@@ -151,7 +151,7 @@ module Text2048
       def fill
         (0..(@height - 1)).each do |each|
           setpos(@row + each, @col)
-          if @value != 0 && each == @height / 2
+          if @value && each == @height / 2
             addstr @value.to_s.center(@width)
           else
             addstr('.' * @width)

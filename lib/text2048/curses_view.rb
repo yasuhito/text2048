@@ -122,7 +122,7 @@ module Text2048
       [0, 1, 2, 3].product([0, 1, 2, 3]).each do |row, col|
         tile = tiles[row][col]
         @tiles[[row, col]] =
-          Tile.new(tile, row, col, color(tile.to_i), @scale).show
+          Tile.new(tile, row, col, color(tile.value), @scale).show
         refresh
       end
     end

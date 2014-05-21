@@ -11,7 +11,7 @@ module Text2048
     # @return [Number] returns the current score
     attr_reader :score
 
-    def initialize(tiles = Array.new(4) { Array.new(4, 0) }, score = 0)
+    def initialize(tiles = Array.new(4, Array.new(4)), score = 0)
       @all_tiles = tiles.hashinize
       @score = score
     end
@@ -76,7 +76,7 @@ module Text2048
     # @return [Board] a new board
     def generate
       tiles = @all_tiles.dup
-      tiles[sample_zero_tile] = Tile.new(rand < 0.9 ? 2 : 4, :generated)
+      tiles[sample_empty_tile] = Tile.new(rand < 0.9 ? 2 : 4, :generated)
       new_board(tiles, @score)
     end
 
@@ -123,13 +123,13 @@ module Text2048
       new_board(to_a.transpose, @score)
     end
 
-    def zero_tiles
+    def empty_tiles
       @all_tiles.select { |_key, each| each.to_i == 0 }
     end
 
-    def sample_zero_tile
-      fail if zero_tiles.empty?
-      zero_tiles.keys.shuffle.first
+    def sample_empty_tile
+      fail if empty_tiles.empty?
+      empty_tiles.keys.shuffle.first
     end
 
     def new_board(tiles, score)
