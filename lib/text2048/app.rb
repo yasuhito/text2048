@@ -21,10 +21,10 @@ module Text2048
     def show_title
       @view.high_score(@high_score)
       @view.message = 'PRESS ANY KEY TO START'
-      @board = Board.new([[0, 0, 0, 0],
+      @board = Board.new([[nil, nil, nil, nil],
                           [2, 0, 4, 8],
-                          [0, 0, 0, 0],
-                          [0, 0, 0, 0]])
+                          [nil, nil, nil, nil],
+                          [nil, nil, nil, nil]])
       @view.update(@board)
       @view.wait_any_key
     end

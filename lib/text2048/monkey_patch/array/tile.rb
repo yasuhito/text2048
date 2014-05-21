@@ -28,7 +28,7 @@ module Text2048
 
         def fill_length(len)
           compact!
-          unshift(Text2048::Tile.new(0)) until size == len
+          unshift(Text2048::Tile.new(nil)) until size == len
           self
         end
       end

@@ -28,6 +28,12 @@ Installation
 $ gem install text2048
 ```
 
+To upgrade to the latest version, use:
+
+```
+$ gem update text2048
+```
+
 How to Play
 -----------
 
@@ -35,9 +41,9 @@ How to Play
 $ 2048
 ```
 
-- Use your arrow keys or vi keys ('h'/'j'/'k'/'l') to move the tiles.
-- '+'/'-' to increase or decrease the size of the tiles displayed.
-- 'q' to quit.
+- Use your arrow keys or vi keys (h/j/k/l) to move the tiles.
+- +/- to increase or decrease the size of the tiles displayed.
+- q to quit.
 
 Links
 -----
