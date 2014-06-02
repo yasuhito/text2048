@@ -6,7 +6,7 @@ Given(/^a board:$/) do |string|
   layout = string.split("\n").reduce([]) do |memo, row|
     memo << row.split(' ').map { |each| each.to_i }
   end
-  @view = Text2048::TextView.new(output)
+  @view = Text2048::TextView.new(dummy_output)
   @board = Text2048::Board.new(layout)
 end
 
@@ -28,7 +28,7 @@ end
 
 Then(/^the board is:$/) do |string|
   @view.update(@board)
-  output.messages.should eq(string)
+  dummy_output.messages.should eq(string)
 end
 
 Then(/^the score is (\d+)$/) do |score|
@@ -36,5 +36,5 @@ Then(/^the score is (\d+)$/) do |score|
 end
 
 Then(/^it is game over$/) do
-  @board.lose?.should be_true
+  expect(@board.lose?).to be_truthy
 end
