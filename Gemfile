@@ -3,7 +3,6 @@
 source 'https://rubygems.org'
 
 gem 'rake', '~> 10.3.2'
-gem 'curses', '~> 1.0.1', platforms: [:ruby_21]
 
 group :docs do
   gem 'inch', '~> 0.4.6'
@@ -24,6 +23,7 @@ group :test do
   gem 'flay', '~> 2.4.0'
   gem 'flog', '~> 4.2.0'
   gem 'reek', '~> 1.3.7'
+  gem 'rspec', '~> 3.0.0'
   gem 'rspec-given', '~> 3.5.4'
   gem 'rubocop', '~> 0.22.0', require: false
 end
