@@ -14,6 +14,6 @@ class Output
   end
 end
 
-def output
+def dummy_output
   @output ||= Output.new
 end
