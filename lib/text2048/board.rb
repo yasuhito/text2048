@@ -85,7 +85,7 @@ module Text2048
     # @!group Win/Lose
 
     def win?
-      @all_tiles.any? { |_key, value| value.to_i >= 2048 }
+      @all_tiles.any? { |_key, each| each.to_i >= 2048 }
     end
 
     def lose?
