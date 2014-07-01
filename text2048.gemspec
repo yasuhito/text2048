@@ -37,14 +37,14 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency 'curses', '~> 1.0.1'
 
-  gem.add_development_dependency 'bundler', '~> 1.6.2'
+  gem.add_development_dependency 'bundler', '~> 1.6.3'
   gem.add_development_dependency 'rake', '~> 10.3.2'
 
   # guard
   gem.add_development_dependency 'guard', '~> 2.6.1'
   gem.add_development_dependency 'guard-bundler', '~> 2.0.0'
   gem.add_development_dependency 'guard-cucumber', '~> 1.4.1'
-  gem.add_development_dependency 'guard-rspec', '~> 4.2.9'
+  gem.add_development_dependency 'guard-rspec', '~> 4.2.10'
 
   # docs
   gem.add_development_dependency 'inch', '~> 0.4.6'
@@ -58,5 +58,5 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'flog', '~> 4.2.1'
   gem.add_development_dependency 'reek', '~> 1.3.7'
   gem.add_development_dependency 'rspec-given', '~> 3.5.4'
-  gem.add_development_dependency 'rubocop', '~> 0.23.0'
+  gem.add_development_dependency 'rubocop', '~> 0.24.0'
 end
