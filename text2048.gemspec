@@ -37,7 +37,7 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency 'curses', '~> 1.0.1'
 
-  gem.add_development_dependency 'bundler', '~> 1.6.3'
+  gem.add_development_dependency 'bundler'
   gem.add_development_dependency 'rake', '~> 10.3.2'
 
   # guard
