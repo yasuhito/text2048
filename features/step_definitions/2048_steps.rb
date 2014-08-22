@@ -28,11 +28,11 @@ end
 
 Then(/^the board is:$/) do |string|
   @view.update(@board)
-  dummy_output.messages.should eq(string)
+  expect(dummy_output.messages).to eq(string)
 end
 
 Then(/^the score is (\d+)$/) do |score|
-  @board.score.should eq(score.to_i)
+  expect(@board.score).to eq(score.to_i)
 end
 
 Then(/^it is game over$/) do
