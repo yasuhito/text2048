@@ -23,7 +23,7 @@ module Text2048
 
         def shrink
           delete(0)
-          map! { |each| each.clear_status }
+          map!(&:clear_status)
         end
 
         def fill_length(len)

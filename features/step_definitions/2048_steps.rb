@@ -4,7 +4,7 @@ require 'text2048'
 
 Given(/^a board:$/) do |string|
   layout = string.split("\n").reduce([]) do |memo, row|
-    memo << row.split(' ').map { |each| each.to_i }
+    memo << row.split(' ').map(&:to_i)
   end
   @view = Text2048::TextView.new(dummy_output)
   @board = Text2048::Board.new(layout)
