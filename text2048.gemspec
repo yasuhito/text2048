@@ -38,10 +38,10 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'curses', '~> 1.0.1'
 
   gem.add_development_dependency 'bundler'
-  gem.add_development_dependency 'rake', '~> 10.3.2'
+  gem.add_development_dependency 'rake', '~> 10.4.2'
 
   # guard
-  gem.add_development_dependency 'guard', '~> 2.8.2'
+  gem.add_development_dependency 'guard', '~> 2.10.1'
   gem.add_development_dependency 'guard-bundler', '~> 2.0.0'
   gem.add_development_dependency 'guard-cucumber', '~> 1.5.1'
   gem.add_development_dependency 'guard-rspec', '~> 4.3.1'
@@ -56,7 +56,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'cucumber', '~> 1.3.17'
   gem.add_development_dependency 'flay', '~> 2.5.0'
   gem.add_development_dependency 'flog', '~> 4.3.0'
-  gem.add_development_dependency 'reek', '~> 1.4.0'
+  gem.add_development_dependency 'reek', '~> 1.5.0'
   gem.add_development_dependency 'rspec-given', '~> 3.5.4'
   gem.add_development_dependency 'rubocop', '~> 0.27.1'
 end
