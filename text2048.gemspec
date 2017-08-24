@@ -47,8 +47,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'guard-rspec', '~> 4.3.1'
 
   # docs
-  gem.add_development_dependency 'inch', '~> 0.5.7'
-  gem.add_development_dependency 'yard', '~> 0.8.7.6'
+  gem.add_development_dependency 'yard', '~> 0.9.9'
 
   # test
   gem.add_development_dependency 'codeclimate-test-reporter'
