@@ -15,7 +15,7 @@ module Text2048
         Key::UP => :up, Key::DOWN => :down,
         '+' => :larger, '-' => :smaller,
         'q' => :quit
-      }
+      }.freeze
 
       def read
         maybe_init

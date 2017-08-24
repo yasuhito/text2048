@@ -10,7 +10,7 @@ module Text2048
       include Curses
 
       def pop_tiles(list)
-        [:pop, :draw_box].each do |each|
+        %i[pop draw_box].each do |each|
           list_do each, list
           refresh
           sleep 0.1
@@ -19,7 +19,7 @@ module Text2048
       end
 
       def zoom_tiles(list)
-        [:fill_black, :draw_number, :show].each do |each|
+        %i[fill_black draw_number show].each do |each|
           list_do each, list
           refresh
           sleep 0.05

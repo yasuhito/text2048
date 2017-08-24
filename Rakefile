@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-task default: [:test, :reek, :flog, :flay, :rubocop]
+task default: %i[test reek flog flay rubocop]
 task test: [:spec, :cucumber, 'coveralls:push']
 task travis: :default
 

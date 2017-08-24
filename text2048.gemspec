@@ -16,7 +16,7 @@ Gem::Specification.new do |gem|
   gem.email = ['yasuhito@gmail.com']
   gem.homepage = 'http://github.com/yasuhito/text2048'
 
-  gem.files = %w(LICENSE Rakefile text2048.gemspec)
+  gem.files = %w[LICENSE Rakefile text2048.gemspec]
   gem.files += Dir.glob('lib/**/*.rb')
   gem.files += Dir.glob('bin/**/*')
   gem.files += Dir.glob('spec/**/*')
@@ -56,7 +56,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'cucumber', '~> 1.3.17'
   gem.add_development_dependency 'flay', '~> 2.5.0'
   gem.add_development_dependency 'flog', '~> 4.3.0'
-  gem.add_development_dependency 'reek', '~> 1.5.0'
+  gem.add_development_dependency 'reek', '~> 4.7.2'
   gem.add_development_dependency 'rspec-given', '~> 3.5.4'
-  gem.add_development_dependency 'rubocop', '~> 0.27.1'
+  gem.add_development_dependency 'rubocop', '~> 0.49.1'
 end

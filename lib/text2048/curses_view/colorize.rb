@@ -23,7 +23,7 @@ module Text2048
         512 => COLOR_YELLOW,
         1024 => COLOR_MAGENTA,
         2048 => COLOR_RED
-      }
+      }.freeze
 
       def color(number)
         COLORS[number]

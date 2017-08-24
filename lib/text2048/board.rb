@@ -128,8 +128,8 @@ module Text2048
     end
 
     def sample_empty_tile
-      fail if empty_tiles.empty?
-      empty_tiles.keys.shuffle.first
+      raise if empty_tiles.empty?
+      empty_tiles.keys.sample
     end
 
     def new_board(tiles, score)

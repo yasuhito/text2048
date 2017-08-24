@@ -52,7 +52,7 @@ module Text2048
     end
 
     def demo
-      input [:left, :right, :up, :down][rand(5)]
+      input %i[left right up down][rand(5)]
     end
 
     private
