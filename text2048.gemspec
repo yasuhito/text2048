@@ -52,7 +52,7 @@ Gem::Specification.new do |gem|
   # test
   gem.add_development_dependency 'codeclimate-test-reporter'
   gem.add_development_dependency 'coveralls', '~> 0.7.2'
-  gem.add_development_dependency 'cucumber', '~> 1.3.17'
+  gem.add_development_dependency 'cucumber', '~> 2.4.0'
   gem.add_development_dependency 'flay', '~> 2.5.0'
   gem.add_development_dependency 'flog', '~> 4.3.0'
   gem.add_development_dependency 'reek', '~> 4.7.2'
