@@ -35,7 +35,7 @@ Gem::Specification.new do |gem|
 
   gem.required_ruby_version = '>= 1.9.3'
 
-  gem.add_dependency 'curses', '~> 1.0.1'
+  gem.add_dependency 'curses', '~> 1.4'
 
   gem.add_development_dependency 'bundler'
   gem.add_development_dependency 'rake', '~> 10.4.2'
